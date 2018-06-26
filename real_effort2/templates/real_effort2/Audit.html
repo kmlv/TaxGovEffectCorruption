@@ -1,0 +1,19 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    <p style="font-size:15px; color:#CD853F;" align="right">{{ pgCode }}<br/>Period {{ round_num }}</p>Auditoría
+{% endblock %}
+
+{% block content %}
+    {% if fail %}
+        <p>¡Has sido seleccionado para la auditoría!<br/><br/>Tu ingreso fue de {{ correctIncome }} unidades, y reportaste
+            {{ reportedIncome }} unidades. Has sido penalizado con un {{ penalty }}% de tu
+            ingreso restante después de pagar impuestos. <br/><br/>Por lo tanto, tu ingreso ahora es de {{ newIncome }} unidades.
+    {% else %}
+        <p>¡Has sido seleccionado para la auditoría! Como reportaste correctamente tu ingreso, no se te aplica la penalidad.</p>
+{% endif %}
+
+    {% next_button %}
+
+{% endblock %}

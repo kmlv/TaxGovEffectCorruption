@@ -1,0 +1,89 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    <p style="font-size:15px; color:#CD853F;" align="right">{{ pgCode }}<br/>Period {{ round_num }}</p>
+    Resultados
+{% endblock %}
+
+{% block content %}
+    {% if player.spanish %}
+        <table class="table-condensed" style="width:500px; margin-top:20px;">
+        <tr><td>Tu ingreso reportado fue: </td><td>{{ player.contribution }}</td></tr>
+        <tr><td>Los ingresos reportados por los otros participantes fueron:</td><td></td></tr>
+        {% for p in player.get_others_in_group %}
+            <tr><td></td><td>{{ p.contribution }}</td></tr>
+        {% endfor %}
+
+        <tr><td>Recaudación total:</td><td>{{ total_contribution }}</td></tr>
+
+        <tr><td colspan="2"><hr/></td></tr>
+
+        <tr><td>Ganancia total de la inversión pública:</td><td>{{ total_earnings }}</td></tr>
+
+            {% if mode != 1 %}
+            <tr><td>La autoridad se quedó con:</td><td>{{total_appropriation}} (25% de ganancia total de inversión pública) </td></tr>
+
+            <tr>
+                <td colspan="2"><hr/></td>
+            </tr>
+            {% endif %}
+
+        <tr><td>Por lo tanto, tú ganaste:</td><td>{{ payoff }}</td></tr>
+
+        </table>
+    {% else %}
+        <table class="table-condensed" style="width:900px; margin-top:20px;">
+        <tr>
+            <td>You reported income of:</td>
+            <td>{{ player.contribution }}</td>
+        </tr>
+
+        <tr>
+            <td>Total tax contribution (tax rate multiplied by total reported income):</td>
+            <td>{{ group.total_contribution }}</td>
+        </tr>
+
+        <tr>
+            <td>Group money (Total tax contribution multiplied by 2: </td>
+            <td>{{ group.total_contribution }}</td>
+        </tr>
+        <tr>
+            <td colspan="2"><hr/></td>
+        </tr>
+
+        {% if mode != 1 %}
+            <tr>
+                <td>Money appropriated by authority ({{display_app_percent}}% of the Group money):</td>
+                <td>{{ appropriation }}</td>
+            </tr>
+
+            <tr>
+                <td colspan="2"><hr/></td>
+            </tr>
+        {% endif %}
+
+        <tr>
+            <td>Money distributed equally among group members:</td>
+            <td>{{ total_earnings }}</td>
+        </tr>
+
+        <tr><td colspan="2"><hr/></td></tr>
+
+        <tr>
+            <td>Your payoff for this period is:</td>
+            <td>{{ player.income }} - {{ player.contribution }} * {{ tax }} + {{ player_earnings }}</td>
+        </tr>
+        <tr>
+            <td>Task Income - Reported Income * Tax Rate + Share of group money</td>
+            <td>{{ payoff }} ECUs</td>
+        </tr>
+
+    </table>
+    <p></p>
+
+    {% endif %}
+
+    {% next_button %}
+
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    <p style="font-size:15px; color:#CD853F;" align="right">{{ pgCode }}<br/>Period {{ round_num }}</p>
+    Reporte de Ingresos
+{% endblock %}
+
+{% block content %}
+    {% if player.spanish %}
+        {% if transcribe_on %}
+        <p> La precisión de tu transcripción fue de {{ display_ratio }}%.</p>
+        <p>Por lo tanto, tu ingreso es de {{ display_income }} unidades. ({{display_ratio}}% de {{ endowment }} unidades).
+        </p>
+        {% else %}
+        <p> Tu ingreso es {{ display_income }} unidades.</p>
+        {% endif %}
+        <p>
+            <b>La tasa impositiva es {{ tax }}% </b> </p>
+        <p>
+            En el siguiente recuadro, ingresa el monto que reportarás como ingreso.
+        </p>
+        {% formfield player.contribution label="¿Cuál es el monto que reportarás como ingreso?" %}
+         <p> Recuerda que el monto total recolectado de tu grupo será multiplicado por {{ mult }} y luego será divido entre todos los miembros del grupo, sin importar cuánto contribuyó cada uno.
+        </p>
+    {% else %}
+        {% if transcribe_on %}
+            <p>
+                The accuracy of your transcription was {{ display_ratio }}%.
+                <br/>
+                Therefore, your income is {{ display_ratio }}% of {{ endowment }} ECUs, which is {{ display_income }} ECUs.
+            </p>
+        {% else %}
+            Your income is {{ display_income }} ECUs.
+            <br/><br/>
+        {% endif %}
+        <p>
+            Reporting Income:
+            <br/>
+            The tax rate is {{ tax }}%.
+            <br/><br/>
+            Please, in the field below, report your income for tax collection.
+        </p>
+
+        {% formfield player.contribution label="How much income will you report?" %}
+    <p> Remember that the total tax collected from all group members is added together, multiplied by {{ mult }}, and then
+        divided evenly among all group members, regardless of how much each contributed.
+    </p>
+    {% endif %}
+
+    {% next_button %}
+
+{% endblock %}

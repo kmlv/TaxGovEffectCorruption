@@ -1,0 +1,59 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    <p style="font-size:15px; color:#CD853F;" align="right">{{ pgCode }}<br/>Period {{ round_num }}</p>
+    Transcripción
+{% endblock %}
+
+{% block content %}
+    {% if player.spanish %}
+        <p> Trascribe (copia) el siguiente texto en el recuadro.</p>
+<p>Trata de ser exacto y asegúrate de poner todas las letras y espacios correspondientes.</p>
+    {% else %}
+        <p>
+        Please transcribe (copy) the text below into the input field.
+        Be exact and make sure to get all characters and spaces correct.
+    </p>
+    {% endif %}
+
+
+    <img src="{% static image_path %}"/>
+    <br><br>
+
+
+    {% formfield player.transcribed_text2 label="" %}
+
+    {% next_button %}
+
+    {% if debug %}
+        <div class="card border-warning">
+            <div class="card-body">
+            <h4>Explanation for researchers (shown in debug mode only)</h4>
+            <p>
+                
+                by clicking <a href="#" id="prefill">this link</a>
+                and clicking "next".
+            </p>
+
+            <p>
+                A subject can only advance to the next screen if the
+                transcription is {{ required_accuracy }}% accurate.
+            </p>
+
+            </div>
+        </div>
+
+    {% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(document).ready(function () {
+        var referenceText = {{ reference_text|json }};
+        $('#prefill').click(function () {
+            $('#id_transcribed_text').val(referenceText);
+        })
+    });
+</script>
+{% endblock %}

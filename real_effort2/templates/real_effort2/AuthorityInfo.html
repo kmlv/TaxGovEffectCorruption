@@ -1,0 +1,33 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    <p style="font-size:15px; color:#CD853F;" align="right">{{ pgCode }}<br/>Period {{ round_num }}</p>Información sobre la autoridad
+{% endblock %}
+
+{% block content %}
+	{% if player.spanish %}
+        <p>
+         Otro jugador fue seleccionado para ser la autoridad. Él decidió {{ decision }}
+    	</p>
+    {% else %}
+        <p>
+        Another player was selected to be the "Authority", and he/she decided to {{ decision }}
+    	</p>
+    {% endif %}
+
+    
+
+
+
+
+
+
+    
+
+    {% next_button %}
+
+    
+{% endblock %}
+
+
