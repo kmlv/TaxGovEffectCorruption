@@ -124,15 +124,21 @@ class Transcribe1(Page):
         self.player.refText = generateText1(Constants.config[0][self.round_number - 1]["difficulty"])
         # Don't display this Transcribe2 page if the "transcription" value in
         # the dictionary representing this round in config.py is False
+        print("Inside Transcribe1 page")
+        print("Transcription for this round is: " + str(Constants.config[0][self.round_number - 1]["transcription"]))
+
         if (Constants.config[0][self.round_number - 1]["transcription"] == False):
             self.player.ratio = 1
             return False
 
-        # Don't display this Transcribe2 page for each player who has completed
+
+        """
+        # Don't display this Transcribe1 page for each player who has completed
         # the second transcription task
         for p in self.player.in_all_rounds():
             if(p.transcriptionDone):
                 return False
+        """
 
         return True
 
@@ -161,14 +167,20 @@ class Transcribe2(Page):
     # Don't display this Transcribe2 page if the "transcription" value in
     # the dictionary representing this round in config.py is False
     def is_displayed(self):
+        print("Inside Transcribe2 page")
+        print("Transcription for this round is: " + str(Constants.config[0][self.round_number - 1]["transcription"]))
+
         if (Constants.config[0][self.round_number - 1]["transcription"] == False):
             return False
 
+        """
         # Don't display this Transcribe2 page for each player who has completed
         # the first transcription task
         for p in self.player.in_all_rounds():
             if(p.transcriptionDone):
                 return False
+        """
+
         self.player.refText = generateText2(Constants.config[0][self.round_number - 1]["difficulty"])
 
         return True
