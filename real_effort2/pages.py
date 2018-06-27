@@ -145,7 +145,7 @@ class Transcribe1(Page):
     def vars_for_template(self):
         pgCode = getPageCode(self)
 
-        writeText(self.player.refText, 'real_effort2/static/real_effort2/paragraphs/{}.png'.format(1))
+        writeText(self.player.refText, 'real_effort2/static/real_effort2/paragraphs/{}.png'.format(self.player.id_in_group))
         return {
             'image_path': 'real_effort2/paragraphs/{}.png'.format(1),
             'reference_text': self.player.refText,
