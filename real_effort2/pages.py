@@ -259,7 +259,7 @@ class ReportIncome(Page):
 
     def before_next_page(self):
         self.group.appropriation = 0
-        if(random.randint(0,1) == 0):
+        if random.randint(0, 1) == 0:
             self.player.audit = True
         else:
             self.player.audit = False
@@ -270,8 +270,12 @@ class Audit(Page):
     and reported income match. If not, they incur a penalty that's deducted from their remaining income after taxes
     are deducted."""
     def is_displayed(self):
-        return self.player.audit
-    
+       # return self.player.audit
+       if self.player.audit2 == 1:
+           return True
+       else:
+           return False
+
     def vars_for_template(self):
         config = Constants.config
         pgCode = getPageCode(self)

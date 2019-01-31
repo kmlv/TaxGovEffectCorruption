@@ -3,6 +3,7 @@ from otree.api import (
     Currency as c, currency_range
 )
 from . import config as config_py
+import random
 
 doc = """
 This is a game that combines elements of the Public Goods game and real-effort
@@ -87,9 +88,13 @@ class Subsession(BaseSubsession):
     # Executed when the session is created
     def creating_session(self):
         # Shuffle players randomly so that they can end up in any group
+        # k is a scalar that will allow to randomize the audits
+        k = random.randint(0, 1)
         config = Constants.config
         round_number = self.round_number
         shuffle = config[0][round_number - 1]["shuffle"]
+        for p in self.get_players():
+            p.audit2 = k
 
         print("Round number: ", round_number, ", Shuffle: ", shuffle)
 
@@ -115,7 +120,7 @@ class Subsession(BaseSubsession):
             p.income = Constants.config[0][round_number - 1]["end"]
 
 
-class Group(BaseGroup): 
+class Group(BaseGroup):
     baseIncome = models.CurrencyField()
     total_report = models.CurrencyField()
     total_contribution = models.FloatField()
@@ -134,19 +139,20 @@ class Group(BaseGroup):
     # him/herself)?
     auth_appropriate = models.BooleanField()
     total_reported_income = models.CurrencyField()
-    appropriation = models.IntegerField()
+    appropriation = models.FloatField()
 
 
 class Player(BasePlayer):
+    audit2 = models.IntegerField()
     transcribed_text = models.LongStringField()
     transcribed_text2 = models.LongStringField()
     levenshtein_distance = models.IntegerField()
     ratio = models.FloatField()
     contribution = models.FloatField(min = 0, initial = -1)
-    income = models.FloatField()
+    income = models.CurrencyField()
     spanish = models.BooleanField()
     done = models.BooleanField()
     transcriptionDone = models.BooleanField()
-    payoff = models.FloatField()
+    payoff = models.CurrencyField()
     refText = models.LongStringField()
     audit = models.BooleanField()
