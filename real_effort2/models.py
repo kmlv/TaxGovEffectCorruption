@@ -118,8 +118,8 @@ class Subsession(BaseSubsession):
 class Group(BaseGroup): 
     baseIncome = models.CurrencyField()
     total_report = models.CurrencyField()
-    total_contribution = models.IntegerField()
-    total_earnings = models.IntegerField()
+    total_contribution = models.FloatField()
+    total_earnings = models.FloatField()
     individual_share = models.FloatField()
     temp = models.IntegerField()
 
@@ -142,8 +142,8 @@ class Player(BasePlayer):
     transcribed_text2 = models.LongStringField()
     levenshtein_distance = models.IntegerField()
     ratio = models.FloatField()
-    contribution = models.IntegerField(min = 0, initial = -1)
-    income = models.IntegerField()
+    contribution = models.FloatField(min = 0, initial = -1)
+    income = models.FloatField()
     spanish = models.BooleanField()
     done = models.BooleanField()
     transcriptionDone = models.BooleanField()
