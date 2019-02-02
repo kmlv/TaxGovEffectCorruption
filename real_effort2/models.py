@@ -148,7 +148,7 @@ class Player(BasePlayer):
     transcribed_text2 = models.LongStringField()
     levenshtein_distance = models.IntegerField()
     ratio = models.FloatField()
-    contribution = models.FloatField(min = 0, initial = -1)
+    contribution = models.CurrencyField(min = 0, initial = -1)
     income = models.CurrencyField()
     spanish = models.BooleanField()
     done = models.BooleanField()
