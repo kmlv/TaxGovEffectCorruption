@@ -123,9 +123,9 @@ class Subsession(BaseSubsession):
 class Group(BaseGroup):
     baseIncome = models.CurrencyField()
     total_report = models.CurrencyField()
-    total_contribution = models.FloatField()
-    total_earnings = models.FloatField()
-    individual_share = models.FloatField()
+    total_contribution = models.CurrencyField()
+    total_earnings = models.CurrencyField()
+    individual_share = models.CurrencyField()
     temp = models.IntegerField()
 
     # ID of randomly-chosen authority player
@@ -139,7 +139,7 @@ class Group(BaseGroup):
     # him/herself)?
     auth_appropriate = models.BooleanField()
     total_reported_income = models.CurrencyField()
-    appropriation = models.FloatField()
+    appropriation = models.CurrencyField()
 
 
 class Player(BasePlayer):

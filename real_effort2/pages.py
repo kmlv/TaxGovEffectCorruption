@@ -47,7 +47,8 @@ def generateText1(difficulty):
     allchar = string.ascii_lowercase + string.digits + string.punctuation
     vowels = ('a','e','i','o','u')
 
-    generated = "$eub:uuwhui eiu,u.ead^)ie{hp/irle.eug aw2x~auao`u.pi-[n+eaoqej."
+    #generated = "$eub:uuwhui eiu,u.ead^)ie{hp/irle.eug aw2x~auao`u.pi-[n+eaoqej."
+    generated=""
 
     if(difficulty == 1):
         allchar = string.ascii_lowercase
@@ -73,7 +74,8 @@ def generateText2(difficulty):
     allchar = string.ascii_lowercase + string.digits + string.punctuation
     vowels = ('a', 'e', 'i', 'o', 'u')
 
-    generated = "$abgfnu% hgancnya @mk.o)qwbn[apzxc[*}-en45a.m_nbczpi45&|jsn-omn^"
+    #generated = "$abgfnu% hgancnya @mk.o)qwbn[apzxc[*}-en45a.m_nbczpi45&|jsn-omn^"
+    generated=""
 
     if (difficulty == 1):
         allchar = string.ascii_lowercase
@@ -164,6 +166,7 @@ class Transcribe2(Page):
     form_model = 'player'
     form_fields = ['transcribed_text']
 
+    # la transcripcion se aproxima al entero mas cercano si la parte decimal es mayor a .5 (no mayor igual)
     # Don't display this Transcribe2 page if the "transcription" value in
     # the dictionary representing this round in config.py is False
     def is_displayed(self):
@@ -496,5 +499,8 @@ class TaxResults(Page):
             'total_appropriation':self.group.appropriation, 'pgCode': pgCode, 'round_num': self.round_number,'mode':mode_num,'tax': tax,'payoff': self.player.payoff,
         }
 
-page_sequence = [Introduction, Transcribe1, Transcribe2, ReportIncome, Audit, resultsWaitPage,
+#page_sequence = [Introduction, Transcribe1, Transcribe2, ReportIncome, Audit, resultsWaitPage,
+                 #Authority,  Authority2, AuthorityWaitPage, AuthorityInfo, TaxResults]
+page_sequence = [Introduction, Transcribe2, ReportIncome, Audit, resultsWaitPage,
                  Authority,  Authority2, AuthorityWaitPage, AuthorityInfo, TaxResults]
+
