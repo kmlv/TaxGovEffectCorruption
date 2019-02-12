@@ -215,7 +215,7 @@ class Transcribe2(Page):
             if allowed_error_rate == 0:
                 return "The transcription should be exactly the same as on the image."
             else:
-                return "This transcription appears to contain too many errors."
+                return "Para avanzar, debes transcribir más caracteres similares a la transcripción original."
 
     def before_next_page(self):
         self.player.ratio = 1 - self.player.levenshtein_distance / len(self.player.refText)
