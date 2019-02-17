@@ -10,10 +10,10 @@
     {% if player.spanish %}
         {% if transcribe_on %}
         <p> La precisión de tu transcripción fue de {{ display_ratio }}%.</p>
-        <p>Por lo tanto, tu ingreso es de {{ display_income }} unidades. ({{display_ratio}}% de {{ endowment }} unidades).
+        <p>Por lo tanto, tu ingreso es de {{ display_income|c }} Solex. ({{display_ratio}}% de {{ endowment }} Solex).
         </p>
         {% else %}
-        <p> Tu ingreso es {{ display_income }} unidades.</p>
+        <p> Tu ingreso es {{ display_income }} Solex.</p>
         {% endif %}
         <p>
             <b>La tasa impositiva es {{ tax }}% </b> </p>

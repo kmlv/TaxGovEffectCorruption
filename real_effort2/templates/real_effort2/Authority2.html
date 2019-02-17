@@ -9,17 +9,19 @@
 {% block content %}
     {% if player.spanish %}
     <p>
-        ¡Felicitaciones! Has sido escogido para ser la autoridad de tu grupo.
+        Has sido escogido para ser la autoridad de tu grupo.
         Esto quiere decir que puedes escoger entre dos alternativas:
             </p>
 
             <br/>
 
             <p>
-                <b>Elección 1:</b> Multiplicar el monto total recaudado por {{ mult }} para que luego pueda ser repartido entre los integrantes.
+                <b>Elección 1:</b> Multiplicar el monto total recaudado por {{ mult }} para que luego
+                pueda ser repartido entre todos los integrantes en partes iguales (incluyéndote).
                 <br/><br/>
                 <b>Elección 2:</b> Multiplicar el monto total recaudado por {{ mult }} <b>y</b>
-                quedarte con {{ display_app_percent }}% del monto total. Lo restante será repartido entre todos los integrantes (incluyéndote).
+                quedarte con {{ display_app_percent }}% del monto total <b>tras multiplicar</b>. Lo
+                restante será repartido entre todos los integrantes (incluyéndote).
             </p>
 
     {% else %}

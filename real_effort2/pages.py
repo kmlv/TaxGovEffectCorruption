@@ -250,7 +250,7 @@ class ReportIncome(Page):
 
         displaytax = config[0][self.round_number - 1]["tax"] * 100
         display_ratio = round(self.player.ratio * 100, 1)
-        display_income = int(self.player.income)
+        display_income =  self.player.income
 
         return {'ratio': self.player.ratio, 'income': self.player.income, 'tax': displaytax,
                 'flag': config[0][self.round_number - 1]["transcription"],
