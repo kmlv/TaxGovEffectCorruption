@@ -115,6 +115,14 @@ class Introduction(Page):
 
         return False
 
+class InstructionsB(Page):
+    """Description of the game block"""
+
+    def is_displayed(self):
+        if (self.round_number == 1):
+            return True
+
+        return False
 
 class Transcribe1(Page):
     """First transcription task that's shown to the player that is merely for practice and does not determine the ratio
@@ -333,6 +341,7 @@ class Authority(Page):
         pgCode = getPageCode(self)
 
         return {
+            'mode': config[0][self.round_number - 1]["mode"],
             'mult': config[0][self.round_number - 1]["multiplier"],
             'pgCode': pgCode, 'round_num': self.round_number
         }
@@ -392,6 +401,36 @@ class Authority2(Page):
         displaytax = config[0][self.round_number - 1]["tax"] * 100
 
         return {
+            'mode': config[0][self.round_number - 1]["mode"],
+            'mult': config[0][self.round_number - 1]["multiplier"],
+            'tax': displaytax, 'pgCode': pgCode, 'round_num': self.round_number, 'display_app_percent': display_appropriation
+        }
+
+
+class Authority3(Page):
+    form_model = 'group'
+    form_fields = ['auth_appropriate']
+
+    def is_displayed(self):
+        config = Constants.config
+        group = self.group
+
+        mode_num = config[0][self.round_number - 1]["mode"]
+
+        if (mode_num == 3 and self.player.id_in_group == group.authority_ID):
+            return True
+
+    def vars_for_template(self):
+        config = Constants.config
+        pgCode = getPageCode(self)
+        mode_num = config[0][self.round_number - 1]["mode"]
+        appropriation_percent = config[0][self.round_number - 1]["appropriation_percent"]
+        display_appropriation = appropriation_percent * 100
+
+        displaytax = config[0][self.round_number - 1]["tax"] * 100
+
+        return {
+            'mode': config[0][self.round_number - 1]["mode"],
             'mult': config[0][self.round_number - 1]["multiplier"],
             'tax': displaytax, 'pgCode': pgCode, 'round_num': self.round_number, 'display_app_percent': display_appropriation
         }
@@ -499,8 +538,8 @@ class TaxResults(Page):
             'total_appropriation':self.group.appropriation, 'pgCode': pgCode, 'round_num': self.round_number,'mode':mode_num,'tax': tax,'payoff': self.player.payoff,
         }
 
-#page_sequence = [Introduction, Transcribe1, Transcribe2, ReportIncome, Audit, resultsWaitPage,
+#page_sequence = [Introduction, InstructionsB, Transcribe1, Transcribe2, ReportIncome, Audit, resultsWaitPage,
                  #Authority,  Authority2, AuthorityWaitPage, AuthorityInfo, TaxResults]
-page_sequence = [Introduction, Transcribe2, ReportIncome, Audit, resultsWaitPage,
-                 Authority,  Authority2, AuthorityWaitPage, AuthorityInfo, TaxResults]
+page_sequence = [Introduction, InstructionsB, Transcribe2, ReportIncome, Audit, resultsWaitPage,
+                 Authority,  Authority2,  Authority3, AuthorityWaitPage, AuthorityInfo, TaxResults]
 

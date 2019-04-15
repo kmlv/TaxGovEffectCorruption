@@ -5,8 +5,8 @@ import random
 # Each dictionary entry represents the data values for 1 round
 data = [
     [ 
-        {"end": 100, "multiplier": 2, "tax": 0.3, "transcription": True, "mode": 1, "difficulty": 1, "spanish": True, "penalty": 0.9, "appropriation_percent": 0.25, "shuffle": True},
-        {"end": 100, "multiplier": 2, "tax": 0.3, "transcription": True, "mode": 1, "difficulty": 1, "spanish": True, "penalty": 0.4, "appropriation_percent": 0.25, "shuffle": False},
+        {"end": 100, "multiplier": 2, "tax": 0.3, "transcription": True, "mode": 3, "difficulty": 1, "spanish": True, "penalty": 0.9, "appropriation_percent": 0.25, "shuffle": False},
+        {"end": 100, "multiplier": 2, "tax": 0.3, "transcription": True, "mode": 1, "difficulty": 1, "spanish": True, "penalty": 0.9, "appropriation_percent": 0.25, "shuffle": False},
         {"end": 100, "multiplier": 2, "tax": 0.3, "transcription": True, "mode": 1, "difficulty": 1, "spanish": True, "penalty": 0.9, "appropriation_percent": 0.25, "shuffle": False},
         {"end": 100, "multiplier": 2, "tax": 0.3, "transcription": True, "mode": 1, "difficulty": 1, "spanish": True, "penalty": 0.9, "appropriation_percent": 0.25, "shuffle": False},
         {"end": 100, "multiplier": 2, "tax": 0.3, "transcription": True, "mode": 1, "difficulty": 4, "spanish": True, "penalty": 0.9, "appropriation_percent": 0.25, "shuffle": False},
@@ -35,7 +35,7 @@ data = [
         {"end": 100, "multiplier": 2, "tax": 0.3, "transcription": True, "mode": 2, "difficulty": 5, "spanish": True, "penalty": 0.9, "appropriation_percent": 0.25, "shuffle": False},
         {"end": 100, "multiplier": 2, "tax": 0.3, "transcription": True, "mode": 2, "difficulty": 6, "spanish": True, "penalty": 0.9, "appropriation_percent": 0.25, "shuffle": False},
         {"end": 100, "multiplier": 2, "tax": 0.3, "transcription": True, "mode": 2, "difficulty": 6, "spanish": True, "penalty": 0.9, "appropriation_percent": 0.25, "shuffle": False},
-        {"end": 100, "multiplier": 2, "tax": 0.5, "transcription": True, "mode": 2, "difficulty": 2, "spanish": True, "penalty": 0.9, "appropriation_percent": 0.25, "shuffle": True},
+        {"end": 100, "multiplier": 2, "tax": 0.5, "transcription": True, "mode": 2, "difficulty": 2, "spanish": True, "penalty": 0.9, "appropriation_percent": 0.25, "shuffle": False},
         {"end": 100, "multiplier": 2, "tax": 0.5, "transcription": True, "mode": 2, "difficulty": 2, "spanish": True, "penalty": 0.9, "appropriation_percent": 0.25, "shuffle": False},
         {"end": 100, "multiplier": 2, "tax": 0.5, "transcription": True, "mode": 2, "difficulty": 3, "spanish": True, "penalty": 0.9, "appropriation_percent": 0.25, "shuffle": False},
         {"end": 100, "multiplier": 2, "tax": 0.5, "transcription": True, "mode": 2, "difficulty": 3, "spanish": True, "penalty": 0.9, "appropriation_percent": 0.25, "shuffle": False},

@@ -1,0 +1,26 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    <p style="font-size:15px; color:#CD853F;" align="right">{{ pgCode }}<br/>Period {{ round_num }}</p>    Autoridad
+{% endblock %}
+
+{% block content %}
+{% if player.spanish %}
+    <p>
+        Has sido escogido para recibir {{ display_app_percent }}% del monto total recaudado por el grupo.
+    </p>
+
+    {% else %}
+        <p>
+            You have been randomly selected to be the authority within your group and have been granted the power to
+            multiply the total taxed income of the participants within your group by {{ mult }}.
+        </p>
+    {% endif %}
+
+    <div>
+        {% next_button %}
+        <!-- <button name="authority_multiply" value="False" class="btn btn-primary btn-large">No</button> -->
+    </div>
+
+{% endblock %}
