@@ -114,6 +114,12 @@ class Introduction(Page):
             return True
 
         return False
+    def vars_for_template(self):
+        config = Constants.config
+        return {
+        'mode': config[0][self.round_number-1]["mode"],
+    }
+
 
 class InstructionsB(Page):
     """Description of the game block"""
@@ -335,6 +341,8 @@ class Authority(Page):
 
         if (mode_num == 1 and self.player.id_in_group == group.authority_ID):
             return True
+        else:
+            return False
 
     def vars_for_template(self):
         config = Constants.config
@@ -391,6 +399,8 @@ class Authority2(Page):
 
         if (mode_num == 2 and self.player.id_in_group == group.authority_ID):
             return True
+        else:
+            return False
 
     def vars_for_template(self):
         config = Constants.config
@@ -419,11 +429,12 @@ class Authority3(Page):
 
         if (mode_num == 3 and self.player.id_in_group == group.authority_ID):
             return True
+        else:
+            return False
 
     def vars_for_template(self):
         config = Constants.config
         pgCode = getPageCode(self)
-        mode_num = config[0][self.round_number - 1]["mode"]
         appropriation_percent = config[0][self.round_number - 1]["appropriation_percent"]
         display_appropriation = appropriation_percent * 100
 
@@ -443,7 +454,7 @@ class AuthorityWaitPage(WaitPage):
         group = self.group
         players = group.get_players()
 
-        mode_num = config[0][self.round_number - 1]["mode"]
+        mode_num: object = config[0][self.round_number - 1]["mode"]
         tax = config[0][int(self.round_number - 1)]["tax"]
         multiplier = config[0][self.round_number - 1]["multiplier"]
         appropriation_percent = config[0][self.round_number - 1]["appropriation_percent"]
@@ -469,7 +480,8 @@ class AuthorityWaitPage(WaitPage):
                 p.payoff = p.income - (tax * p.contribution) + group.individual_share
 
         # Mode 2, Authority Mode 2, Button 2 (Appropriation)
-        else:
+        #else:
+        elif mode_num == 3 and not group.auth_appropriate:
             contributions = [p.contribution * tax for p in players]
             group.total_contribution = sum(contributions)
             group.total_earnings = group.total_contribution*multiplier
@@ -478,7 +490,7 @@ class AuthorityWaitPage(WaitPage):
             group.individual_share = (group.total_earnings*(1-appropriation_percent)) / Constants.players_per_group
 
             for p in players:
-                if (p.id_in_group == group.authority_ID):
+                if p.id_in_group == group.authority_ID:
                     p.payoff = p.income - (tax * p.contribution) + group.individual_share + group.appropriation
                 else:
                     p.payoff = p.income - (tax * p.contribution) + group.individual_share
@@ -543,3 +555,5 @@ class TaxResults(Page):
 page_sequence = [Introduction, InstructionsB, Transcribe2, ReportIncome, Audit, resultsWaitPage,
                  Authority,  Authority2,  Authority3, AuthorityWaitPage, AuthorityInfo, TaxResults]
 
+#page_sequence = [Introduction, InstructionsB, Transcribe2, ReportIncome, Audit, resultsWaitPage,
+#                 AuthorityMaster, AuthorityWaitPage, AuthorityInfo, TaxResults]

@@ -2,11 +2,12 @@
 {% load otree static %}
 
 {% block title %}
-    <p style="font-size:15px; color:#CD853F;" align="right">{{ pgCode }}<br/>Period {{ round_num }}</p>    Autoridad
+    <p style="font-size:15px; color:#CD853F;" align="right">{{ pgCode }}<br/>Period {{ round_num }}</p>    Autoridad {{ mode }}
 {% endblock %}
 
 {% block content %}
 {% if player.spanish %}
+
     <p>
         Has sido escogido para ser la autoridad en tu grupo.
         Tienes el poder de multiplicar el monto total reportado por {{ mult }} para que luego
