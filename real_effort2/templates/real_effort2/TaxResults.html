@@ -12,6 +12,8 @@
         <tr><td colspan="2"><hr/></td></tr>
         <tr><td>Tu <b>ingreso reportado</b> fue: </td><td>{{ player.contribution }} Solex</td></tr>
         <tr><td><br/></td></tr>
+         <tr><td>Los <b>impuestos que pagaste</b> fueron: </td><td>{{ taxcob }} Solex</td></tr>
+        <tr><td><br/></td></tr>
         <tr><td>Los <b>ingresos reportados</b> por</td><td></td></tr>
         <tr><td>el <b>otro</b> participante fue:</td>
         {% for p in player.get_others_in_group %}
@@ -28,9 +30,6 @@
             {% if mode != 1 %}
             <tr><td>La <b>autoridad</b> se <b>quedó</b> con:</td><td>{{total_appropriation}} Solex (25% de ganancia total de inversión pública) </td></tr>
 
-            <tr>
-                <td colspan="2"><hr/></td>
-            </tr>
             {% endif %}
         <tr><td colspan="2"><hr/></td></tr>
         <tr><td>Por lo tanto, tú <b>ganaste</b>:</td><td>{{ payoff }} Solex</td></tr>

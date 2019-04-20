@@ -6,8 +6,8 @@ import random
 data = [
     [
         {"end": 100, "multiplier": 2, "tax": 0.3, "transcription": True, "mode": 3, "difficulty": 1, "spanish": True, "penalty": 0.9, "appropriation_percent": 0.25, "shuffle": False},
-        {"end": 100, "multiplier": 2, "tax": 0.3, "transcription": True, "mode": 3, "difficulty": 1, "spanish": True, "penalty": 0.9, "appropriation_percent": 0.25, "shuffle": False},
-        {"end": 100, "multiplier": 2, "tax": 0.3, "transcription": True, "mode": 3, "difficulty": 1, "spanish": True, "penalty": 0.9, "appropriation_percent": 0.25, "shuffle": False},
+        {"end": 100, "multiplier": 2, "tax": 0.3, "transcription": True, "mode": 2, "difficulty": 1, "spanish": True, "penalty": 0.9, "appropriation_percent": 0.25, "shuffle": False},
+        {"end": 100, "multiplier": 2, "tax": 0.3, "transcription": True, "mode": 1, "difficulty": 1, "spanish": True, "penalty": 0.9, "appropriation_percent": 0.25, "shuffle": False},
         {"end": 100, "multiplier": 2, "tax": 0.3, "transcription": True, "mode": 3, "difficulty": 1, "spanish": True, "penalty": 0.9, "appropriation_percent": 0.25, "shuffle": False},
         {"end": 100, "multiplier": 2, "tax": 0.3, "transcription": True, "mode": 3, "difficulty": 4, "spanish": True, "penalty": 0.9, "appropriation_percent": 0.25, "shuffle": False},
         {"end": 100, "multiplier": 2, "tax": 0.3, "transcription": True, "mode": 3, "difficulty": 4, "spanish": True, "penalty": 0.9, "appropriation_percent": 0.25, "shuffle": False},
@@ -79,7 +79,8 @@ def shuffle(data):
     return [random.sample(data[0], k=len(data[0]))]
 
 def export_data():
-    return shuffle(data)
+#    return shuffle(data)
+    return data
 
 # VARIABLES/ATRIBUTOS UTILIZADOS
 

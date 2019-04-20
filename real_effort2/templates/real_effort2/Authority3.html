@@ -1,5 +1,6 @@
 {% extends "global/Page.html" %}
 {% load otree static %}
+{{ form.auth_appropriate.errors }}
 
 {% block title %}
     <p style="font-size:15px; color:#CD853F;" align="right">{{ pgCode }}<br/>Period {{ round_num }}</p>    Autoridad {{ mode }}
@@ -9,7 +10,8 @@
 {% if player.spanish %}
 
         <p>
-            Has sido escogido para recibir {{ display_app_percent }}% del monto total recaudado por el grupo.
+            Has sido escogido para recibir {{ display_app_percent }}% del monto total recaudado por el grupo y multiplicar
+            la recaudación tributaria.
         </p>
 
 {% else %}
@@ -20,7 +22,8 @@
 {% endif %}
 
     <div>
-        {% next_button %}
+        <button name="auth_appropriate" value="True" class="btn btn-primary btn-large">Recibir y Multiplicar</button>
+
         <!-- <button name="authority_multiply" value="False" class="btn btn-primary btn-large">No</button> -->
     </div>
 

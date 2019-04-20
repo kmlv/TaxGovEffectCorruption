@@ -469,7 +469,7 @@ class AuthorityWaitPage(WaitPage):
             for p in players:
                 p.payoff = p.income - (tax * p.contribution) + group.individual_share
 
-        elif mode_num == 2 and not group.auth_appropriate:
+        elif (mode_num == 2 or mode_num == 3) and not group.auth_appropriate:
             contributions = [p.contribution * tax for p in players]
             group.total_contribution = sum(contributions)
             group.total_earnings = group.total_contribution*multiplier
@@ -480,8 +480,8 @@ class AuthorityWaitPage(WaitPage):
                 p.payoff = p.income - (tax * p.contribution) + group.individual_share
 
         # Mode 2, Authority Mode 2, Button 2 (Appropriation)
-        #else:
-        elif mode_num == 3 and not group.auth_appropriate:
+        else:
+        #elif mode_num == 3 and not group.auth_appropriate:
             contributions = [p.contribution * tax for p in players]
             group.total_contribution = sum(contributions)
             group.total_earnings = group.total_contribution*multiplier
@@ -508,6 +508,10 @@ class TaxResults(Page):
         display_appropriation = appropriation_percent * 100
         mode_num = config[0][self.round_number - 1]["mode"]
         tax = config[0][int(self.round_number - 1)]["tax"]
+        #impuestos cobrados:
+        taxcob = config[0][int(self.round_number - 1)]["tax"]*player.contribution
+        #penalidad:
+        pen =  player.contribution*90/100
         multiplier = config[0][self.round_number - 1]["multiplier"]
 
         if mode_num == 1:
@@ -520,7 +524,7 @@ class TaxResults(Page):
             for p in players:
                 p.payoff = p.income - (tax * p.contribution) + group.individual_share
 
-        elif mode_num == 2 and not group.auth_appropriate:
+        elif (mode_num == 2 or mode_num == 3) and not group.auth_appropriate:
             contributions = [p.contribution * tax for p in players]
             group.total_contribution = sum(contributions)
             group.total_earnings = group.total_contribution * multiplier
@@ -547,7 +551,7 @@ class TaxResults(Page):
 
         return{
             'total_contribution': self.group.total_contribution,'total_earnings': self.group.total_earnings,
-            'total_appropriation':self.group.appropriation, 'pgCode': pgCode, 'round_num': self.round_number,'mode':mode_num,'tax': tax,'payoff': self.player.payoff,
+            'total_appropriation':self.group.appropriation, 'pgCode': pgCode, 'round_num': self.round_number,'mode':mode_num, 'taxcob':taxcob,'tax': tax,'payoff': self.player.payoff,
         }
 
 #page_sequence = [Introduction, InstructionsB, Transcribe1, Transcribe2, ReportIncome, Audit, resultsWaitPage,
