@@ -2,6 +2,7 @@ from ._builtin import Page, WaitPage
 from otree.api import Currency as c, currency_range
 from .models import Constants, levenshtein, distance_and_ok
 from django.conf import settings
+import PIL
 from PIL import Image, ImageDraw, ImageFont
 import math
 from random import *
