@@ -3,25 +3,26 @@
 
 {% block title %}
     <p style="font-size:15px; color:#CD853F;" align="right">{{ pgCode }}<br/>Period {{ round_num }}</p>
-    Autoridad
+    Autoridad {{ mode }}
 {% endblock %}
 
 {% block content %}
     {% if player.spanish %}
-    <p>
-        ¡Felicitaciones! Has sido escogido para ser la autoridad de tu grupo.
+        <p>
+        Has sido escogido para ser la autoridad de tu grupo.
         Esto quiere decir que puedes escoger entre dos alternativas:
-            </p>
+        </p>
 
-            <br/>
+        <br/>
 
-            <p>
-                <b>Elección 1:</b> Multiplicar el monto total recaudado por {{ mult }} para que luego pueda ser repartido entre los integrantes.
-                <br/><br/>
-                <b>Elección 2:</b> Multiplicar el monto total recaudado por {{ mult }} <b>y</b>
-                quedarte con {{ display_app_percent }}% del monto total, lo restante será repartido entre los integrantes.
-            </p>
-
+        <p>
+        <b>Elección 1:</b> Multiplicar el monto total recaudado por {{ mult }} para que luego
+        pueda ser repartido entre todos los integrantes en partes iguales (incluyéndote).
+        <br/><br/>
+        <b>Elección 2:</b> Multiplicar el monto total recaudado por {{ mult }} <b>y</b>
+        quedarte con {{ display_app_percent }}% del monto total <b>tras multiplicar</b>. Lo
+        restante será repartido entre todos los integrantes (incluyéndote).
+        </p>
     {% else %}
         <p>
             You have been randomly selected to be the authority within your group and have the power to make one of two

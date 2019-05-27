@@ -47,7 +47,8 @@ def generateText1(difficulty):
     allchar = string.ascii_lowercase + string.digits + string.punctuation
     vowels = ('a','e','i','o','u')
 
-    generated = "$eub:uuwhui eiu,u.ead^)ie{hp/irle.eug aw2x~auao`u.pi-[n+eaoqej."
+    #generated = "$eub:uuwhui eiu,u.ead^)ie{hp/irle.eug aw2x~auao`u.pi-[n+eaoqej."
+    generated=""
 
     if(difficulty == 1):
         allchar = string.ascii_lowercase
@@ -73,7 +74,8 @@ def generateText2(difficulty):
     allchar = string.ascii_lowercase + string.digits + string.punctuation
     vowels = ('a', 'e', 'i', 'o', 'u')
 
-    generated = "$abgfnu% hgancnya @mk.o)qwbn[apzxc[*}-en45a.m_nbczpi45&|jsn-omn^"
+    #generated = "$abgfnu% hgancnya @mk.o)qwbn[apzxc[*}-en45a.m_nbczpi45&|jsn-omn^"
+    generated=""
 
     if (difficulty == 1):
         allchar = string.ascii_lowercase
@@ -112,7 +114,21 @@ class Introduction(Page):
             return True
 
         return False
+    def vars_for_template(self):
+        config = Constants.config
+        return {
+        'mode': config[0][self.round_number-1]["mode"],
+    }
 
+
+class InstructionsB(Page):
+    """Description of the game block"""
+
+    def is_displayed(self):
+        if (self.round_number == 1):
+            return True
+
+        return False
 
 class Transcribe1(Page):
     """First transcription task that's shown to the player that is merely for practice and does not determine the ratio
@@ -164,6 +180,7 @@ class Transcribe2(Page):
     form_model = 'player'
     form_fields = ['transcribed_text']
 
+    # la transcripcion se aproxima al entero mas cercano si la parte decimal es mayor a .5 (no mayor igual)
     # Don't display this Transcribe2 page if the "transcription" value in
     # the dictionary representing this round in config.py is False
     def is_displayed(self):
@@ -212,7 +229,7 @@ class Transcribe2(Page):
             if allowed_error_rate == 0:
                 return "The transcription should be exactly the same as on the image."
             else:
-                return "This transcription appears to contain too many errors."
+                return "Para avanzar, debes transcribir más caracteres similares a la transcripción original."
 
     def before_next_page(self):
         self.player.ratio = 1 - self.player.levenshtein_distance / len(self.player.refText)
@@ -247,7 +264,7 @@ class ReportIncome(Page):
 
         displaytax = config[0][self.round_number - 1]["tax"] * 100
         display_ratio = round(self.player.ratio * 100, 1)
-        display_income = int(self.player.income)
+        display_income =  self.player.income
 
         return {'ratio': self.player.ratio, 'income': self.player.income, 'tax': displaytax,
                 'flag': config[0][self.round_number - 1]["transcription"],
@@ -259,7 +276,7 @@ class ReportIncome(Page):
 
     def before_next_page(self):
         self.group.appropriation = 0
-        if(random.randint(0,1) == 0):
+        if random.randint(0, 1) == 0:
             self.player.audit = True
         else:
             self.player.audit = False
@@ -270,8 +287,12 @@ class Audit(Page):
     and reported income match. If not, they incur a penalty that's deducted from their remaining income after taxes
     are deducted."""
     def is_displayed(self):
-        return self.player.audit
-    
+       # return self.player.audit
+       if self.player.audit2 == 1:
+           return True
+       else:
+           return False
+
     def vars_for_template(self):
         config = Constants.config
         pgCode = getPageCode(self)
@@ -320,12 +341,15 @@ class Authority(Page):
 
         if (mode_num == 1 and self.player.id_in_group == group.authority_ID):
             return True
+        else:
+            return False
 
     def vars_for_template(self):
         config = Constants.config
         pgCode = getPageCode(self)
 
         return {
+            'mode': config[0][self.round_number - 1]["mode"],
             'mult': config[0][self.round_number - 1]["multiplier"],
             'pgCode': pgCode, 'round_num': self.round_number
         }
@@ -375,6 +399,8 @@ class Authority2(Page):
 
         if (mode_num == 2 and self.player.id_in_group == group.authority_ID):
             return True
+        else:
+            return False
 
     def vars_for_template(self):
         config = Constants.config
@@ -385,6 +411,37 @@ class Authority2(Page):
         displaytax = config[0][self.round_number - 1]["tax"] * 100
 
         return {
+            'mode': config[0][self.round_number - 1]["mode"],
+            'mult': config[0][self.round_number - 1]["multiplier"],
+            'tax': displaytax, 'pgCode': pgCode, 'round_num': self.round_number, 'display_app_percent': display_appropriation
+        }
+
+
+class Authority3(Page):
+    form_model = 'group'
+    form_fields = ['auth_appropriate']
+
+    def is_displayed(self):
+        config = Constants.config
+        group = self.group
+
+        mode_num = config[0][self.round_number - 1]["mode"]
+
+        if (mode_num == 3 and self.player.id_in_group == group.authority_ID):
+            return True
+        else:
+            return False
+
+    def vars_for_template(self):
+        config = Constants.config
+        pgCode = getPageCode(self)
+        appropriation_percent = config[0][self.round_number - 1]["appropriation_percent"]
+        display_appropriation = appropriation_percent * 100
+
+        displaytax = config[0][self.round_number - 1]["tax"] * 100
+
+        return {
+            'mode': config[0][self.round_number - 1]["mode"],
             'mult': config[0][self.round_number - 1]["multiplier"],
             'tax': displaytax, 'pgCode': pgCode, 'round_num': self.round_number, 'display_app_percent': display_appropriation
         }
@@ -397,7 +454,7 @@ class AuthorityWaitPage(WaitPage):
         group = self.group
         players = group.get_players()
 
-        mode_num = config[0][self.round_number - 1]["mode"]
+        mode_num: object = config[0][self.round_number - 1]["mode"]
         tax = config[0][int(self.round_number - 1)]["tax"]
         multiplier = config[0][self.round_number - 1]["multiplier"]
         appropriation_percent = config[0][self.round_number - 1]["appropriation_percent"]
@@ -412,7 +469,7 @@ class AuthorityWaitPage(WaitPage):
             for p in players:
                 p.payoff = p.income - (tax * p.contribution) + group.individual_share
 
-        elif mode_num == 2 and not group.auth_appropriate:
+        elif (mode_num == 2 or mode_num == 3) and not group.auth_appropriate:
             contributions = [p.contribution * tax for p in players]
             group.total_contribution = sum(contributions)
             group.total_earnings = group.total_contribution*multiplier
@@ -424,6 +481,7 @@ class AuthorityWaitPage(WaitPage):
 
         # Mode 2, Authority Mode 2, Button 2 (Appropriation)
         else:
+        #elif mode_num == 3 and not group.auth_appropriate:
             contributions = [p.contribution * tax for p in players]
             group.total_contribution = sum(contributions)
             group.total_earnings = group.total_contribution*multiplier
@@ -432,7 +490,7 @@ class AuthorityWaitPage(WaitPage):
             group.individual_share = (group.total_earnings*(1-appropriation_percent)) / Constants.players_per_group
 
             for p in players:
-                if (p.id_in_group == group.authority_ID):
+                if p.id_in_group == group.authority_ID:
                     p.payoff = p.income - (tax * p.contribution) + group.individual_share + group.appropriation
                 else:
                     p.payoff = p.income - (tax * p.contribution) + group.individual_share
@@ -450,6 +508,10 @@ class TaxResults(Page):
         display_appropriation = appropriation_percent * 100
         mode_num = config[0][self.round_number - 1]["mode"]
         tax = config[0][int(self.round_number - 1)]["tax"]
+        #impuestos cobrados:
+        taxcob = config[0][int(self.round_number - 1)]["tax"]*player.contribution
+        #penalidad:
+        pen =  player.contribution*90/100
         multiplier = config[0][self.round_number - 1]["multiplier"]
 
         if mode_num == 1:
@@ -462,7 +524,7 @@ class TaxResults(Page):
             for p in players:
                 p.payoff = p.income - (tax * p.contribution) + group.individual_share
 
-        elif mode_num == 2 and not group.auth_appropriate:
+        elif (mode_num == 2 or mode_num == 3) and not group.auth_appropriate:
             contributions = [p.contribution * tax for p in players]
             group.total_contribution = sum(contributions)
             group.total_earnings = group.total_contribution * multiplier
@@ -489,8 +551,13 @@ class TaxResults(Page):
 
         return{
             'total_contribution': self.group.total_contribution,'total_earnings': self.group.total_earnings,
-            'total_appropriation':self.group.appropriation, 'pgCode': pgCode, 'round_num': self.round_number,'mode':mode_num,'tax': tax,'payoff': self.player.payoff,
+            'total_appropriation':self.group.appropriation, 'pgCode': pgCode, 'round_num': self.round_number,'mode':mode_num, 'taxcob':taxcob,'tax': tax,'payoff': self.player.payoff,
         }
 
-page_sequence = [Introduction, Transcribe1, Transcribe2, ReportIncome, Audit, resultsWaitPage,
-                 Authority,  Authority2, AuthorityWaitPage, AuthorityInfo, TaxResults]
+#page_sequence = [Introduction, InstructionsB, Transcribe1, Transcribe2, ReportIncome, Audit, resultsWaitPage,
+                 #Authority,  Authority2, AuthorityWaitPage, AuthorityInfo, TaxResults]
+page_sequence = [Introduction, InstructionsB, Transcribe2, ReportIncome, Audit, resultsWaitPage,
+                 Authority,  Authority2,  Authority3, AuthorityWaitPage, AuthorityInfo, TaxResults]
+
+#page_sequence = [Introduction, InstructionsB, Transcribe2, ReportIncome, Audit, resultsWaitPage,
+#                 AuthorityMaster, AuthorityWaitPage, AuthorityInfo, TaxResults]

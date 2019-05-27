@@ -9,28 +9,34 @@
 {% block content %}
     {% if player.spanish %}
         <table class="table-condensed" style="width:500px; margin-top:20px;">
-        <tr><td>Tu ingreso reportado fue: </td><td>{{ player.contribution }}</td></tr>
-        <tr><td>Los ingresos reportados por los otros participantes fueron:</td><td></td></tr>
-        {% for p in player.get_others_in_group %}
-            <tr><td></td><td>{{ p.contribution }}</td></tr>
-        {% endfor %}
-
-        <tr><td>Recaudación total:</td><td>{{ total_contribution }}</td></tr>
-
         <tr><td colspan="2"><hr/></td></tr>
-
-        <tr><td>Ganancia total de la inversión pública:</td><td>{{ total_earnings }}</td></tr>
+        <tr><td>Tu <b>ingreso reportado</b> fue: </td><td>{{ player.contribution }} Solex</td></tr>
+        <tr><td><br/></td></tr>
+         <tr><td>Los <b>impuestos que pagaste</b> fueron: </td><td>{{ taxcob }} Solex</td></tr>
+        <tr><td><br/></td></tr>
+        <tr><td>Los <b>ingresos reportados</b> por</td><td></td></tr>
+        <tr><td>el <b>otro</b> participante fue:</td>
+        {% for p in player.get_others_in_group %}
+            <td>{{ p.contribution }} Solex</td></tr>
+        {% endfor %}
+        <tr><td colspan="2"><hr/></td></tr>
+        <tr><td><b>Recaudación total:</b></td><td>{{ total_contribution }} Solex</td></tr>
+            <tr><td>(<b>Suma</b> de las <b>impuestos</b> pagados</td></tr>
+            <tr><td>por <b>todos</b> los jugadores)</td></tr>
+        <tr><td><br/></td></tr>
+        <tr><td><b>Ganancia total</b> de la inversión pública:</td><td>{{ total_earnings }} Solex</td></tr>
+        <tr><td>( Recaudación total*2 )</td></tr>
 
             {% if mode != 1 %}
-            <tr><td>La autoridad se quedó con:</td><td>{{total_appropriation}} (25% de ganancia total de inversión pública) </td></tr>
+            <tr><td>La <b>autoridad</b> se <b>quedó</b> con:</td><td>{{total_appropriation}} Solex (25% de ganancia total de inversión pública) </td></tr>
 
-            <tr>
-                <td colspan="2"><hr/></td>
-            </tr>
             {% endif %}
-
-        <tr><td>Por lo tanto, tú ganaste:</td><td>{{ payoff }}</td></tr>
-
+        <tr><td colspan="2"><hr/></td></tr>
+        <tr><td>Por lo tanto, tú <b>ganaste</b>:</td><td>{{ payoff }} Solex</td></tr>
+        <tr><td>( Ingreso - Impuestos + </td></tr>
+        <tr><td>(Ganancia Total)/(Número de Jugadores) )</td></tr>
+        <tr><td colspan="2"><hr/></td></tr>
+        <tr><td><br/></td></tr>
         </table>
     {% else %}
         <table class="table-condensed" style="width:900px; margin-top:20px;">

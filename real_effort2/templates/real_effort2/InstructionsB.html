@@ -1,0 +1,69 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block content %}
+
+<head>
+<style>
+h2 {
+        color: #F8F4EE;
+}
+</style>
+</head>
+<body>
+<div class="card bg-light instructions">
+    <div class="card-body">
+
+    <h3>
+        Instrucciones del Bloque <h2>(Nombre del Bloque)</h2>
+    </h3>
+
+    <p>
+        <div align="justify">
+        Este experimento tendrá 4 bloques y 10 rondas por bloque. Esta parte se divide en 3 etapas.
+        <br><br>
+        <h5>Etapa 1:</h5> Tendrás que realizar una tarea de transcripción que determinará cuál será tu ingreso en el
+        juego. Mientras mejor sea la transcripción, mayores serán tus ingresos.
+        <br><br>
+        <h5>Etapa 2:</h5> Se te pedirá que reportes al Estado cuál fue el monto que recibiste, con el objetivo de que
+        puedan descontarte los impuestos respectivos. Tú puedes decidir si reportas todo lo que ganaste en la tarea o un
+        monto menor, pero debes tener en cuenta que se realizarán <b>auditorías aleatoriamente</b>. Si reportaste
+        ingresos menores a los que recibiste y eres auditado, serás penalizado con el 90% de tus ingresos.
+        <br><br>
+        <h5>Etapa 3:</h5> Finalmente, el monto recaudado será invertido por el Estado en una obra pública que tendrá
+        beneficios para los participantes, es decir, las ganancias totales de la obra pública serán repartidas entre
+        todos. De esta manera, tu ganancia también dependerá de las decisiones de los otros participantes, pues se
+        dividirá el total de lo recaudado en partes iguales, sin importar cuánto aportó cada uno con respecto a los demás.
+        Asimismo, el Estado (Autoridad) también juega un papel muy importante porque dependiendo de su eficacia,
+        las ganancias de la obra pública se podrían multiplicar.
+        <br><br>
+        </div>
+        <H5>Pagos:</H5> Los pagos o ganancias que tendrá un jugador pueden ser descritas de la siguiente manera:
+        <br><br>
+        <ul>
+        <li>Si tu ingreso declarado es igual a tu ingreso verdadero, tu ganancia final es:
+            <br><br> <b>Pago</b> = Ingreso neto de impuestos + Ganancia por la obra pública.<br><br></li>
+        <li>Si tu ingreso declarado NO es igual a tu ingreso  pero NO fuiste auditado, tu ganancia final es igual a tu ingreso declarado neto de impuestos MÁS el monto del ingreso que no declaraste MÁS la ganancia por la obra pública.
+            <br><br> <b>Pago</b> = Ingreso neto de impuestos + Ganancia por la obra pública + Ingreso no declarado.<br><br></li>
+        <li>Si tu ingreso declarado NO es igual a tu ingreso  pero SÍ fuiste auditado, tu ganancia final es igual a tu ingreso declarado neto de impuestos MÁS el monto del ingreso que no declaraste MÁS la ganancia por la obra pública MENOS la penalidad.
+            <br><br> <b>Pago</b> = Ingreso neto de impuestos + Ganancia por la obra pública + Ingreso no declarado - 90%(Ingreso antes de impuestos).<br></li>
+        </ul>
+        El resultado final se muestra al terminar cada ronda.
+        <br><br>
+        <h5>Autoridad:</h5> En cada ronda se escogerá a un participante para que sea la Autoridad y tome una decisión con respecto a la
+        eficacia del Estado.
+        <br><br>
+        <h5>Cambios por Ronda: </h5>
+        Debes estar atento a las indicaciones, ya que habrán cambios en:<br><br>
+        <ul>
+        <li><b>Las tasas impositivas:</b> En cada ronda, la tasa puede ser 20% o 50%.<br><br></li>
+        <li><b>Eficacia de la Autoridad:</b> En algunas rondas, los participantes que sean seleccionados para ser la autoridad podrán multiplicar las ganancias de la obra pública, pero, en otras, podrán multiplicar las ganancias y quedarse con parte de ellas.<br><br></li>
+        </ul>
+    </p>
+    </div>
+</div>
+</body>
+{% next_button %}
+
+{% endblock %}
+
