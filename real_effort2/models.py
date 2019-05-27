@@ -154,5 +154,6 @@ class Player(BasePlayer):
     done = models.BooleanField()
     transcriptionDone = models.BooleanField()
     payoff = models.CurrencyField()
+    orig_income = models.CurrencyField(initial=0)
     refText = models.LongStringField()
     audit = models.BooleanField()

@@ -129,6 +129,11 @@ class InstructionsB(Page):
             return True
 
         return False
+    def vars_for_template(self):
+        config = Constants.config
+        return {
+        'multi': config[0][self.round_number-1]["multiplier"],
+    }
 
 class Transcribe1(Page):
     """First transcription task that's shown to the player that is merely for practice and does not determine the ratio
@@ -254,6 +259,7 @@ class ReportIncome(Page):
         pgCode = getPageCode(self)
         endowment = config[0][self.round_number - 1]["end"]
         transcribe_on = config[0][self.round_number - 1]["transcription"]
+        self.player.orig_income = self.player.income
 
         if self.player.ratio == 1 and Constants.config[0][self.round_number - 1]["transcription"] == True:
             for p in self.player.in_all_rounds():
@@ -264,7 +270,7 @@ class ReportIncome(Page):
 
         displaytax = config[0][self.round_number - 1]["tax"] * 100
         display_ratio = round(self.player.ratio * 100, 1)
-        display_income =  self.player.income
+        display_income = self.player.income
 
         return {'ratio': self.player.ratio, 'income': self.player.income, 'tax': displaytax,
                 'flag': config[0][self.round_number - 1]["transcription"],
@@ -384,7 +390,7 @@ class AuthorityInfo(Page):
         else:
             decision = Constants.decisions[1] + " " + str(multiplier) + Constants.decisions[2] + str(appropriation_percent * 100) + Constants.decisions[3]
 
-        return {"decision": decision, 'pgCode': pgCode, 'round_num': self.round_number}
+        return {"mode": mode_num, "decision": decision, 'pgCode': pgCode, 'round_num': self.round_number}
 
 
 class Authority2(Page):
@@ -513,6 +519,7 @@ class TaxResults(Page):
         #penalidad:
         pen =  player.contribution*90/100
         multiplier = config[0][self.round_number - 1]["multiplier"]
+        orig = self.player.orig_income
 
         if mode_num == 1:
             contributions = [p.contribution * tax for p in players]
@@ -550,7 +557,7 @@ class TaxResults(Page):
                     p.payoff = p.income - (tax * p.contribution) + group.individual_share
 
         return{
-            'total_contribution': self.group.total_contribution,'total_earnings': self.group.total_earnings,
+            'orig': orig,'total_contribution': self.group.total_contribution,'total_earnings': self.group.total_earnings,
             'total_appropriation':self.group.appropriation, 'pgCode': pgCode, 'round_num': self.round_number,'mode':mode_num, 'taxcob':taxcob,'tax': tax,'payoff': self.player.payoff,
         }
 
