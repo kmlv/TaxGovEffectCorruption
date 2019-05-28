@@ -1,2 +1,2 @@
 otree>=2.0.27
-Pillow==1.7.8
+Pillow==5.3.0
