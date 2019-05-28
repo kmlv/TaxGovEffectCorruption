@@ -56,7 +56,13 @@ SECRET_KEY = '^wrnxsj^(6ea-7#&cv*tawwpk*hzov-35m!e^o604&4m^6m+3y'
 # if an app is included in SESSION_CONFIGS, you don't need to list it here
 INSTALLED_APPS = ['otree']
 
-
+ROOMS = [
+    {
+        'name': 'EconoLab',
+        'display_name': 'Laboratorio de Economía',
+        'participant_label_file': '_rooms/econolab.txt',
+    },
+]
 
 
 SESSION_CONFIGS = [
