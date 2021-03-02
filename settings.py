@@ -71,6 +71,7 @@ SESSION_CONFIGS = [
         'display_name': "Impuestos & Eficacia de gobierno",
         'num_demo_participants': 2,
         'app_sequence': ["real_effort2","survey", 'payment_info'],
+        'use_browser_bots': False
     },
 #
 #   {

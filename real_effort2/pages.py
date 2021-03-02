@@ -132,8 +132,10 @@ class InstructionsB(Page):
         return False
     def vars_for_template(self):
         config = Constants.config
+        appropriation_percent = config[0][self.round_number - 1]["appropriation_percent"]
         return {
         'multi': config[0][self.round_number-1]["multiplier"],
+        'aprop_perc': appropriation_percent
     }
 
 class Transcribe1(Page):
@@ -346,7 +348,7 @@ class Authority(Page):
 
         mode_num = config[0][self.round_number - 1]["mode"]
 
-        if (mode_num == 1 and self.player.id_in_group == group.authority_ID):
+        if mode_num == 1 and self.player.id_in_group == group.authority_ID:
             return True
         else:
             return False
@@ -404,7 +406,7 @@ class Authority2(Page):
 
         mode_num = config[0][self.round_number - 1]["mode"]
 
-        if (mode_num == 2 and self.player.id_in_group == group.authority_ID):
+        if mode_num == 2 and self.player.id_in_group == group.authority_ID:
             return True
         else:
             return False

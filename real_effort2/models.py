@@ -68,7 +68,10 @@ class Constants(BaseConstants):
     # List of the incomprehensible text that the players must transcribe
     reference_texts = [
         "Revealed preference",
-        "Hex ton satoha egavecen. Loh ta receso minenes da linoyiy xese coreliet ocotine! Senuh asud tu bubo tixorut sola, bo ipacape le rorisin lesiku etutale saseriec niyacin ponim na. Ri arariye senayi esoced behin? Tefid oveve duk mosar rototo buc: Leseri binin nolelar sise etolegus ibosa farare. Desac eno titeda res vab no mes!",
+        "Hex ton satoha egavecen. Loh ta receso minenes da linoyiy xese coreliet ocotine! Senuh asud tu bubo "
+        "tixorut sola, bo ipacape le rorisin lesiku etutale saseriec niyacin ponim na. Ri arariye senayi esoced "
+        "behin? Tefid oveve duk mosar rototo buc: Leseri binin nolelar sise etolegus ibosa farare. Desac eno "
+        "titeda res vab no mes!",
     ]
 
     # Text of decisions that the authority can make
@@ -153,7 +156,7 @@ class Player(BasePlayer):
     spanish = models.BooleanField()
     done = models.BooleanField()
     transcriptionDone = models.BooleanField()
-    payoff = models.CurrencyField()
+    # payoff = models.CurrencyField()
     orig_income = models.CurrencyField(initial=0)
     refText = models.LongStringField()
     audit = models.BooleanField()
