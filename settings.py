@@ -67,11 +67,17 @@ ROOMS = [
 
 SESSION_CONFIGS = [
     {
-        'name': 'tesis1',
+        'name': 'paper_klo',
         'display_name': "Impuestos & Eficacia de gobierno",
         'num_demo_participants': 2,
-        'app_sequence': ["real_effort2","survey", 'payment_info'],
+        'app_sequence': ["real_effort2","survey", 'mpl'],
         'use_browser_bots': False
+    },
+    {
+        'name': 'mpl',
+        'display_name': "HoltLaury",
+        'num_demo_participants': 1,
+        'app_sequence': ['mpl'],
     },
 #
 #   {
