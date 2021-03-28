@@ -32,7 +32,8 @@ class Subsession(BaseSubsession):
 
                 # Creando lista de pagos crecientes TANAKA 1
                 payoffs = [
-                    "{0:.2f}".format(k / n * 100)
+                    #"{0:.2f}".format(k / n * 100)
+                    "{0:.0f}".format(k / n * 100)
                     for k in indices
                 ]
 
@@ -40,7 +41,8 @@ class Subsession(BaseSubsession):
                 # ----------------------------------------------------------------------------------------------------
                 if Constants.percentage:
                     probabilities = [
-                        "{0:.2f}".format(k / n * 100) + "%"
+                        #"{0:.2f}".format(k / n * 100) + "%"
+                        "{0:.0f}".format(k / n * 100) + "%"
                         for k in indices
                     ]
                 else:

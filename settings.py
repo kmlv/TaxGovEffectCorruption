@@ -20,8 +20,8 @@ LANGUAGE_CODE = 'en'
 
 # e.g. EUR, GBP, CNY, JPY
 REAL_WORLD_CURRENCY_CODE = ''
-REAL_WORLD_CURRENCY_DECIMAL_PLACES = 1
-POINTS_DECIMAL_PLACES = 1
+REAL_WORLD_CURRENCY_DECIMAL_PLACES = 0
+POINTS_DECIMAL_PLACES = 0
 USE_POINTS = False
 
 ROOMS = []
@@ -67,12 +67,21 @@ ROOMS = [
 
 SESSION_CONFIGS = [
     {
-        'name': 'paper_klo',
-        'display_name': "Impuestos & Eficacia de gobierno",
+        'name': 'paper_klo_au',
+        'display_name': "Impuestos & Eficacia de gobierno: Authority",
         'num_demo_participants': 2,
+        'authority': True,
         'app_sequence': ["real_effort2","survey", 'mpl'],
         'use_browser_bots': False
     },
+    {
+        'name': 'paper_klo_nau',
+        'display_name': "Impuestos & Eficacia de gobierno: No Authority",
+        'num_demo_participants': 2,
+        'authority': False,
+        'app_sequence': ["real_effort2","survey", 'mpl'],
+        'use_browser_bots': False
+    },    
     {
         'name': 'mpl',
         'display_name': "HoltLaury",

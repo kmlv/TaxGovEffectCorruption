@@ -4,18 +4,39 @@ import random
 ##            audit penalty, appropriation percent, shuffle
 # Each dictionary entry represents the data values for 1 round
 
-data = [
+# data = [
+#     [
+#         {"end": 100, "multiplier": 2, "tax": 0.3, "transcription": True, "mode": 1, "difficulty": 1, "spanish": True,
+#          "penalty": 0.9, "appropriation_percent": 0.25, "shuffle": False},
+#         {"end": 100, "multiplier": 1.5, "tax": 0.3, "transcription": True, "mode": 1, "difficulty": 1, "spanish": True,
+#          "penalty": 0.9, "appropriation_percent": 0.25, "shuffle": False},
+#         {"end": 100, "multiplier": 2, "tax": 0.3, "transcription": True, "mode": 2, "difficulty": 1, "spanish": True,
+#          "penalty": 0.9, "appropriation_percent": 0.25, "shuffle": False},
+#         {"end": 100, "multiplier": 2, "tax": 0.5, "transcription": True, "mode": 3, "difficulty": 6, "spanish": True,
+#          "penalty": 0.9, "appropriation_percent": 0.25, "shuffle": False}
+#     ]
+#     ]
+
+data_au = [
     [
-        {"end": 100, "multiplier": 2, "tax": 0.3, "transcription": True, "mode": 1, "difficulty": 1, "spanish": True,
-         "penalty": 0.9, "appropriation_percent": 0.25, "shuffle": False},
-        {"end": 100, "multiplier": 1.5, "tax": 0.3, "transcription": True, "mode": 1, "difficulty": 1, "spanish": True,
-         "penalty": 0.9, "appropriation_percent": 0.25, "shuffle": False},
-        {"end": 100, "multiplier": 2, "tax": 0.3, "transcription": True, "mode": 2, "difficulty": 1, "spanish": True,
-         "penalty": 0.9, "appropriation_percent": 0.25, "shuffle": False},
-        {"end": 100, "multiplier": 2, "tax": 0.5, "transcription": True, "mode": 3, "difficulty": 6, "spanish": True,
-         "penalty": 0.9, "appropriation_percent": 0.25, "shuffle": False}
+    {"end": 100, "multiplier": 2, "tax": 0.3, "transcription": True, "mode": 2, "difficulty": 6, "spanish": True,
+         "penalty": 0.9, "appropriation_percent": 0.5, "shuffle": False},
+        {"end": 100, "multiplier": 1.5, "tax": 0.3, "transcription": True, "mode": 2, "difficulty": 6, "spanish": True,
+         "penalty": 0.9, "appropriation_percent": 0.5, "shuffle": False},
     ]
     ]
+
+data_nau = [
+    [
+        {"end": 100, "multiplier": 2, "tax": 0.3, "transcription": True, "mode": 3, "difficulty": 6, "spanish": True,
+         "penalty": 0.9, "appropriation_percent": 0.5, "shuffle": False},
+        {"end": 100, "multiplier": 1.5, "tax": 0.5, "transcription": True, "mode": 3, "difficulty": 6, "spanish": True,
+         "penalty": 0.9, "appropriation_percent": 0.5, "shuffle": False}
+    ]
+    ]
+
+num_rounds = 2
+
 """
 data = [
     [
@@ -197,6 +218,18 @@ def shuffle(data):
 def export_data():
 #    return shuffle(data)
     return data
+
+def export_data_authority():
+    """
+    Exports the data for a session with authority
+    """
+    return data_au
+
+def export_data_no_authority():
+    """
+    Exports the data for a session with NO authority
+    """
+    return data_nau
 
 # VARIABLES/ATRIBUTOS UTILIZADOS
 
