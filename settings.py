@@ -19,7 +19,7 @@ SESSION_CONFIG_DEFAULTS = {
 LANGUAGE_CODE = 'es'
 
 # e.g. EUR, GBP, CNY, JPY
-REAL_WORLD_CURRENCY_CODE = ''
+REAL_WORLD_CURRENCY_CODE = 'Soles'
 REAL_WORLD_CURRENCY_DECIMAL_PLACES = 0
 POINTS_DECIMAL_PLACES = 0
 USE_POINTS = False
@@ -70,7 +70,7 @@ SESSION_CONFIGS = [
         'name': 'paper_klo_prosocial',
         'display_name': "Tareas de Prosocialidad",
         'num_demo_participants': 4,
-        'app_sequence': ["ultimatum", "trust", "public_goods", "prosociality"],
+        'app_sequence': ["dictator", "trust", "public_goods", "prosociality"],
         'use_browser_bots': False
     },
     {
@@ -101,18 +101,27 @@ SESSION_CONFIGS = [
        'display_name': "Public Goods",
        'num_demo_participants': 4,
        'app_sequence': ['public_goods'],
+       'use_strategy_method': False, 
     },
-     {
-         'name': 'ultimatum',
-         'display_name': "Ultimatum",
-         'num_demo_participants': 4,
-         'app_sequence': ['ultimatum'],
-     },
+    {
+        'name': 'dictator',
+        'display_name': "Dictator: 'Strategy' method",
+        'num_demo_participants': 2,
+        'app_sequence': ['dictator'],
+    },    
     {
         'name': 'trust',
         'display_name': "Trust Game",
         'num_demo_participants': 2,
         'app_sequence': ['trust'],
+        'use_strategy_method': False,
+    },
+    {
+        'name': 'trust_strategy',
+        'display_name': "Trust Game: Strategy Method",
+        'num_demo_participants': 2,
+        'app_sequence': ['trust'],
+        'use_strategy_method': True,
     },
     {
         'name': 'prosocial',
