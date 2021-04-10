@@ -1,0 +1,54 @@
+{% load otree_tags staticfiles %}
+
+<div class="instructions well well-lg">
+
+    <h3 class="panel-sub-heading">
+
+        Instrucciones 
+
+    </h3>
+
+    <p>
+        En esta parte del experimento vas a participar en {{ Constants.num_rounds }} rondas de la misma interacción.
+        Antes de la primera ronda, todos los participantes serán agrupados en grupos de {{ Constants.players_per_group }} personas.
+        <strong>Los integrantes de cada grupo serán los mismos para todas las rondas de la interacción.</strong>
+        Es decir los grupos se mantendrán fijos durante todo el bloque.
+        Además, este agrupamiento se realizará al azar y de forma anónima. Es decir, ningún participante
+        sabrá quiénes son los miembros de su grupo ni durante ni después del experimento.
+    </p>
+    <h4 class="panel-sub-heading">
+        Cada Ronda
+    </h4>
+    <p>
+        Al inicio de cada ronda, cada participante del grupo recibirá {{ Constants.endowment}} de dotación.
+        Luego, cada participante debe decidir cuánto conservar para sí mismo y cuánto contribuir a un proyecto grupal.
+        Denominaremos el monto conservado como "conserva".
+        La <strong> contribución </strong> al proyecto grupal puede ser cualquier monto entero desde 0 hasta {{ Constants.endowment }}.
+    </p>
+
+    <h4 class="panel-sub-heading">
+        Pagos de la Ronda
+    </h4>
+        Los pagos de la ronda para cada participante se determinan así: </br>
+        <strong>Pago de la Ronda = conserva + ({{ Constants.multiplier }}/{{ Constants.players_per_group }})*
+        Suma de todas las contribuciones del grupo </strong>
+    </p>
+    <p>
+        Es decir, cada miembro del grupo recibe el monto que conservó mas las "ganancias del proyecto grupal".
+        Para calcular las ganancias del proyecto grupal se suma las contribuciones de todos los
+        {{ Constants.players_per_group }} miembros del grupo, y esta suma se multiplica por
+        {{ Constants.multiplier }}. Este monto sumado es repartido equitativamente
+        entre todos los miembros del grupo como sus "ganancias del proyecto grupal".
+        </br></br>
+        Por ejemplo, supón que la dotación es 10, y un participante conserva 4 y contribuye 6;
+        y además la suma de todas las contribuciones de su grupo es 20.
+        Entonces, el pago de la ronda para este participante es calculado así: </br>
+        conserva + (2/4)*suma de contribuciones = 4 + (2/4)*20 = 14.
+    </p>
+</div>
+
+
+
+{#    1/{{ Constants.players_per_group }}#}
+{#        de {{ Constants.multiplier }} veces la suma de las contribuciones de todo el grupo. </br>#}
+

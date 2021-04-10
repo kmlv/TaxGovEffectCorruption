@@ -1,0 +1,23 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree_tags %}
+
+{% block title %}
+    <p style="color:lightgrey"> Ronda {{ group.round_number }}</p>
+    Contribución
+{% endblock %}
+
+{% block content %}
+
+    Tienes {{ Constants.endowment}}. Debes decidir cuánto conservas y cuánto contribuyes al proyecto grupal.
+
+    </br></br>
+
+    {% formfield player.contribution with label="¿Cuánto contribuirás al proyecto grupal?" %}
+
+    </br>
+    {% next_button %}
+
+    </br></br></br></br>
+    {% include Constants.instructions_template %}
+
+{% endblock %}

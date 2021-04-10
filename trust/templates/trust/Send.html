@@ -1,0 +1,24 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree_tags %}
+
+{% block title %}
+    <p style="color:lightgrey"> Ronda {{ group.round_number }} </p>
+    Tu elección
+{% endblock %}
+
+{% block content %}
+
+    <p>
+        Se te ha asignado el rol A. Cuentas con {{Constants.endowment}}.
+        Cuánto deseas enviar al participante B?
+    </p>
+
+    {% formfield group.sent_amount with label="Por favor, ingrese el monto aquí:" %}
+    <p>
+    {% next_button %}
+    </p>
+
+    </br></br></br></br>
+    {% include Constants.instructions_template %}
+
+{% endblock %}

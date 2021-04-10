@@ -1,0 +1,16 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Encuesta
+{% endblock %}
+
+{% block content %}
+
+    <p>Por favor, responda las siguientes preguntas:</p>
+    <br>
+    {% formfields %}
+    <br>    
+    {% next_button %}
+
+{% endblock %}

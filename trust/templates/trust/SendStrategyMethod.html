@@ -1,0 +1,25 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree_tags %}
+
+{% block title %}
+    <p style="color:lightgrey"> Ronda {{ group.round_number }} </p>
+    Tu elección
+{% endblock %}
+
+{% block content %}
+    <p>
+        La dotación a repartir es de {{ Constants.endowment }}
+    </p>
+
+    <p>
+        {% formfields %}
+    </p>
+
+    <p>
+    {% next_button %}
+    </p>
+
+    </br></br></br></br>
+    {% include Constants.instructions_template %}
+
+{% endblock %}
