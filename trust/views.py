@@ -10,6 +10,10 @@ class Introduction(Page):
     def is_displayed(self):
         return self.round_number == 1
 
+    def before_next_page(self):
+        self.player.participant.vars["payoff_"+Constants.name_in_url] = 0
+
+
 class Send(Page):
     """This page is only for P1
     P1 sends amount (all, some, or none) to P2
@@ -90,7 +94,9 @@ class Results(Page):
 
         # pass payoff to new var
         self.player.round_payoff = self.player.payoff
-
+        self.player.participant.vars["payoff_"+Constants.name_in_url] += self.player.payoff
+        print(f"self.player.participant.vars['payoff_'+Constants.name_in_url] = {self.player.participant.vars['payoff_'+Constants.name_in_url]}")
+        
         # if config_leex_1.paid_game == Constants.name_in_url and config_leex_1.paid_round == self.round_number:
         #     self.player.payoff = self.player.payoff
         # else:

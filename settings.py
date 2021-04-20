@@ -71,7 +71,9 @@ SESSION_CONFIGS = [
         'display_name': "Tareas de Prosocialidad",
         'num_demo_participants': 4,
         'app_sequence': ["dictator", "trust", "public_goods", "prosociality"],
-        'use_browser_bots': False
+        'use_browser_bots': False,
+        'use_strategy_method': True,
+        # 'fixed_matching': False,
     },
     {
         'name': 'paper_klo_au',
@@ -96,32 +98,39 @@ SESSION_CONFIGS = [
         'app_sequence': ['mpl'],
     },
     {
-    
        'name': 'public_goods',
        'display_name': "Public Goods",
-       'num_demo_participants': 4,
+       'num_demo_participants': 12,
        'app_sequence': ['public_goods'],
-       'use_strategy_method': False, 
+       'use_strategy_method': False,
+    #    'fixed_matching': True,
+    #    'matching_file': "matchings_taxgovcorruption.json"
     },
     {
         'name': 'dictator',
         'display_name': "Dictator: 'Strategy' method",
-        'num_demo_participants': 2,
+        'num_demo_participants': 12,
         'app_sequence': ['dictator'],
+        # 'fixed_matching': True,
+        # 'matching_file': "matchings_taxgovcorruption.json"
     },    
     {
         'name': 'trust',
         'display_name': "Trust Game",
-        'num_demo_participants': 2,
+        'num_demo_participants': 12,
         'app_sequence': ['trust'],
         'use_strategy_method': False,
+        # 'fixed_matching': True,
+        # 'matching_file': "matchings_taxgovcorruption.json"
     },
     {
         'name': 'trust_strategy',
         'display_name': "Trust Game: Strategy Method",
-        'num_demo_participants': 2,
+        'num_demo_participants': 12,
         'app_sequence': ['trust'],
         'use_strategy_method': True,
+        # 'fixed_matching': True,
+        # 'matching_file': "matchings_taxgovcorruption.json"
     },
     {
         'name': 'prosocial',

@@ -46,6 +46,13 @@
 
     </br></br>
 
+    <p>
+        {% if round_number == Constants.num_rounds %}
+            La aplicación escogida para el pago es {{ paid_app }} y tu pago final del experimento es {{ final_payoff }}
+        {% endif %}
+
+    </p>
+
     {% next_button %}
 
     </br></br></br></br>

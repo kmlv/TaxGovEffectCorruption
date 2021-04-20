@@ -2,7 +2,7 @@ from otree.api import (
     models, widgets, BaseConstants, BaseSubsession, BaseGroup, BasePlayer,
     Currency as c, currency_range
 )
-import random
+import random, json
 
 import config_leex_1
 
@@ -33,7 +33,7 @@ class Constants(BaseConstants):
 
 class Subsession(BaseSubsession):
     def creating_session(self):
-        self.group_randomly(fixed_id_in_group=True)
+        self.group_randomly()
 
 
 class Group(BaseGroup):

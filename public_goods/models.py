@@ -2,7 +2,7 @@ from otree.api import (
     models, widgets, BaseConstants, BaseSubsession, BaseGroup, BasePlayer,
     Currency as c, currency_range
 )
-import random
+import random, json
 import config_leex_1
 
 
@@ -14,7 +14,7 @@ This is a one-period public goods game with 3 players.
 class Constants(BaseConstants):
     name_in_url = 'public_goods'
     players_per_group = 4
-    num_rounds = 4
+    num_rounds = 1
 
     instructions_template = 'public_goods/Instructions.html'
 
@@ -23,11 +23,14 @@ class Constants(BaseConstants):
     multiplier = 2
 
 class Subsession(BaseSubsession):
+    chosen_app = models.StringField()
+
     def creating_session(self):
         if self.round_number == 1:
             self.group_randomly()
         else:
             self.group_like_round(1)
+
     def vars_for_admin_report(self):
         contributions = [p.contribution for p in self.get_players() if p.contribution != None]
         if contributions:
@@ -43,10 +46,17 @@ class Subsession(BaseSubsession):
                 'max_contribution': '(no data)',
             }
 
+    def set_final_payoffs(self):
+        apps = ['trust', 'dictator', 'public_goods']
+        random.shuffle(apps)
+        self.chosen_app = apps[0]
+        for g in self.get_groups():
+            for p in self.get_players():
+                p.participant.payoff = p.participant.vars["payoff_"+self.chosen_app]
+
 
 class Group(BaseGroup):
     total_contribution = models.CurrencyField()
-
     individual_share = models.CurrencyField()
 
     def set_payoffs(self):
