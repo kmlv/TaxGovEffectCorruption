@@ -70,10 +70,10 @@ SESSION_CONFIGS = [
         'name': 'paper_klo_prosocial',
         'display_name': "Tareas de Prosocialidad",
         'num_demo_participants': 4,
-        'app_sequence': ["dictator", "trust", "public_goods", "prosociality"],
+        'app_sequence': ["dictator", "trust", "public_goods", "coin_tossing", "prosociality"],
         'use_browser_bots': False,
         'use_strategy_method': True,
-        # 'fixed_matching': False,
+        'pay_random_app': True
     },
     {
         'name': 'paper_klo_au',
@@ -90,6 +90,12 @@ SESSION_CONFIGS = [
         'authority': False,
         'app_sequence': ["real_effort2","survey", 'mpl'],
         'use_browser_bots': False
+    },  
+    {
+        'name': 'coin_tossing',
+        'display_name': "Coin Tossing - Honesty",
+        'num_demo_participants': 1,
+        'app_sequence': ['coin_tossing'],
     },    
     {
         'name': 'mpl',

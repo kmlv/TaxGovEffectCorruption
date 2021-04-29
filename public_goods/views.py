@@ -41,7 +41,7 @@ class FinalResultsWaitPage(WaitPage):
     def is_displayed(self):
         return self.round_number == Constants.num_rounds
 
-    body_text = "Waiting for all participants to contribute."
+    body_text = "Esperando a que el resto de participantes termine los juegos correspondientes."
 
 class Results(Page):
     """Players payoff: How much each has earned"""
@@ -49,7 +49,6 @@ class Results(Page):
     def vars_for_template(self):
         return {
             'total_earnings': self.group.total_contribution * Constants.multiplier,
-            'paid_app': self.subsession.chosen_app,
             'final_payoff': self.player.participant.payoff,
             'round_number': self.round_number
         }
@@ -69,6 +68,6 @@ page_sequence = [
     Introduction,
     Contribute,
     ResultsWaitPage,
-    FinalResultsWaitPage,
+#    FinalResultsWaitPage,
     Results
 ]

@@ -22,8 +22,9 @@ class Constants(BaseConstants):
     endowment = c(config_leex_1.PG_endowment)
     multiplier = 2
 
+
 class Subsession(BaseSubsession):
-    chosen_app = models.StringField()
+#    chosen_app = models.StringField()
 
     def creating_session(self):
         if self.round_number == 1:
@@ -46,13 +47,13 @@ class Subsession(BaseSubsession):
                 'max_contribution': '(no data)',
             }
 
-    def set_final_payoffs(self):
-        apps = ['trust', 'dictator', 'public_goods']
-        random.shuffle(apps)
-        self.chosen_app = apps[0]
-        for g in self.get_groups():
-            for p in self.get_players():
-                p.participant.payoff = p.participant.vars["payoff_"+self.chosen_app]
+    # def set_final_payoffs(self):
+    #     apps = self.session.config["app_sequence"][:-2]
+    #     print("app sequence without last app", apps)
+    #     random.shuffle(apps)
+    #     self.chosen_app = apps[0]
+    #     for p in self.get_players():
+    #         p.participant.payoff = p.participant.vars["payoff_"+self.chosen_app]
 
 
 class Group(BaseGroup):

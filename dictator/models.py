@@ -87,8 +87,9 @@ class Player(BasePlayer):
     kept = models.CurrencyField(
         doc="""Amount tentative dictator decided to keep for himself""",
         min=0, max=Constants.endowment,
-        verbose_name='Si fueras el Participante 1, te quedarías con (desde 0 hasta %i)' % Constants.endowment
+        verbose_name='Si pudieras decidir cómo dividir los puntos (Participante 1), ¿con cuántos te quedarías? (desde 0 hasta %i)' % Constants.endowment
     )
+    # instructions from https://www.moblab.com/edu/games/dictator
 
     dictator = models.BooleanField(initial=False)
 
