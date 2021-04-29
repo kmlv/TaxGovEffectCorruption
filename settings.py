@@ -16,12 +16,12 @@ SESSION_CONFIG_DEFAULTS = {
 
 # ISO-639 code
 # for example: de, fr, ja, ko, zh-hans
-LANGUAGE_CODE = 'en'
+LANGUAGE_CODE = 'es'
 
 # e.g. EUR, GBP, CNY, JPY
-REAL_WORLD_CURRENCY_CODE = ''
-REAL_WORLD_CURRENCY_DECIMAL_PLACES = 1
-POINTS_DECIMAL_PLACES = 1
+REAL_WORLD_CURRENCY_CODE = 'Soles'
+REAL_WORLD_CURRENCY_DECIMAL_PLACES = 0
+POINTS_DECIMAL_PLACES = 0
 USE_POINTS = False
 
 ROOMS = []
@@ -42,8 +42,8 @@ AUTH_LEVEL = environ.get('OTREE_AUTH_LEVEL')
 
 ADMIN_USERNAME = 'admin'
 # for security, best to set admin password in an environment variable
-ADMIN_PASSWORD = environ.get('OTREE_ADMIN_PASSWORD')
-
+#ADMIN_PASSWORD = environ.get('OTREE_ADMIN_PASSWORD')
+ADMIN_PASSWORD = 'PACMAN'
 
 # Consider '', None, and '0' to be empty/false
 DEBUG = (environ.get('OTREE_PRODUCTION') in {None, '', '0'})
@@ -56,162 +56,95 @@ SECRET_KEY = '^wrnxsj^(6ea-7#&cv*tawwpk*hzov-35m!e^o604&4m^6m+3y'
 # if an app is included in SESSION_CONFIGS, you don't need to list it here
 INSTALLED_APPS = ['otree']
 
-
+ROOMS = [
+    {
+        'name': 'EconoLab',
+        'display_name': 'Laboratorio de Economía',
+        'participant_label_file': '_rooms/econolab.txt',
+    },
+]
 
 
 SESSION_CONFIGS = [
     {
-        'name': 'tesis1',
-        'display_name': "Impuestos & Eficacia de gobierno",
-        'num_demo_participants': 2,
-        'app_sequence': ["real_effort2","survey", 'payment_info'],
+        'name': 'paper_klo_prosocial',
+        'display_name': "Tareas de Prosocialidad",
+        'num_demo_participants': 4,
+        'app_sequence': ["dictator", "trust", "public_goods", "coin_tossing", "prosociality"],
+        'use_browser_bots': False,
+        'use_strategy_method': True,
+        'pay_random_app': True
     },
-#
-#   {
-    #
-    #    'name': 'public_goods',
-    #    'display_name': "Public Goods",
-    #    'num_demo_participants': 2,
-    #    'app_sequence': ['public_goods'],
-#},
-    #    {
-    #    'name': 'survey',
-    #    'display_name': "Survey",
-    #    'num_demo_participants': 1,
-    #    'app_sequence': ['survey'],
-#},
-    # {
-    #     'name': 'quiz',
-    #     'display_name': "Quiz",
-    #     'num_demo_participants': 1,
-    #     'app_sequence': ['quiz'],
-    # },
-    # {
-    #     'name': 'prisoner',
-    #     'display_name': "Prisoner's Dilemma",
-    #        'num_demo_participants': 2,
-    #     'app_sequence': ['prisoner', 'payment_info'],
-    # },
-    # {
-    #     'name': 'ultimatum_strategy',
-    #     'display_name': "Ultimatum (strategy method treatment)",
-    #     'num_demo_participants': 2,
-    #     'app_sequence': ['ultimatum', 'payment_info'],
-    #     'use_strategy_method': True,
-    # },
-    # {
-    #     'name': 'ultimatum_non_strategy',
-    #     'display_name': "Ultimatum (direct response treatment)",
-    #     'num_demo_participants': 2,
-    #     'app_sequence': ['ultimatum', 'payment_info'],
-    #     'use_strategy_method': False,
-    # },
-    # {
-    #     'name': 'vickrey_auction',
-    #     'display_name': "Vickrey Auction",
-    #     'num_demo_participants': 3,
-    #     'app_sequence': ['vickrey_auction', 'payment_info'],
-    # },
-    # {
-    #     'name': 'volunteer_dilemma',
-    #     'display_name': "Volunteer's Dilemma",
-    #     'num_demo_participants': 3,
-    #     'app_sequence': ['volunteer_dilemma', 'payment_info'],
-    # },
-    # {
-    #     'name': 'cournot',
-    #     'display_name': "Cournot Competition",
-    #     'num_demo_participants': 2,
-    #     'app_sequence': [
-    #         'cournot', 'payment_info'
-    #     ],
-    # },
-    # {
-    #     'name': 'principal_agent',
-    #     'display_name': "Principal Agent",
-    #     'num_demo_participants': 2,
-    #     'app_sequence': ['principal_agent', 'payment_info'],
-    # },
-    # {
-    #     'name': 'dictator',
-    #     'display_name': "Dictator Game",
-    #     'num_demo_participants': 2,
-    #     'app_sequence': ['dictator', 'payment_info'],
-    # },
-    # {
-    #     'name': 'matching_pennies',
-    #     'display_name': "Matching Pennies",
-    #     'num_demo_participants': 2,
-    #     'app_sequence': [
-    #         'matching_pennies',
-    #     ],
-    # },
-    # {
-    #     'name': 'traveler_dilemma',
-    #     'display_name': "Traveler's Dilemma",
-    #     'num_demo_participants': 2,
-    #     'app_sequence': ['traveler_dilemma', 'payment_info'],
-    # },
-    # {
-    #     'name': 'bargaining',
-    #     'display_name': "Bargaining Game",
-    #     'num_demo_participants': 2,
-    #     'app_sequence': ['bargaining', 'payment_info'],
-    # },
-    # {
-    #     'name': 'common_value_auction',
-    #     'display_name': "Common Value Auction",
-    #     'num_demo_participants': 3,
-    #     'app_sequence': ['common_value_auction', 'payment_info'],
-    # },
-    # {
-    #     'name': 'stackelberg',
-    #     'display_name': "Stackelberg Competition",
-    #     'real_world_currency_per_point': 0.01,
-    #     'num_demo_participants': 2,
-    #     'app_sequence': [
-    #         'stackelberg', 'payment_info'
-    #     ],
-    # },
-    # {
-    #     'name': 'bertrand',
-    #     'display_name': "Bertrand Competition",
-    #     'num_demo_participants': 2,
-    #     'app_sequence': [
-    #         'bertrand', 'payment_info'
-    #     ],
-    # },
-    # {
-    #     'name': 'real_effort',
-    #     'display_name': "Real-effort transcription task",
-    #     'num_demo_participants': 1,
-    #     'app_sequence': [
-    #         'real_effort',
-    #     ],
-    # },
-    # {
-    #     'name': 'lemon_market',
-    #     'display_name': "Lemon Market Game",
-    #     'num_demo_participants': 3,
-    #     'app_sequence': [
-    #         'lemon_market', 'payment_info'
-    #     ],
-    # },
-    #     ],
-    # },
-    # {
-    #     'name': 'public_goods_simple',
-    #     'display_name': "Public Goods (simple version from tutorial)",
-    #     'num_demo_participants': 3,
-    #     'app_sequence': ['public_goods_simple', 'survey', 'payment_info'],
-    # },
-    # {
-    #     'name': 'trust_simple',
-    #     'display_name': "Trust Game (simple version from tutorial)",
-    #     'num_demo_participants': 2,
-    #     'app_sequence': ['trust_simple'],
-    # },
-
+    {
+        'name': 'paper_klo_au',
+        'display_name': "Impuestos & Eficacia de gobierno: Authority",
+        'num_demo_participants': 2,
+        'authority': True,
+        'app_sequence': ["real_effort2","survey", 'mpl'],
+        'use_browser_bots': False
+    },
+    {
+        'name': 'paper_klo_nau',
+        'display_name': "Impuestos & Eficacia de gobierno: No Authority",
+        'num_demo_participants': 2,
+        'authority': False,
+        'app_sequence': ["real_effort2","survey", 'mpl'],
+        'use_browser_bots': False
+    },  
+    {
+        'name': 'coin_tossing',
+        'display_name': "Coin Tossing - Honesty",
+        'num_demo_participants': 1,
+        'app_sequence': ['coin_tossing'],
+    },    
+    {
+        'name': 'mpl',
+        'display_name': "HoltLaury",
+        'num_demo_participants': 1,
+        'app_sequence': ['mpl'],
+    },
+    {
+       'name': 'public_goods',
+       'display_name': "Public Goods",
+       'num_demo_participants': 12,
+       'app_sequence': ['public_goods'],
+       'use_strategy_method': False,
+    #    'fixed_matching': True,
+    #    'matching_file': "matchings_taxgovcorruption.json"
+    },
+    {
+        'name': 'dictator',
+        'display_name': "Dictator: 'Strategy' method",
+        'num_demo_participants': 12,
+        'app_sequence': ['dictator'],
+        # 'fixed_matching': True,
+        # 'matching_file': "matchings_taxgovcorruption.json"
+    },    
+    {
+        'name': 'trust',
+        'display_name': "Trust Game",
+        'num_demo_participants': 12,
+        'app_sequence': ['trust'],
+        'use_strategy_method': False,
+        # 'fixed_matching': True,
+        # 'matching_file': "matchings_taxgovcorruption.json"
+    },
+    {
+        'name': 'trust_strategy',
+        'display_name': "Trust Game: Strategy Method",
+        'num_demo_participants': 12,
+        'app_sequence': ['trust'],
+        'use_strategy_method': True,
+        # 'fixed_matching': True,
+        # 'matching_file': "matchings_taxgovcorruption.json"
+    },
+    {
+        'name': 'prosocial',
+        'display_name': "Encuesta Prosocialidad",
+        'num_demo_participants': 1,
+        'app_sequence': ["prosociality"],
+        'use_browser_bots': False
+    },
 ]
 
 # anything you put after the below line will override

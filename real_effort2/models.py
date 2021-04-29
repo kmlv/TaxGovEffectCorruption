@@ -5,6 +5,7 @@ from otree.api import (
 from . import config as config_py
 import random
 
+
 doc = """
 This is a game that combines elements of the Public Goods game and real-effort
 transcription task into one. This game has 2 modes, one with transcription off and one 
@@ -55,12 +56,12 @@ def distance_and_ok(transcribed_text, reference_text, max_error_rate):
 
 
 class Constants(BaseConstants):
-    config = config_py.export_data()
+
     name_in_url = 'real_effort'
 
     # The total number of dictionaries in the data list in config.py is the
     # number of game rounds
-    num_rounds = len(config[0])
+    num_rounds = config_py.num_rounds
     players_per_group = 2
     instructions_template = 'real_effort2/Instructions.html'
     info_code = 'real_effort/Code.html'
@@ -68,7 +69,10 @@ class Constants(BaseConstants):
     # List of the incomprehensible text that the players must transcribe
     reference_texts = [
         "Revealed preference",
-        "Hex ton satoha egavecen. Loh ta receso minenes da linoyiy xese coreliet ocotine! Senuh asud tu bubo tixorut sola, bo ipacape le rorisin lesiku etutale saseriec niyacin ponim na. Ri arariye senayi esoced behin? Tefid oveve duk mosar rototo buc: Leseri binin nolelar sise etolegus ibosa farare. Desac eno titeda res vab no mes!",
+        "Hex ton satoha egavecen. Loh ta receso minenes da linoyiy xese coreliet ocotine! Senuh asud tu bubo "
+        "tixorut sola, bo ipacape le rorisin lesiku etutale saseriec niyacin ponim na. Ri arariye senayi esoced "
+        "behin? Tefid oveve duk mosar rototo buc: Leseri binin nolelar sise etolegus ibosa farare. Desac eno "
+        "titeda res vab no mes!",
     ]
 
     # Text of decisions that the authority can make
@@ -83,32 +87,38 @@ class Constants(BaseConstants):
     maxdistance2 = len(reference_texts[1])
     allowed_error_rates = [0, 0.99]
 
-
+    
 class Subsession(BaseSubsession):
     # Executed when the session is created
     def creating_session(self):
         # Shuffle players randomly so that they can end up in any group
         # k is a scalar that will allow to randomize the audits
         k = random.randint(0, 1)
-        config = Constants.config
         round_number = self.round_number
-        shuffle = config[0][round_number - 1]["shuffle"]
+
         for p in self.get_players():
             p.audit2 = k
-
-        print("Round number: ", round_number, ", Shuffle: ", shuffle)
 
         # After round 1, decision to shuffle the groups is based on whether the value for the "shuffle" key for the
         # current round's dictionary entry is True
         if round_number == 1:
+            # setting the config according to the authority
+            if self.session.config["authority"]:
+                self.session.vars["config"] = config_py.export_data_authority()
+            else:
+                self.session.vars["config"] = config_py.export_data_no_authority()
+            # group randomly the players    
             self.group_randomly()
 
         else:
+            shuffle = self.session.vars["config"][0][round_number - 1]["shuffle"]
+            
             if shuffle == True:
                 self.group_randomly(fixed_id_in_group=True)
             else: # Keep the groups organized the same as in the previous round
                 self.group_like_round(round_number - 1)
-
+        
+        config = self.session.vars["config"]
         print(self.get_group_matrix())
         print("---------------------------------------------------")
 
@@ -116,8 +126,8 @@ class Subsession(BaseSubsession):
         for p in self.get_players():
             p.ratio = 1
             p.contribution = 0
-            p.spanish = Constants.config[0][round_number - 1]["spanish"]
-            p.income = Constants.config[0][round_number - 1]["end"]
+            p.spanish = config[0][round_number - 1]["spanish"]
+            p.income = config[0][round_number - 1]["end"]
 
 
 class Group(BaseGroup):
@@ -153,6 +163,7 @@ class Player(BasePlayer):
     spanish = models.BooleanField()
     done = models.BooleanField()
     transcriptionDone = models.BooleanField()
-    payoff = models.CurrencyField()
+    # payoff = models.CurrencyField()
+    orig_income = models.CurrencyField(initial=0)
     refText = models.LongStringField()
     audit = models.BooleanField()

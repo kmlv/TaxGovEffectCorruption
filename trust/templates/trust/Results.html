@@ -1,0 +1,42 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree_tags %}
+
+{% block title %}
+    <p style="color:lightgrey"> Ronda {{ group.round_number }} </p>
+    Resultados
+{% endblock %}
+
+{% block content %}
+
+    {% if player.role == 'A' %}
+        <p>
+            Tu rol fue ser el jugador A </br></br>
+            Dotación: {{ Constants.endowment }} </br></br>
+            Monto enviado al participante de rol B: {{ group.sent_amount }}. </br>
+            Monto enviado triplicado: {{ tripled_amount }}. </br></br>
+
+            Monto retornado por el participante de rol B: {{ group.sent_back_amount }}.</br></br>
+
+            Tu pago de esta ronda:</br>
+            {{ Constants.endowment }} - {{ group.sent_amount }} + {{ group.sent_back_amount }} = <strong>{{ player.payoff }}</strong>
+
+        </p>
+    {% else %}
+            Tu rol fue ser el jugador B </br></br>
+            Dotación: {{ Constants.endowment }} </br></br>
+            Monto enviado por participante de rol A: {{ group.sent_amount }}. </br>
+            Monto enviado triplicado: {{ tripled_amount }}. </br></br>
+
+            Monto retornado al participante de rol A: {{ group.sent_back_amount }}.</br></br>
+
+            Tu pago de esta ronda:</br>
+            {{ tripled_amount }} - {{ group.sent_back_amount }} = <strong>{{ player.payoff }}</strong>
+    {% endif %}
+
+    </br></br>
+    <p>{% next_button %}</p>
+
+    </br></br></br></br>
+    {% include Constants.instructions_template %}
+
+{% endblock %}

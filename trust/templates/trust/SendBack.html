@@ -1,0 +1,26 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree_tags %}
+
+{% block title %}
+    <p style="color:lightgrey"> Ronda {{ group.round_number }} </p>
+    Tu elección
+{% endblock %}
+
+{% block content %}
+
+<p>
+    Se te ha asignado el rol B. De los {{Constants.endowment}}, rol A ha enviado {{group.sent_amount}}.
+    Este monto se ha multiplicado por {{ Constants.multiplication_factor }} convirtiendose en {{tripled_amount}}.
+    </br></br>
+    De los {{tripled_amount}}, cuánto deseas enviar de retorno al participante A?
+
+</p>
+
+    {% formfield group.sent_back_amount with label="Por favor, ingrese el monto aquí:" %}
+
+    <p>{% next_button %}</p>
+
+    </br></br></br></br>
+    {% include Constants.instructions_template %}
+
+{% endblock %}

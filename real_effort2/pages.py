@@ -2,6 +2,7 @@ from ._builtin import Page, WaitPage
 from otree.api import Currency as c, currency_range
 from .models import Constants, levenshtein, distance_and_ok
 from django.conf import settings
+import PIL
 from PIL import Image, ImageDraw, ImageFont
 import math
 from random import *
@@ -96,7 +97,7 @@ def getPageCode(self):
     mode (0 or 1) and the number after "A" represents the authority mode (1 or 2). This page code is displayed at the
     top right of every page in the game."""
 
-    config = Constants.config
+    config = self.session.vars["config"]
     t_code = 0
     auth_code = config[0][self.round_number - 1]["mode"]
 
@@ -115,7 +116,7 @@ class Introduction(Page):
 
         return False
     def vars_for_template(self):
-        config = Constants.config
+        config = self.session.vars["config"]
         return {
         'mode': config[0][self.round_number-1]["mode"],
     }
@@ -129,6 +130,13 @@ class InstructionsB(Page):
             return True
 
         return False
+    def vars_for_template(self):
+        config = self.session.vars["config"]
+        appropriation_percent = config[0][self.round_number - 1]["appropriation_percent"]
+        return {
+        'multi': config[0][self.round_number-1]["multiplier"],
+        'aprop_perc': appropriation_percent
+    }
 
 class Transcribe1(Page):
     """First transcription task that's shown to the player that is merely for practice and does not determine the ratio
@@ -137,13 +145,13 @@ class Transcribe1(Page):
     form_fields = ['transcribed_text2']
 
     def is_displayed(self):
-        self.player.refText = generateText1(Constants.config[0][self.round_number - 1]["difficulty"])
+        self.player.refText = generateText1(self.session.vars["config"][0][self.round_number - 1]["difficulty"])
         # Don't display this Transcribe2 page if the "transcription" value in
         # the dictionary representing this round in config.py is False
         print("Inside Transcribe1 page")
-        print("Transcription for this round is: " + str(Constants.config[0][self.round_number - 1]["transcription"]))
+        print("Transcription for this round is: " + str(self.session.vars["config"][0][self.round_number - 1]["transcription"]))
 
-        if (Constants.config[0][self.round_number - 1]["transcription"] == False):
+        if (self.session.vars["config"][0][self.round_number - 1]["transcription"] == False):
             self.player.ratio = 1
             return False
 
@@ -185,9 +193,9 @@ class Transcribe2(Page):
     # the dictionary representing this round in config.py is False
     def is_displayed(self):
         print("Inside Transcribe2 page")
-        print("Transcription for this round is: " + str(Constants.config[0][self.round_number - 1]["transcription"]))
+        print("Transcription for this round is: " + str(self.session.vars["config"][0][self.round_number - 1]["transcription"]))
 
-        if (Constants.config[0][self.round_number - 1]["transcription"] == False):
+        if (self.session.vars["config"][0][self.round_number - 1]["transcription"] == False):
             return False
 
         """
@@ -198,7 +206,7 @@ class Transcribe2(Page):
                 return False
         """
 
-        self.player.refText = generateText2(Constants.config[0][self.round_number - 1]["difficulty"])
+        self.player.refText = generateText2(self.session.vars["config"][0][self.round_number - 1]["difficulty"])
 
         return True
 
@@ -250,12 +258,13 @@ class ReportIncome(Page):
     def vars_for_template(self):
         # If transcription mode is set to true for this round, set the player's income according
         # to their transcription accuracy
-        config = Constants.config
+        config = self.session.vars["config"]
         pgCode = getPageCode(self)
         endowment = config[0][self.round_number - 1]["end"]
         transcribe_on = config[0][self.round_number - 1]["transcription"]
+        self.player.orig_income = self.player.income
 
-        if self.player.ratio == 1 and Constants.config[0][self.round_number - 1]["transcription"] == True:
+        if self.player.ratio == 1 and self.session.vars["config"][0][self.round_number - 1]["transcription"] == True:
             for p in self.player.in_all_rounds():
                 if p.ratio < 1:
                     self.player.ratio = p.ratio
@@ -264,7 +273,7 @@ class ReportIncome(Page):
 
         displaytax = config[0][self.round_number - 1]["tax"] * 100
         display_ratio = round(self.player.ratio * 100, 1)
-        display_income =  self.player.income
+        display_income = self.player.income
 
         return {'ratio': self.player.ratio, 'income': self.player.income, 'tax': displaytax,
                 'flag': config[0][self.round_number - 1]["transcription"],
@@ -294,7 +303,7 @@ class Audit(Page):
            return False
 
     def vars_for_template(self):
-        config = Constants.config
+        config = self.session.vars["config"]
         pgCode = getPageCode(self)
         player = self.player
 
@@ -334,18 +343,18 @@ class Authority(Page):
     form_fields = ['authority_multiply']
 
     def is_displayed(self):
-        config = Constants.config
+        config = self.session.vars["config"]
         group = self.group
 
         mode_num = config[0][self.round_number - 1]["mode"]
 
-        if (mode_num == 1 and self.player.id_in_group == group.authority_ID):
+        if mode_num == 1 and self.player.id_in_group == group.authority_ID:
             return True
         else:
             return False
 
     def vars_for_template(self):
-        config = Constants.config
+        config = self.session.vars["config"]
         pgCode = getPageCode(self)
 
         return {
@@ -366,7 +375,7 @@ class AuthorityInfo(Page):
             return True
 
     def vars_for_template(self):
-        config = Constants.config
+        config = self.session.vars["config"]
         group = self.group
         pgCode = getPageCode(self)
 
@@ -384,7 +393,7 @@ class AuthorityInfo(Page):
         else:
             decision = Constants.decisions[1] + " " + str(multiplier) + Constants.decisions[2] + str(appropriation_percent * 100) + Constants.decisions[3]
 
-        return {"decision": decision, 'pgCode': pgCode, 'round_num': self.round_number}
+        return {"mode": mode_num, "decision": decision, 'pgCode': pgCode, 'round_num': self.round_number}
 
 
 class Authority2(Page):
@@ -392,18 +401,18 @@ class Authority2(Page):
     form_fields = ['auth_appropriate']
 
     def is_displayed(self):
-        config = Constants.config
+        config = self.session.vars["config"]
         group = self.group
 
         mode_num = config[0][self.round_number - 1]["mode"]
 
-        if (mode_num == 2 and self.player.id_in_group == group.authority_ID):
+        if mode_num == 2 and self.player.id_in_group == group.authority_ID:
             return True
         else:
             return False
 
     def vars_for_template(self):
-        config = Constants.config
+        config = self.session.vars["config"]
         pgCode = getPageCode(self)
         appropriation_percent = config[0][self.round_number - 1]["appropriation_percent"]
         display_appropriation = appropriation_percent * 100
@@ -422,7 +431,7 @@ class Authority3(Page):
     form_fields = ['auth_appropriate']
 
     def is_displayed(self):
-        config = Constants.config
+        config = self.session.vars["config"]
         group = self.group
 
         mode_num = config[0][self.round_number - 1]["mode"]
@@ -433,7 +442,7 @@ class Authority3(Page):
             return False
 
     def vars_for_template(self):
-        config = Constants.config
+        config = self.session.vars["config"]
         pgCode = getPageCode(self)
         appropriation_percent = config[0][self.round_number - 1]["appropriation_percent"]
         display_appropriation = appropriation_percent * 100
@@ -450,7 +459,7 @@ class Authority3(Page):
 class AuthorityWaitPage(WaitPage):
     """Determines the payoff for all players based on the decision of the Authority"""
     def after_all_players_arrive(self):
-        config = Constants.config
+        config = self.session.vars["config"]
         group = self.group
         players = group.get_players()
 
@@ -498,7 +507,7 @@ class AuthorityWaitPage(WaitPage):
 
 class TaxResults(Page):
     def vars_for_template(self):
-        config = Constants.config
+        config = self.session.vars["config"]
         pgCode = getPageCode(self)
         group = self.group
         players = group.get_players()
@@ -513,6 +522,7 @@ class TaxResults(Page):
         #penalidad:
         pen =  player.contribution*90/100
         multiplier = config[0][self.round_number - 1]["multiplier"]
+        orig = self.player.orig_income
 
         if mode_num == 1:
             contributions = [p.contribution * tax for p in players]
@@ -550,7 +560,7 @@ class TaxResults(Page):
                     p.payoff = p.income - (tax * p.contribution) + group.individual_share
 
         return{
-            'total_contribution': self.group.total_contribution,'total_earnings': self.group.total_earnings,
+            'orig': orig,'total_contribution': self.group.total_contribution,'total_earnings': self.group.total_earnings,
             'total_appropriation':self.group.appropriation, 'pgCode': pgCode, 'round_num': self.round_number,'mode':mode_num, 'taxcob':taxcob,'tax': tax,'payoff': self.player.payoff,
         }
 
