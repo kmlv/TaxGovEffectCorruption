@@ -96,6 +96,7 @@ SESSION_CONFIGS = [
         'display_name': "Coin Tossing - Honesty",
         'num_demo_participants': 1,
         'app_sequence': ['coin_tossing'],
+        'pay_random_app': False
     },    
     {
         'name': 'mpl',
