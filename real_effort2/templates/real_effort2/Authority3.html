@@ -2,8 +2,19 @@
 {% load otree static %}
 {{ form.auth_appropriate.errors }}
 
+
 {% block title %}
-    <p style="font-size:15px; color:#CD853F;" align="right">{{ pgCode }}<br/>Period {{ round_num }}</p>    Autoridad {{ mode }}
+<head>
+<style>
+h2 {
+        color: #F8F4EE;
+}
+</style>
+</head>
+<body>
+    <p style="font-size:15px; color:#CD853F;" align="right">{{ pgCode }}<br/>Period {{ round_num }}</p>   <h1>Estado sin Autoridad</h1>
+    <h2>Código: a2-Nau-Ap</h2><br>
+</body>
 {% endblock %}
 
 {% block content %}

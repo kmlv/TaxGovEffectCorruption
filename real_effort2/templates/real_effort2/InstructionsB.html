@@ -15,49 +15,60 @@ h2 {
     <div class="card-body">
 
     <h3>
-        Instrucciones del Bloque <h2>(Nombre del Bloque)</h2>
+        Instrucciones del Bloque
     </h3>
 
     <p>
         <div align="justify">
-        Este experimento tendrá 4 bloques y 10 rondas por bloque. Esta parte se divide en 3 etapas.
+        Este experimento tendrá 4 bloques y 10 rondas de decisión por bloque. Antes de cada ronda, todos los
+        participantes serán asignados a un grupo de cuatro personas completamente al azar. Una vez formados los
+        grupos, la ronda comenzará.
+
         <br><br>
-        <h5>Etapa 1:</h5> Tendrás que realizar una tarea de transcripción que determinará cuál será tu ingreso en el
-        juego. Mientras mejor sea la transcripción, mayores serán tus ingresos.
-        <br><br>
-        <h5>Etapa 2:</h5> Se te pedirá que reportes al Estado cuál fue el monto que recibiste, con el objetivo de que
-        puedan descontarte los impuestos respectivos. Tú puedes decidir si reportas todo lo que ganaste en la tarea o un
-        monto menor, pero debes tener en cuenta que se realizarán <b>auditorías aleatoriamente</b>. Si reportaste
-        ingresos menores a los que recibiste y eres auditado, serás penalizado con el 90% de tus ingresos.
-        <br><br>
-        <h5>Etapa 3:</h5> Finalmente, el monto recaudado será invertido por el Estado en una obra pública que tendrá
-        beneficios para los participantes, es decir, las ganancias totales de la obra pública serán repartidas entre
-        todos. De esta manera, tu ganancia también dependerá de las decisiones de los otros participantes, pues se
-        dividirá el total de lo recaudado en partes iguales, sin importar cuánto aportó cada uno con respecto a los demás.
-        Asimismo, el Estado (Autoridad) también juega un papel muy importante porque dependiendo de su eficacia,
-        las ganancias de la obra pública se podrían multiplicar.
+        <ol>
+            <li>Al comenzar la ronda, realizarás una tarea de transcripción que te generará ingresos en SOLEX.
+                Mientras mejor sea la transcripción, mayores serán tus ingresos.</li>
+            <li>Luego, reportarás tu ingreso al Estado para que se descuenten los impuestos respectivos. La tasa de
+                impuestos es de {{ aprop_perc }} de tu ingreso. Tú puedes decidir si reportas todo lo que ganaste en la tarea
+                o un monto distinto.</li>
+            <li>Se realizarán auditorías al azar con probabilidad 50%. Si eres auditado, y reportaste ingresos menores
+                a los que recibiste, se te descuentará el 90% de tus ingresos.</li>
+            <li>Con el dinero de los impuestos, el Estado “hace obras” que benefician a los ciudadanos. En concreto, el
+                monto total de contribuciones es multiplicado por Z y luego es repartido por igual entre todos los
+                ciudadanos y se denomina beneficio por obra pública. Esta transferencia se realiza sin importar quiénes
+                y cuánto han contribuido.</li>
+        </ol>
         <br><br>
         </div>
-        <H5>Pagos:</H5> Los pagos o ganancias que tendrá un jugador pueden ser descritas de la siguiente manera:
+
+        <H5>Pagos:</H5> Los pagos o ganancias por ronda que tendrá un participante se determinan así:
         <br><br>
         <ul>
-        <li>Si tu ingreso declarado es igual a tu ingreso verdadero, tu ganancia final es:
+        <li>Si tu ingreso declarado es igual a tu ingreso verdadero, tu pago de la ronda es:
             <br><br> <b>Pago</b> = Ingreso neto de impuestos + Ganancia por la obra pública.<br><br></li>
-        <li>Si tu ingreso declarado NO es igual a tu ingreso  pero NO fuiste auditado, tu ganancia final es igual a tu ingreso declarado neto de impuestos MÁS el monto del ingreso que no declaraste MÁS la ganancia por la obra pública.
+        <li>Si tu ingreso declarado NO es igual a tu ingreso pero NO eres auditado, tu pago es igual a tu ingreso declarado neto de impuestos MÁS el monto del ingreso que no declaraste MÁS la ganancia por la obra pública.
             <br><br> <b>Pago</b> = Ingreso neto de impuestos + Ganancia por la obra pública + Ingreso no declarado.<br><br></li>
-        <li>Si tu ingreso declarado NO es igual a tu ingreso  pero SÍ fuiste auditado, tu ganancia final es igual a tu ingreso declarado neto de impuestos MÁS el monto del ingreso que no declaraste MÁS la ganancia por la obra pública MENOS la penalidad.
+        <li>Si tu ingreso declarado NO es igual a tu ingreso  pero SÍ eres auditado, tu pago es igual a tu ingreso declarado neto de impuestos MÁS el monto del ingreso que no declaraste MÁS la ganancia por la obra pública MENOS la penalidad.
             <br><br> <b>Pago</b> = Ingreso neto de impuestos + Ganancia por la obra pública + Ingreso no declarado - 90%(Ingreso antes de impuestos).<br></li>
         </ul>
-        El resultado final se muestra al terminar cada ronda.
+        El resultado de la ronda se muestra al terminar cada ronda.
+        <br>
+        Ejemplo (COLOCARLO TRAS VER LOS CAMBIOS EN LA AUTORIDAD):
+        <br>
+        INCLUIR CONDICIONALES PARA LA AUTORIDAD
         <br><br>
         <h5>Autoridad:</h5> En cada ronda se escogerá a un participante para que sea la Autoridad y tome una decisión con respecto a la
-        eficacia del Estado.
+        eficacia del Estado. Quien sea elegido para ese puesto, tendrá en algunos casos la opción de tomar una parte de los ingresos recaudados
+        para sí mismo.
         <br><br>
         <h5>Cambios por Ronda: </h5>
         Debes estar atento a las indicaciones, ya que habrán cambios en:<br><br>
         <ul>
         <li><b>Las tasas impositivas:</b> En cada ronda, la tasa puede ser 20% o 50%.<br><br></li>
-        <li><b>Eficacia de la Autoridad:</b> En algunas rondas, los participantes que sean seleccionados para ser la autoridad podrán multiplicar las ganancias de la obra pública, pero, en otras, podrán multiplicar las ganancias y quedarse con parte de ellas.<br><br></li>
+        <li><b>Eficacia de la Autoridad:</b> En algunas rondas, los participantes que sean seleccionados para ser la autoridad podrán multiplicar
+        las ganancias de la obra pública, pero, en otras, podrán multiplicar las ganancias y quedarse con parte de ellas.<br><br></li>
+        <li><b>Estado sin Autoridad:</b> Habrán algunas rondas donde no haya autoridad, sino que alguien será escogido aleatoriamente para
+        multiplicar lo recaudado y repartirlo entre él y los demás en partes iguales, pero adicionalmente recibirá 25% de lo multiplicado.<br><br></li>
         </ul>
     </p>
     </div>

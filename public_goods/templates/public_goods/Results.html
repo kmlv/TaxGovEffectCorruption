@@ -1,0 +1,55 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree_tags %}
+
+{% block title %}
+
+    <p style="color:lightgrey"> Ronda {{ group.round_number }}</p>
+    Resultados
+
+{% endblock %}
+
+{% block content %}
+  
+
+    <table class="table-condensed" style="width:500px; margin-top:20px;">
+
+        <tr><td>Dotación:</td><td>{{ Constants.endowment}}</td></tr>
+
+        <tr><td>Tu contribución al proyecto grupal:</td><td>{{ player.contribution }}</td></tr>
+
+        <tr><td colspan="2"><hr/></td></tr>
+
+        <tr><td>Las contribuciones de los otros miembros:</td><td></td></tr>
+
+        {% for p in player.get_others_in_group %}
+            <tr><td></td><td>{{ p.contribution }}</td></tr>
+        {% endfor %}
+
+
+        </br>
+
+        <tr><td colspan="2"><hr/></td></tr>
+
+        <tr><td>Suma de contribuciones del Grupo:</td><td>{{ group.total_contribution }}</td></tr>
+        <tr><td>{{ Constants.multiplier }} * Suma de Contribuciones:</td><td>{{ total_earnings }}</td></tr>
+
+        <tr><td colspan="2"><hr/></td></tr>
+
+
+        <tr><td>Ganancias del Proyecto Grupal:</td><td>{{ group.individual_share }}</td></tr>
+
+        <tr><td colspan="2"><hr/></td></tr>
+
+        <tr><td>Por lo tanto, tu pago de la ronda es:</td><td>{{ player.payoff }}</td></tr>
+
+    </table>
+
+    </br></br>
+
+    {% next_button %}
+
+    </br></br></br></br>
+    {% include Constants.instructions_template %}
+
+
+{% endblock %}
