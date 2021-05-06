@@ -42,12 +42,18 @@ class FinalProcessing(Page):
 
 class RoundResults(Page):
     def vars_for_template(self):
-        return {"real_coin_value": self.player.real_coin_value,
+        template_vars = {"real_coin_value": self.player.real_coin_value,
                 "guess": self.player.heads_or_tails,
-                "pay_random_app": self.session.config["pay_random_app"],
-                "paid_app": self.player.chosen_app,
                 "accumulated_payoff": self.player.participant.vars["payoff_"+Constants.name_in_url],
-                "last_round": self.round_number == Constants.num_rounds}
+                "last_round": self.round_number == Constants.num_rounds,
+                "pay_random_app": self.session.config["pay_random_app"]}
+
+        paid_app = self.player.chosen_app
+        if paid_app != None:
+            paid_app_name = self.session.config["app_names"][paid_app]
+            template_vars = {**template_vars, **{"paid_app": paid_app_name}}        
+
+        return template_vars
 
 
 page_sequence = [Introduction, TossingTheCoin, Report, FinalProcessing, RoundResults]
