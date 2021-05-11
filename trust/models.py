@@ -11,7 +11,8 @@ This is a standard 2-player trust game where the amount sent by player 1 gets
 tripled. The trust game was first proposed by
 <a href="http://econweb.ucsd.edu/~jandreon/Econ264/papers/Berg%20et%20al%20GEB%201995.pdf" target="_blank">
     Berg, Dickhaut, and McCabe (1995)
-</a>.
+</a>. The differences between using strategy method or not can be found <a href="https://citeseerx.ist.psu.edu/view
+doc/download?doi=10.1.1.597.7870&rep=rep1&type=pdf" target="_blank"> here</a>
 """
 
 
@@ -34,6 +35,48 @@ class Constants(BaseConstants):
 class Subsession(BaseSubsession):
     def creating_session(self):
         self.group_randomly()
+
+    def vars_for_admin_report(self):
+        num_players = len(self.get_players())
+
+        # amount sent in average
+        amounts_sent = [p.sent_amount_strategy for p in self.get_players() if p.sent_amount_strategy != None]
+        avg_sent = "no data"
+        if len(amounts_sent) != 0:
+            avg_sent = sum(amounts_sent)/len(amounts_sent)
+
+        # amount sent back in average per case
+        amounts_sent_back = {}
+        amounts_sent_back["received_3"] = [p.sent_back_amount_strategy_3 for p in self.get_players() if p.sent_back_amount_strategy_3 != None]
+        amounts_sent_back["received_6"] = [p.sent_back_amount_strategy_6 for p in self.get_players() if p.sent_back_amount_strategy_6 != None]
+        amounts_sent_back["received_9"] = [p.sent_back_amount_strategy_9 for p in self.get_players() if p.sent_back_amount_strategy_9 != None]
+        amounts_sent_back["received_12"] = [p.sent_back_amount_strategy_12 for p in self.get_players() if p.sent_back_amount_strategy_12 != None]
+        amounts_sent_back["received_15"] = [p.sent_back_amount_strategy_15 for p in self.get_players() if p.sent_back_amount_strategy_15 != None]
+        amounts_sent_back["received_18"] = [p.sent_back_amount_strategy_18 for p in self.get_players() if p.sent_back_amount_strategy_18 != None]
+        amounts_sent_back["received_21"] = [p.sent_back_amount_strategy_21 for p in self.get_players() if p.sent_back_amount_strategy_21 != None]
+        amounts_sent_back["received_24"] = [p.sent_back_amount_strategy_24 for p in self.get_players() if p.sent_back_amount_strategy_24 != None]
+        amounts_sent_back["received_27"] = [p.sent_back_amount_strategy_27 for p in self.get_players() if p.sent_back_amount_strategy_27 != None]
+        amounts_sent_back["received_30"] = [p.sent_back_amount_strategy_30 for p in self.get_players() if p.sent_back_amount_strategy_30 != None]
+
+        # telling if there are values for all sent back amounts
+        there_are_sent_backs = False
+        aux_counter = 0 # for counting how many values from amounts_sent_back are not empty
+        for choice in range(3, Constants.endowment*Constants.multiplication_factor+1, Constants.choice_step*Constants.multiplication_factor):
+            if amounts_sent_back[f"received_{choice}"]:
+                amounts_sent_back[f"received_{choice}"] = sum(amounts_sent_back[f"received_{choice}"])/len(amounts_sent_back[f"received_{choice}"])
+                aux_counter += 1
+        
+        if aux_counter == len(Constants.choices_trustor) - 1: # True if all values aren't empty (omitting 0)
+            there_are_sent_backs = True
+
+        if amounts_sent and there_are_sent_backs:
+            return {**{'avg_sent': avg_sent}, **amounts_sent_back}
+
+        else:   
+            sent_backs_no_data = {}
+            for choice in range(3, Constants.endowment*Constants.multiplication_factor+1, Constants.choice_step*Constants.multiplication_factor):
+                sent_backs_no_data[f"received_{choice}"] = '(no data)'
+            return {**{'avg_sent': '(no data)'}, **sent_backs_no_data}
 
 
 class Group(BaseGroup):

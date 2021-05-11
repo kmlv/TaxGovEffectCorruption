@@ -7,6 +7,9 @@ class Introduction(Page):
     def is_displayed(self):
         return self.round_number == 1
 
+    def vars_for_template(self):
+        return {"part_fee": self.session.config["participation_fee"]}
+
     def before_next_page(self):
         self.player.participant.vars["payoff_"+Constants.name_in_url] = 0
 

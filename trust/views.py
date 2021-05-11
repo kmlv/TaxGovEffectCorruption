@@ -77,7 +77,8 @@ class SendBack(Page):
 class ResultsWaitPage(WaitPage):
     def after_all_players_arrive(self):
         self.group.set_payoffs()
-        self.group.set_group_data()
+        if self.session.config["use_strategy_method"]:
+            self.group.set_group_data()
 
 
 class Results(Page):
