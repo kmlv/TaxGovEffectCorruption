@@ -10,19 +10,6 @@ import random
 import string
 from .config import data_grps as data_all_groups
 
-def get_group_data(group_id_in_subsession, parameter):
-    """
-    Gets the required parameter for an specific group
-
-    Input: group id in subsession (int), parameter (string)
-    Output: parameter (int/str/etc)
-    """
-
-    group_id = group_id_in_subsession
-    group_data = data_all_groups[f"group_{group_id}"]
-    return group_data[f"{parameter}"]
-
-
 def writeText(text, fileName):
     """"This method generates the image with the garbled/randomized transcription text on it
     and saves it to fileName"""
@@ -154,18 +141,9 @@ class Transcribe1(Page):
         print("Inside Transcribe1 page")
         print("Transcription for this round is: " + str(self.session.vars["config"][0][self.round_number - 1]["transcription"]))
 
-        if (self.session.vars["config"][0][self.round_number - 1]["transcription"] == False):
-            self.player.ratio = 1
+        if self.group.transcription_required == False:
+            self.player.ratio = 1 # income = endowment
             return False
-
-
-        """
-        # Don't display this Transcribe1 page for each player who has completed
-        # the second transcription task
-        for p in self.player.in_all_rounds():
-            if(p.transcriptionDone):
-                return False
-        """
 
         return True
 
@@ -191,30 +169,20 @@ class Transcribe2(Page):
     form_fields = ['transcribed_text']
 
     # la transcripcion se aproxima al entero mas cercano si la parte decimal es mayor a .5 (no mayor igual)
-    # Don't display this Transcribe2 page if the "transcription" value in
-    # the dictionary representing this round in config.py is False
     def is_displayed(self):
         print("Inside Transcribe2 page")
-        print("Transcription for this round is: " + str(self.session.vars["config"][0][self.round_number - 1]["transcription"]))
+        print("Transcription for this round is: " + str(self.group.transcription_required))
 
-        if (self.session.vars["config"][0][self.round_number - 1]["transcription"] == False):
+        if self.group.transcription_required == False:
             return False
-
-        """
-        # Don't display this Transcribe2 page for each player who has completed
-        # the first transcription task
-        for p in self.player.in_all_rounds():
-            if(p.transcriptionDone):
-                return False
-        """
-
-        self.player.refText = generateText2(self.session.vars["config"][0][self.round_number - 1]["difficulty"])
-
-        return True
+        else:
+            # creating an image with the text to be transcribed
+            self.player.refText = generateText2(self.group.transcription_difficulty)            
+            writeText(self.player.refText, 'real_effort2/static/real_effort2/paragraphs/{}.png'.format(2))
+            
+            return True
 
     def vars_for_template(self):
-        
-        writeText(self.player.refText, 'real_effort2/static/real_effort2/paragraphs/{}.png'.format(2))
         return {
             'image_path': 'real_effort2/paragraphs/{}.png'.format(2),
             'reference_text': self.player.refText,
@@ -227,7 +195,7 @@ class Transcribe2(Page):
         """Determines the player's transcription accuracy."""
 
         reference_text = self.player.refText
-        allowed_error_rate = Constants.allowed_error_rates[1]
+        allowed_error_rate = Constants.allowed_error_rates[1] # allows .99 error rate
         distance, ok = distance_and_ok(transcribed_text, reference_text,
                                        allowed_error_rate)
         if ok:
@@ -235,11 +203,13 @@ class Transcribe2(Page):
             self.player.ratio = 1 - distance / Constants.maxdistance2
         else:
             if allowed_error_rate == 0:
-                return "The transcription should be exactly the same as on the image."
+                return "La transcripción debe ser exactamente igual a la original."
             else:
                 return "Para avanzar, debes transcribir más caracteres similares a la transcripción original."
 
     def before_next_page(self):
+        # If transcription mode is set to true for this round, set the player's income according
+        # to their transcription accuracy
         self.player.ratio = 1 - self.player.levenshtein_distance / len(self.player.refText)
         self.player.income *= self.player.ratio
         self.player.payoff = 0
@@ -256,31 +226,18 @@ class ReportIncome(Page):
         return self.player.income
 
     def vars_for_template(self):
-        # If transcription mode is set to true for this round, set the player's income according
-        # to their transcription accuracy
-        self.player.orig_income = self.player.income
-
-        if self.player.ratio == 1 and self.session.vars["config"][0][self.round_number - 1]["transcription"] == True:
-            for p in self.player.in_all_rounds():
-                if p.ratio < 1:
-                    self.player.ratio = p.ratio
-                    self.player.income *= p.ratio
-                    break
-
-        displaytax = config[0][self.round_number - 1]["tax"] * 100
-        display_ratio = round(self.player.ratio * 100, 1)
-        display_income = self.player.income
-
-        return {'ratio': self.player.ratio, 'income': self.player.income, 'tax': displaytax,
-                'flag': config[0][self.round_number - 1]["transcription"],
-                'mult': config[0][self.round_number - 1]["multiplier"],
-                'display_ratio': display_ratio, 'endowment': self.player.endowment,
-                'display_income': display_income, 'transcribe_on': self.group.transcription_required,
+        return {'tax': self.group.tax_percent * 100,
+                'mult': self.group.multiplier,
+                'display_ratio': round(self.player.ratio * 100, 1), 
+                'endowment': self.player.endowment,
+                'display_income': self.player.income, 
+                'transcribe_on': self.group.transcription_required,
                 'round_num': self.round_number
         }
 
     def before_next_page(self):
-        self.group.appropriation = 0
+        self.player.income_before_taxes = self.player.income # assigning income bef taxes
+        # TODO: ask kristian if he still wants audits
         if random.randint(0, 1) == 0:
             self.player.audit = True
         else:
@@ -303,7 +260,6 @@ class Audit(Page):
 
         # If player's reported income and actual income don't match
         if player.contribution != player.income:
-            player.income_before_taxes = player.income # check if this works
             player.income = (1 - self.group.penalty_percent) * (player.income - (self.group.tax_percent * player.contribution))
 
             return {
@@ -320,7 +276,6 @@ class Audit(Page):
             }
 
 
-# TODO: refactor all previous pages for parameters usage
 class resultsWaitPage(WaitPage):
     def after_all_players_arrive(self):
         group = self.group
@@ -373,7 +328,7 @@ class Authority(Page):
             'display_app_percent': self.group.appropriation_percent * 100
         }
 
-
+#TODO: refactor following pages
 class AuthorityWaitPage(WaitPage):
     """Determines the payoff for all players based on the decision of the Authority"""
     def after_all_players_arrive(self):
@@ -473,7 +428,7 @@ class TaxResults(Page):
         #penalidad:
         pen =  player.contribution*90/100
         multiplier = config[0][self.round_number - 1]["multiplier"]
-        orig = self.player.orig_income
+        orig = self.player.income_before_taxes
 
         if mode_num == 1:
             contributions = [p.contribution * tax for p in players]

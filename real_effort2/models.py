@@ -141,6 +141,7 @@ class Subsession(BaseSubsession):
             p.ratio = 1
             p.contribution = 0
             p.endowment = round_parameters["end"]
+            p.income = p.endowment
 
 
 class Group(BaseGroup):
@@ -162,7 +163,7 @@ class Group(BaseGroup):
     # him/herself)?
     auth_appropriate = models.BooleanField()
     total_reported_income = models.CurrencyField()
-    appropriation = models.CurrencyField()
+    appropriation = models.CurrencyField(initial=0)
 
     # main parameters
     multiplier = models.FloatField() # public goods multiplier
@@ -189,6 +190,6 @@ class Player(BasePlayer):
     done = models.BooleanField()
     transcriptionDone = models.BooleanField()
     # payoff = models.CurrencyField()
-    income = models.CurrencyField(initial=0)
+    income = models.CurrencyField(initial=)
     refText = models.LongStringField()
     audit = models.BooleanField()
