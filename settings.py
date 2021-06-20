@@ -80,6 +80,13 @@ SESSION_CONFIGS = [
     },
     {
         'name': 'paper_klo_au',
+        'display_name': "Impuestos & Eficacia de gobierno: Group DEBUG",
+        'num_demo_participants': 12,
+        'app_sequence': ["real_effort2"],
+        'use_browser_bots': False
+    },
+    {
+        'name': 'paper_klo_au',
         'display_name': "Impuestos & Eficacia de gobierno: Authority",
         'num_demo_participants': 2,
         'authority': True,

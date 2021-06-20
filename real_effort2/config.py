@@ -17,6 +17,58 @@ import random
 #     ]
 #     ]
 
+#TODO: edit data_grps for groups with no authority
+data_grps = {
+            'group_1': {
+                        'first_half': {
+                                        "end": 100, "multiplier": 2, "tax": 0.3, "transcription": True, 'tag': 'BA', 
+                                        "mode": 2, "difficulty": 6, "spanish": True, "penalty": 0.9, 
+                                        "appropriation_percent": 0.5, "shuffle": False, 'authority': 'benevolent'
+                                      },
+                        'second_half': {
+                                        "end": 100, "multiplier": 2, "tax": 0.3, "transcription": True, 'tag': 'EA',
+                                        "mode": 2, "difficulty": 6, "spanish": True, "penalty": 0.9, 
+                                        "appropriation_percent": 0.5, "shuffle": False, 'authority': 'embezzlement'
+                                      },
+                       },
+            'group_2': {
+                        'first_half': {
+                                        "end": 100, "multiplier": 2, "tax": 0.3, "transcription": True, 'tag': 'EA', 
+                                        "mode": 2, "difficulty": 6, "spanish": True, "penalty": 0.9, 
+                                        "appropriation_percent": 0.5, "shuffle": False, 'authority': 'embezzlement'
+                                      },
+                        'second_half': {
+                                        "end": 100, "multiplier": 2, "tax": 0.3, "transcription": True, 'tag': 'BA',
+                                        "mode": 2, "difficulty": 6, "spanish": True, "penalty": 0.9, 
+                                        "appropriation_percent": 0.5, "shuffle": False, 'authority': 'benevolent'
+                                      },
+                       },
+            'group_3': {
+                        'first_half': {
+                                        "end": 100, "multiplier": 2, "tax": 0.3, "transcription": True, 'tag': 'DTA', 
+                                        "mode": 2, "difficulty": 6, "spanish": True, "penalty": 0.9, 
+                                        "appropriation_percent": 0, "shuffle": False, 'authority': 'no authority'
+                                      },
+                        'second_half': {
+                                        "end": 100, "multiplier": 2, "tax": 0.3, "transcription": True, 'tag': 'STA',
+                                        "mode": 2, "difficulty": 6, "spanish": True, "penalty": 0.9, 
+                                        "appropriation_percent": 0.5, "shuffle": False, 'authority': 'no authority'
+                                      },
+                       },
+            'group_4': {
+                        'first_half': {
+                                        "end": 100, "multiplier": 2, "tax": 0.3, "transcription": True, 'tag': 'STA', 
+                                        "mode": 3, "difficulty": 6, "spanish": True, "penalty": 0.9, 
+                                        "appropriation_percent": 0.5, "shuffle": False, 'authority': 'no authority'
+                                      },
+                        'second_half': {
+                                        "end": 100, "multiplier": 2, "tax": 0.3, "transcription": True, 'tag': 'DTA',
+                                        "mode": 3, "difficulty": 6, "spanish": True, "penalty": 0.9, 
+                                        "appropriation_percent": 0, "shuffle": False, 'authority': 'no authority'
+                                      },
+                       },
+            }
+
 data_au = [
     [
     {"end": 100, "multiplier": 2, "tax": 0.3, "transcription": True, "mode": 2, "difficulty": 6, "spanish": True,
@@ -35,7 +87,44 @@ data_nau = [
     ]
     ]
 
-num_rounds = 2
+num_rounds = 1
+
+
+def grouping_algorithm(total_players, players_per_group):
+    """
+    creates groups of size `players_per_group` for `total_players`
+
+    input: total amount of players (int), players per group (int)
+    output: player groups (list of lists)
+    """
+    import random
+
+    # getting all players ids (assumption: total am. of players is even)
+    player_ids = [id for id in range(1, total_players + 1)]
+
+    # Shuffle players randomly so that they can end up in any group
+    random.shuffle(player_ids)
+
+    print("player_ids: ", player_ids)
+
+    # creating player groups of size players_per_group
+    group_matrix = []
+    group_list = []
+    index_id = 1
+    for id in player_ids:
+        
+        # creating our group
+        group_list.append(id)
+
+        # updating matrix and creating new group list
+        if (index_id) % players_per_group == 0: 
+            group_matrix.append(group_list)
+            group_list = []
+
+        index_id += 1
+
+    return group_matrix
+
 
 """
 data = [

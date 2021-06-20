@@ -62,7 +62,8 @@ class Constants(BaseConstants):
     # The total number of dictionaries in the data list in config.py is the
     # number of game rounds
     num_rounds = config_py.num_rounds
-    players_per_group = 2
+    num_groups = len(config_py.data_grps)
+    players_per_group = 3 # 5 in prod
     instructions_template = 'real_effort2/Instructions.html'
     info_code = 'real_effort/Code.html'
 
@@ -91,7 +92,6 @@ class Constants(BaseConstants):
 class Subsession(BaseSubsession):
     # Executed when the session is created
     def creating_session(self):
-        # Shuffle players randomly so that they can end up in any group
         # k is a scalar that will allow to randomize the audits
         k = random.randint(0, 1)
         round_number = self.round_number
@@ -99,35 +99,48 @@ class Subsession(BaseSubsession):
         for p in self.get_players():
             p.audit2 = k
 
-        # After round 1, decision to shuffle the groups is based on whether the value for the "shuffle" key for the
-        # current round's dictionary entry is True
-        if round_number == 1:
-            # setting the config according to the authority
-            if self.session.config["authority"]:
-                self.session.vars["config"] = config_py.export_data_authority()
-            else:
-                self.session.vars["config"] = config_py.export_data_no_authority()
-            # group randomly the players    
-            self.group_randomly()
-
-        else:
-            shuffle = self.session.vars["config"][0][round_number - 1]["shuffle"]
-            
-            if shuffle == True:
-                self.group_randomly(fixed_id_in_group=True)
-            else: # Keep the groups organized the same as in the previous round
-                self.group_like_round(round_number - 1)
+        # getting player groups
+        total_amount_of_players = len(self.get_players())
         
-        config = self.session.vars["config"]
-        print(self.get_group_matrix())
-        print("---------------------------------------------------")
+        # setting new group matrix
+        if round_number == 1:
+            group_matrix = config_py.grouping_algorithm(total_amount_of_players, Constants.players_per_group)
+            self.set_group_matrix(group_matrix)
+        else:
+            self.group_like_round(round_number - 1) # grouping like round 1
 
+        # TODO: set parameters for group variables
+        for grp in self.get_groups():
+            
+            # getting the id of each group
+            group_id = str(grp.id_in_subsession % Constants.players_per_group)
+            if group_id != 0:
+                group_key = "group_" + str(group_id)
+            else:
+                group_key = "group_4"
+
+            # obtaining the group parameters
+            group_parameters = config_py.data_grps[group_key]
+            if self.round_number <= round(Constants.num_rounds/2):
+                round_parameters = group_parameters["first_half"] # parameters for first half of rounds
+            else:
+                round_parameters = group_parameters["second_half"] # parameters for second half of rounds
+            
+            # TODO: set parameters for every group
+            grp.multiplier = round_parameters["multiplier"]
+            grp.authority = round_parameters["authority"]
+            grp.appropriation_percent = round_parameters["appropriation_percent"]
+            grp.tax_percent = round_parameters["tax"]
+            grp.penalty_percent = round_parameters["penalty"]
+            grp.transcription_required = round_parameters["transcription"]
+            grp.transcription_difficulty = round_parameters["difficulty"]
+            grp.spanish = round_parameters["spanish"]
+            
         # Initialization of default ratio, contribution, and income values for each player
         for p in self.get_players():
             p.ratio = 1
             p.contribution = 0
-            p.spanish = config[0][round_number - 1]["spanish"]
-            p.income = config[0][round_number - 1]["end"]
+            p.endowment = round_parameters["end"]
 
 
 class Group(BaseGroup):
@@ -151,19 +164,31 @@ class Group(BaseGroup):
     total_reported_income = models.CurrencyField()
     appropriation = models.CurrencyField()
 
+    # main parameters
+    multiplier = models.FloatField() # public goods multiplier
+    authority = models.StringField() # type of authority
+    appropriation_percent = models.FloatField() # percentage the authority can/will appropiate
+    tax_percent = models.FloatField() # income percentage that goes for taxes
+    penalty_percent = models.FloatField() # income percentage that goes as penalty for bad audit
+    transcription_required = models.BooleanField() # True if required, else False
+    treatment_tag = models.StringField() # tag of current treatment
+    spanish = models.BooleanField() # True if spanish, else False
+    transcription_difficulty = models.IntegerField()
+
 
 class Player(BasePlayer):
     audit2 = models.IntegerField()
+    income_before_taxes = models.CurrencyField()
     transcribed_text = models.LongStringField()
     transcribed_text2 = models.LongStringField()
     levenshtein_distance = models.IntegerField()
     ratio = models.FloatField()
     contribution = models.CurrencyField(min = 0, initial = -1)
-    income = models.CurrencyField()
+    endowment = models.CurrencyField()
     spanish = models.BooleanField()
     done = models.BooleanField()
     transcriptionDone = models.BooleanField()
     # payoff = models.CurrencyField()
-    orig_income = models.CurrencyField(initial=0)
+    income = models.CurrencyField(initial=0)
     refText = models.LongStringField()
     audit = models.BooleanField()
