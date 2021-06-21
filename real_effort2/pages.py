@@ -328,56 +328,34 @@ class Authority(Page):
             'display_app_percent': self.group.appropriation_percent * 100
         }
 
-#TODO: refactor following pages
+
 class AuthorityWaitPage(WaitPage):
     """Determines the payoff for all players based on the decision of the Authority"""
+    
     def after_all_players_arrive(self):
-        config = self.session.vars["config"]
         group = self.group
         players = group.get_players()
 
-        mode_num: object = config[0][self.round_number - 1]["mode"]
-        tax = config[0][int(self.round_number - 1)]["tax"]
-        multiplier = config[0][self.round_number - 1]["multiplier"]
-        appropriation_percent = config[0][self.round_number - 1]["appropriation_percent"]
+        # getting group parameters
+        tax = self.group.tax_percent
+        multiplier = self.group.multiplier
+        appropriation_percent = self.group.multiplier
 
-        if mode_num == 1:
-            contributions = [p.contribution * tax for p in players]
-            group.total_contribution = sum(contributions)
-            group.total_earnings = group.total_contribution*multiplier
+        # setting up contribution parameters
+        contributions = [p.contribution * tax for p in players]
+        group.total_contribution = sum(contributions)
+        group.total_earnings = group.total_contribution*multiplier
+        group.appropriation = group.total_contribution*appropriation_percent
+        group.individual_share = (group.total_earnings - group.appropriation) / Constants.players_per_group
 
-            group.individual_share = group.total_earnings / Constants.players_per_group
+        for p in players: # assigning payoffs
+            p.payoff = p.income - (tax * p.contribution) + group.individual_share
 
-            for p in players:
-                p.payoff = p.income - (tax * p.contribution) + group.individual_share
-
-        elif (mode_num == 2 or mode_num == 3) and not group.auth_appropriate:
-            contributions = [p.contribution * tax for p in players]
-            group.total_contribution = sum(contributions)
-            group.total_earnings = group.total_contribution*multiplier
-
-            group.individual_share = group.total_earnings / Constants.players_per_group
-
-            for p in players:
-                p.payoff = p.income - (tax * p.contribution) + group.individual_share
-
-        # Mode 2, Authority Mode 2, Button 2 (Appropriation)
-        else:
-        #elif mode_num == 3 and not group.auth_appropriate:
-            contributions = [p.contribution * tax for p in players]
-            group.total_contribution = sum(contributions)
-            group.total_earnings = group.total_contribution*multiplier
-
-            group.appropriation = appropriation_percent * group.total_earnings
-            group.individual_share = (group.total_earnings*(1-appropriation_percent)) / Constants.players_per_group
-
-            for p in players:
-                if p.id_in_group == group.authority_ID:
-                    p.payoff = p.income - (tax * p.contribution) + group.individual_share + group.appropriation
-                else:
-                    p.payoff = p.income - (tax * p.contribution) + group.individual_share
+            if p.id_in_group == group.authority_ID: # adding the appropiated amt to auth/random indv
+                p.payoff += group.appropriation
 
 
+#TODO: refactor following pages
 class AuthorityInfo(Page):
     # TODO: update for new modes of (no) authority
     """Lets the other players know what decision the Authority player made."""
