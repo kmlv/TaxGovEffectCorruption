@@ -4,35 +4,22 @@
 
 {% block title %}
 {% if mode != 3 %}
-        <p style="font-size:15px; color:#CD853F;" align="right">{{ pgCode }}<br/>Period {{ round_num }}</p>Información sobre la autoridad
+        <p style="font-size:15px; color:#CD853F;" align="right"><br/>Period {{ round_num }}</p>Información sobre la autoridad
 {% else %}
-        <p style="font-size:15px; color:#CD853F;" align="right">{{ pgCode }}<br/>Period {{ round_num }}</p>Información sobre la apropiación
+        <p style="font-size:15px; color:#CD853F;" align="right"><br/>Period {{ round_num }}</p>Información sobre la apropiación
 {% endif %}
 {% endblock %}
 
 {% block content %}
-{% if mode != 3 %}
-        {% if player.spanish %}
-            <p>
-             Otro jugador fue seleccionado para ser la autoridad. Él decidió {{ decision }}
-            </p>
-        {% else %}
-            <p>
-            Another player was selected to be the "Authority", and he/she decided to {{ decision }}
-            </p>
-        {% endif %}
-{% else %}
-        {% if player.spanish %}
-            <p>
-             Otro jugador fue seleccionado para multiplicar y recibir parte de lo multiplicado. Él decidió {{ decision }}
-            </p>
-        {% else %}
-            <p>
-            Another player was selected to be the "Authority", and he/she decided to {{ decision }}
-            </p>
-        {% endif %}
-{% endif %}
-
+    {% if player.spanish %}
+        <p>
+            Otro jugador fue seleccionado para ser la autoridad. Él decidió {{ decision }}
+        </p>
+    {% else %}
+        <p>
+        Another player was selected to be the "Authority", and he/she decided to {{ decision }}
+        </p>
+    {% endif %}
 {% next_button %}
 
     

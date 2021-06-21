@@ -141,11 +141,11 @@ class Transcribe1(Page):
         print("Inside Transcribe1 page")
         print("Transcription for this round is: " + str(self.session.vars["config"][0][self.round_number - 1]["transcription"]))
 
-        if self.group.transcription_required == False:
+        if self.group.transcription_required == False or self.round_number != 1:
             self.player.ratio = 1 # income = endowment
             return False
-
-        return True
+        else:
+            return True
 
     def vars_for_template(self):
         
@@ -348,7 +348,8 @@ class AuthorityWaitPage(WaitPage):
         group.appropriation = group.total_contribution*appropriation_percent
         group.individual_share = (group.total_earnings - group.appropriation) / Constants.players_per_group
 
-        for p in players: # assigning payoffs
+        # assigning payoffs
+        for p in players: 
             p.payoff = p.income - (tax * p.contribution) + group.individual_share
 
             if p.id_in_group == group.authority_ID: # adding the appropiated amt to auth/random indv
@@ -359,97 +360,45 @@ class AuthorityWaitPage(WaitPage):
 class AuthorityInfo(Page):
     # TODO: update for new modes of (no) authority
     """Lets the other players know what decision the Authority player made."""
-    def is_displayed(self):
-        group = self.group
 
-        if (self.player.id_in_group == group.authority_ID):
+    def is_displayed(self):
+        if self.player.id_in_group == self.group.authority_ID and self.group.authority != "no authority":
             return False
         else:
             return True
 
     def vars_for_template(self):
-        config = self.session.vars["config"]
         group = self.group
-        pgCode = getPageCode(self)
 
-        mode_num = config[0][self.round_number - 1]["mode"]
-        multiplier = config[0][self.round_number - 1]["multiplier"]
-        tax = config[0][self.round_number - 1]["tax"]
-        appropriation_percent = config[0][self.round_number - 1]["appropriation_percent"]
+        # getting group parameters
+        multiplier = group.multiplier
+        appropriation_percent = group.appropriation_percent
 
-        if(mode_num == 1 and group.authority_multiply):
-            decision = Constants.decisions[1] + " " + str(multiplier) + "."
-        elif(mode_num == 1 and not group.authority_multiply):
+        # displaying the choice from the authority
+        if group.auth_appropriate is False:
             decision = Constants.decisions[0]
-        elif(mode_num == 2 and not group.auth_appropriate):
-            decision = Constants.decisions[1] + " " + str(multiplier) + " ."
         else:
             decision = Constants.decisions[1] + " " + str(multiplier) + Constants.decisions[2] + str(appropriation_percent * 100) + Constants.decisions[3]
 
-        return {"mode": mode_num, "decision": decision, 'pgCode': pgCode, 'round_num': self.round_number}
+        return {"decision": decision, 'round_num': self.round_number}
 
 
 class TaxResults(Page):
     def vars_for_template(self):
-        config = self.session.vars["config"]
-        pgCode = getPageCode(self)
         group = self.group
         players = group.get_players()
         player = self.player
-        share = self.group.total_earnings / Constants.players_per_group
-        appropriation_percent = config[0][self.round_number - 1]["appropriation_percent"]
-        display_appropriation = appropriation_percent * 100 # formatting the percent
-        mode_num = config[0][self.round_number - 1]["mode"]
-        tax = config[0][int(self.round_number - 1)]["tax"]
-        #impuestos cobrados:
-        taxcob = config[0][int(self.round_number - 1)]["tax"]*player.contribution
-        #penalidad:
-        pen =  player.contribution*90/100
-        multiplier = config[0][self.round_number - 1]["multiplier"]
-        orig = self.player.income_before_taxes
 
-        if mode_num == 1:
-            contributions = [p.contribution * tax for p in players]
-            group.total_contribution = sum(contributions)
-            group.total_earnings = group.total_contribution * multiplier
-
-            group.individual_share = group.total_earnings / Constants.players_per_group
-
-            for p in players:
-                p.payoff = p.income - (tax * p.contribution) + group.individual_share
-
-        elif (mode_num == 2 or mode_num == 3) and not group.auth_appropriate:
-            contributions = [p.contribution * tax for p in players]
-            group.total_contribution = sum(contributions)
-            group.total_earnings = group.total_contribution * multiplier
-
-            group.individual_share = group.total_earnings / Constants.players_per_group
-
-            for p in players:
-                p.payoff = p.income - (tax * p.contribution) + group.individual_share
-
-        # Mode 2, Authority Mode 2, Button 2 (Appropriation)
-        else:
-            contributions = [p.contribution * tax for p in players]
-            group.total_contribution = sum(contributions)
-            group.total_earnings = group.total_contribution * multiplier
-
-            group.appropriation = appropriation_percent * group.total_earnings
-            group.individual_share = (group.total_earnings * (1 - appropriation_percent)) / Constants.players_per_group
-
-            for p in players:
-                if (p.id_in_group == group.authority_ID):
-                    p.payoff = p.income - (tax * p.contribution) + group.individual_share + group.appropriation
-                else:
-                    p.payoff = p.income - (tax * p.contribution) + group.individual_share
+        # impuestos cobrados
+        tax = group.tax_percent
+        taxcob =  tax*player.contribution 
 
         return{
-            'orig': orig,'total_contribution': self.group.total_contribution,'total_earnings': self.group.total_earnings,
-            'total_appropriation':self.group.appropriation, 'pgCode': pgCode, 'round_num': self.round_number,'mode':mode_num, 'taxcob':taxcob,'tax': tax,'payoff': self.player.payoff,
+            'orig': player.income_before_taxes,'total_contribution': group.total_contribution,
+            'total_earnings': group.total_earnings, 'total_appropriation': group.appropriation,
+            'round_num': self.round_number, 'taxcob':taxcob,'tax': tax, 'payoff': player.payoff,
+            'authority': group.authority
         }
 
 page_sequence = [Introduction, InstructionsB, Transcribe2, ReportIncome, Audit, resultsWaitPage,
                  NoAuthority,  Authority, AuthorityWaitPage, AuthorityInfo, TaxResults]
-
-#page_sequence = [Introduction, InstructionsB, Transcribe2, ReportIncome, Audit, resultsWaitPage,
-#                 AuthorityMaster, AuthorityWaitPage, AuthorityInfo, TaxResults]

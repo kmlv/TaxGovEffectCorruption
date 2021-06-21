@@ -2,7 +2,7 @@
 {% load otree static %}
 
 {% block title %}
-    <p style="font-size:15px; color:#CD853F;" align="right">{{ pgCode }}<br/>Period {{ round_num }}</p>
+    <p style="font-size:15px; color:#CD853F;" align="right"><br/>Period {{ round_num }}</p>
     Resultados
 {% endblock %}
 
@@ -29,19 +29,22 @@
         <tr><td><b>Ganancia total</b> de la inversión pública:</td><td>{{ total_earnings }}</td></tr>
         <tr><td>( Recaudación total*2 )</td></tr>
 
-            {% if mode == 2  %}
-            <tr><td>La <b>autoridad</b> se <b>quedó</b> con:</td><td>{{total_appropriation}} (25% de ganancia total de inversión pública) </td></tr>
-
-            {% endif %}
-            {% if mode == 3 %}
-            <tr><td>Un <b>jugador</b> se <b>quedó</b> con:</td><td>{{total_appropriation}} (25% de ganancia total de inversión pública) </td></tr>
-
+            {% if authority != "no authority"  %}
+                <tr><td>La <b>autoridad</b> se <b>quedó</b> con:</td><td>{{total_appropriation}} (25% de ganancia total de inversión pública) </td></tr>
+            {% else %}
+                {% if total_appropriation != 0 %}
+                    <tr><td>Un <b>jugador</b> se <b>quedó</b> con:</td><td>{{total_appropriation}} (25% de ganancia total de inversión pública) </td></tr>
+                {% endif %}
             {% endif %}
 
         <tr><td colspan="2"><hr/></td></tr>
         <tr><td>Por lo tanto, tú <b>ganaste</b>:</td><td>{{ payoff }}</td></tr>
         <tr><td>( Ingreso - Impuestos + </td></tr>
-        <tr><td>(Ganancia Total)/(Número de Jugadores) )</td></tr>
+        {% if total_appropriation != 0 %}
+            <tr><td>(Ganancia Total - Cantidad apropiada)/(Número de Jugadores) )</td></tr>
+        {% else %}
+            <tr><td>(Ganancia Total)/(Número de Jugadores) )</td></tr>
+        {% endif %}
         <tr><td colspan="2"><hr/></td></tr>
         <tr><td><br/></td></tr>
         </table>

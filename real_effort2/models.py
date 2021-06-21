@@ -79,7 +79,7 @@ class Constants(BaseConstants):
     # Text of decisions that the authority can make
     decisions = [
         "no modificar el dinero obtenido por impuestos.",
-        " multiplicar el monto total reportado por",
+        "multiplicar el monto total reportado por",
         " y apropiarse de un ",
         "% del total."
     ]
