@@ -79,7 +79,7 @@ class Constants(BaseConstants):
     # Text of decisions that the authority can make
     decisions = [
         "no modificar el dinero obtenido por impuestos.",
-        " multiplicar el monto total reportado por",
+        "multiplicar el monto total reportado por",
         " y apropiarse de un ",
         "% del total."
     ]
@@ -93,40 +93,43 @@ class Subsession(BaseSubsession):
     # Executed when the session is created
     def creating_session(self):
         # k is a scalar that will allow to randomize the audits
-        k = random.randint(0, 1)
         round_number = self.round_number
 
         for p in self.get_players():
-            p.audit2 = k
+            k = random.randint(1, 100)/100
+            p.audit2 = k <= self.session.config["audit_prob"]
 
         # getting player groups
-        total_amount_of_players = len(self.get_players())
+        # total_amount_of_players = len(self.get_players())
         
         # setting new group matrix
+        print(f"round_num = {round_number}")
         if round_number == 1:
-            group_matrix = config_py.grouping_algorithm(total_amount_of_players, Constants.players_per_group)
-            self.set_group_matrix(group_matrix)
+            print("gaaa")
+            # group_matrix = config_py.grouping_algorithm(total_amount_of_players, Constants.players_per_group)
+            # self.set_group_matrix(group_matrix)
+            self.group_randomly(fixed_id_in_group=False)
+
+        elif self.round_number <= round(Constants.num_rounds/2):
+            self.group_like_round(1) # grouping like round 1
+
+        elif self.round_number == round(Constants.num_rounds/2) + 1:
+            print("debug random")
+            self.group_randomly(fixed_id_in_group=False)
+
         else:
-            self.group_like_round(round_number - 1) # grouping like round 1
+            self.group_like_round(round(Constants.num_rounds/2) + 1) # grouping like round 1
 
-        # TODO: set parameters for group variables
-        for grp in self.get_groups():
+        for grp in self.get_groups(): # setting group parameters
             
-            # getting the id of each group
-            group_id = str(grp.id_in_subsession % Constants.players_per_group)
-            if group_id != 0:
-                group_key = "group_" + str(group_id)
-            else:
-                group_key = "group_4"
-
             # obtaining the group parameters
-            group_parameters = config_py.data_grps[group_key]
+            group_parameters = config_py.data_grps[f"group_{grp.id_in_subsession}"]
+            
             if self.round_number <= round(Constants.num_rounds/2):
                 round_parameters = group_parameters["first_half"] # parameters for first half of rounds
             else:
                 round_parameters = group_parameters["second_half"] # parameters for second half of rounds
             
-            # TODO: set parameters for every group
             grp.multiplier = round_parameters["multiplier"]
             grp.authority = round_parameters["authority"]
             grp.appropriation_percent = round_parameters["appropriation_percent"]
@@ -134,6 +137,7 @@ class Subsession(BaseSubsession):
             grp.penalty_percent = round_parameters["penalty"]
             grp.transcription_required = round_parameters["transcription"]
             grp.transcription_difficulty = round_parameters["difficulty"]
+            grp.treatment_tag = round_parameters["tag"]
             grp.spanish = round_parameters["spanish"]
             
         # Initialization of default ratio, contribution, and income values for each player
@@ -141,6 +145,7 @@ class Subsession(BaseSubsession):
             p.ratio = 1
             p.contribution = 0
             p.endowment = round_parameters["end"]
+            p.income = p.endowment
 
 
 class Group(BaseGroup):
@@ -162,7 +167,7 @@ class Group(BaseGroup):
     # him/herself)?
     auth_appropriate = models.BooleanField()
     total_reported_income = models.CurrencyField()
-    appropriation = models.CurrencyField()
+    appropriation = models.CurrencyField(initial=0)
 
     # main parameters
     multiplier = models.FloatField() # public goods multiplier
@@ -189,6 +194,6 @@ class Player(BasePlayer):
     done = models.BooleanField()
     transcriptionDone = models.BooleanField()
     # payoff = models.CurrencyField()
-    income = models.CurrencyField(initial=0)
+    income = models.CurrencyField()
     refText = models.LongStringField()
     audit = models.BooleanField()

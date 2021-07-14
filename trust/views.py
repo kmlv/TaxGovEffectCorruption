@@ -39,13 +39,25 @@ class SendStrategyMethod(Page):
     each possible scenario is chosen"""
 
     form_model = 'player'
-    form_fields = ['sent_amount_strategy'] + [f'sent_back_amount_strategy_{received}' 
-                                    for received in range(Constants.multiplication_factor, 
-                                    Constants.endowment*Constants.multiplication_factor + 1,
-                                    Constants.multiplication_factor)]
+    form_fields = ['sent_amount_strategy']
 
     def is_displayed(self):
-        return self.session.config["use_strategy_method"] is True
+        return self.session.config["use_strategy_method"] is True and self.player.id_in_group == 1 
+
+
+class SendBackStrategyMethod(Page):
+    """This page is for P1 and P2. They will both play both roles
+    An hypothetic amount is sent by P1 and P2, and a response for 
+    each possible scenario is chosen"""
+
+    form_model = 'player'
+    form_fields = [f'sent_back_amount_strategy_{received}' 
+                    for received in range(Constants.multiplication_factor, 
+                    Constants.endowment*Constants.multiplication_factor + 1,
+                    Constants.multiplication_factor)]
+
+    def is_displayed(self):
+        return self.session.config["use_strategy_method"] is True and self.player.id_in_group == 2
 
 
 class SendBackWaitPage(WaitPage):
@@ -108,6 +120,7 @@ page_sequence = [
     Introduction,
     Send,
     SendStrategyMethod,
+    SendBackStrategyMethod,
     SendBackWaitPage,
     SendBack,
     ResultsWaitPage,

@@ -16,7 +16,9 @@ h2 {
 {% endblock %}
 
 {% block content %}
-    {% if player.spanish %}
+    {% if group.spanish %}
+    <b>{{ group.id_in_subsession }}</b> p: {{ player.id_in_group }}
+
         <p>
         Has sido escogido para ser la autoridad de tu grupo.
         Esto quiere decir que puedes escoger entre dos alternativas:
@@ -29,7 +31,7 @@ h2 {
         pueda ser repartido entre todos los integrantes en partes iguales (incluyéndote).
         <br/><br/>
         <b>Elección 2:</b> Multiplicar el monto total recaudado por {{ mult }} <b>y</b>
-        quedarte con {{ display_app_percent }}% del monto total <b>tras multiplicar</b>. Lo
+        quedarte con {{ appropiation_percent_display }} del monto total <b>tras multiplicar</b>. Lo
         restante será repartido entre todos los integrantes (incluyéndote).
         </p>
     {% else %}
