@@ -167,7 +167,7 @@ class Group(BaseGroup):
 def make_sent_back_field(received_amount):
     return models.IntegerField(
     choices=[choice for choice in range(received_amount + 1)],
-    label=f"Si fueras el jugador B y recibieras {received_amount} puntos, ¿cuánto enviarías de vuelta al Jugador A?",
+    label=f"Si recibieras {received_amount} puntos, ¿cuánto enviarías de vuelta al Jugador A?",
     #widget=widgets.RadioSelect,
 )
 
@@ -181,7 +181,7 @@ class Player(BasePlayer):
     sent_amount_strategy = models.CurrencyField(
             min=0, max=Constants.endowment,
             choices=Constants.choices_trustor,
-            verbose_name="""Si fueras el jugador A, ¿cuánto enviarías al Jugador B?""",
+            verbose_name="""¿Cuánto enviarías al Jugador B?""",
         )
 
     ## for trustee

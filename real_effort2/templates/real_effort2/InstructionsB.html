@@ -13,6 +13,8 @@ h2 {
 <body>
 <div class="card bg-light instructions">
     <div class="card-body">
+    
+    <b>{{ group.id_in_subsession }}</b> p: {{ player.id_in_group }}
 
     <h3>
         Instrucciones del Bloque
@@ -20,21 +22,21 @@ h2 {
 
     <p>
         <div align="justify">
-        Este experimento tendrá 4 bloques y 10 rondas de decisión por bloque. Antes de cada ronda, todos los
+        Este experimento tendrá 2 bloques y 10 rondas de decisión por bloque. Antes de cada bloque, todos los
         participantes serán asignados a un grupo de cuatro personas completamente al azar. Una vez formados los
-        grupos, la ronda comenzará.
+        grupos, el bloque comenzará.
 
         <br><br>
         <ol>
             <li>Al comenzar la ronda, realizarás una tarea de transcripción que te generará ingresos en SOLEX.
                 Mientras mejor sea la transcripción, mayores serán tus ingresos.</li>
             <li>Luego, reportarás tu ingreso al Estado para que se descuenten los impuestos respectivos. La tasa de
-                impuestos es de {{ group.appropriation_percent }} de tu ingreso. Tú puedes decidir si reportas todo lo que ganaste en la tarea
+                impuestos es de {{ display_tax_perc }} de tu ingreso. Tú puedes decidir si reportas todo lo que ganaste en la tarea
                 o un monto distinto.</li>
-            <li>Se realizarán auditorías al azar con probabilidad 50%. Si eres auditado, y reportaste ingresos menores
-                a los que recibiste, se te descuentará el 90% de tus ingresos.</li>
+            <li>Se realizarán auditorías al azar con probabilidad {{ audit_prob }}. Si eres auditado, y reportaste ingresos menores
+                a los que recibiste, se te descontará el {{ penalty }} de tus ingresos.</li>
             <li>Con el dinero de los impuestos, el Estado “hace obras” que benefician a los ciudadanos. En concreto, el
-                monto total de contribuciones es multiplicado por Z y luego es repartido por igual entre todos los
+                monto total de contribuciones es multiplicado por {{ mult }} y luego es repartido por igual entre todos los
                 ciudadanos y se denomina beneficio por obra pública. Esta transferencia se realiza sin importar quiénes
                 y cuánto han contribuido.</li>
         </ol>
@@ -52,23 +54,26 @@ h2 {
             <br><br> <b>Pago</b> = Ingreso neto de impuestos + Ganancia por la obra pública + Ingreso no declarado - 90%(Ingreso antes de impuestos).<br></li>
         </ul>
         El resultado de la ronda se muestra al terminar cada ronda.
-        <br>
-        Ejemplo (COLOCARLO TRAS VER LOS CAMBIOS EN LA AUTORIDAD):
-        <br>
-        INCLUIR CONDICIONALES PARA LA AUTORIDAD
         <br><br>
-        <h5>Autoridad:</h5> En cada ronda se escogerá a un participante para que sea la Autoridad y tome una decisión con respecto a la
-        eficacia del Estado. Quien sea elegido para ese puesto, tendrá en algunos casos la opción de tomar una parte de los ingresos recaudados
-        para sí mismo.
-        <br><br>
+        {% if group.authority != "no authority"  %}
+            <h5>Autoridad:</h5> En cada ronda se escogerá a un participante para que sea la Autoridad y tome una decisión con respecto a la
+            eficacia del Estado. Quien sea elegido para ese puesto, tendrá en algunos casos la opción de tomar {{ appropiation_percent_display }} de lo recaudado tras ser multiplicado
+            para sí mismo.
+            <br><br>
+        {% else %}
+            {% if group.appropriation_percent != 0  %}
+                <h5>Eficacia de la obra pública:</h5> En algunas rondas, uno de los participantes será elegido aleatoriamente para recibir {{ appropiation_percent_display }} de lo recaudado tras ser multiplicado.
+            {% endif %}
+        {% endif %}
+    </p>
+    <p>
         <h5>Cambios por Ronda: </h5>
         Debes estar atento a las indicaciones, ya que habrán cambios en:<br><br>
         <ul>
-        <li><b>Las tasas impositivas:</b> En cada ronda, la tasa puede ser 20% o 50%.<br><br></li>
-        <li><b>Eficacia de la Autoridad:</b> En algunas rondas, los participantes que sean seleccionados para ser la autoridad podrán multiplicar
+        <li><b>Estado con/sin Autoridad:</b> Pueden haber algunas rondas donde (no) haya autoridad, sino que alguien será escogido aleatoriamente para
+        multiplicar lo recaudado y repartirlo entre él y los demás en partes iguales, pero adicionalmente recibirá {{ appropiation_percent_display }} de lo multiplicado.<br><br></li>
+        <li><b>Eficacia de la obra pública:</b> En algunas rondas, los participantes que sean seleccionados para ser la autoridad sólo podrán multiplicar
         las ganancias de la obra pública, pero, en otras, podrán multiplicar las ganancias y quedarse con parte de ellas.<br><br></li>
-        <li><b>Estado sin Autoridad:</b> Habrán algunas rondas donde no haya autoridad, sino que alguien será escogido aleatoriamente para
-        multiplicar lo recaudado y repartirlo entre él y los demás en partes iguales, pero adicionalmente recibirá 25% de lo multiplicado.<br><br></li>
         </ul>
     </p>
     </div>

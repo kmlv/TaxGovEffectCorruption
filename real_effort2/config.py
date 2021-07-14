@@ -22,49 +22,49 @@ data_grps = {
             'group_1': {
                         'first_half': {
                                         "end": 100, "multiplier": 2, "tax": 0.3, "transcription": True, 'tag': 'BA', 
-                                        "mode": 2, "difficulty": 6, "spanish": True, "penalty": 0.9, 
-                                        "appropriation_percent": 0.5, "shuffle": False, 'authority': 'benevolent'
+                                        "difficulty": 6, "spanish": True, "penalty": 0.9, "appropriation_percent": 0.5,
+                                        'authority': 'benevolent'
                                       },
                         'second_half': {
                                         "end": 100, "multiplier": 2, "tax": 0.3, "transcription": True, 'tag': 'EA',
-                                        "mode": 2, "difficulty": 6, "spanish": True, "penalty": 0.9, 
-                                        "appropriation_percent": 0.5, "shuffle": False, 'authority': 'embezzlement'
+                                        "difficulty": 6, "spanish": True, "penalty": 0.9, "appropriation_percent": 0.5, 
+                                        'authority': 'embezzlement'
                                       },
                        },
             'group_2': {
                         'first_half': {
                                         "end": 100, "multiplier": 2, "tax": 0.3, "transcription": True, 'tag': 'EA', 
-                                        "mode": 2, "difficulty": 6, "spanish": True, "penalty": 0.9, 
-                                        "appropriation_percent": 0.5, "shuffle": False, 'authority': 'embezzlement'
+                                        "difficulty": 6, "spanish": True, "penalty": 0.9, "appropriation_percent": 0.5, 
+                                        'authority': 'embezzlement'
                                       },
                         'second_half': {
                                         "end": 100, "multiplier": 2, "tax": 0.3, "transcription": True, 'tag': 'BA',
-                                        "mode": 2, "difficulty": 6, "spanish": True, "penalty": 0.9, 
-                                        "appropriation_percent": 0.5, "shuffle": False, 'authority': 'benevolent'
+                                        "difficulty": 6, "spanish": True, "penalty": 0.9, "appropriation_percent": 0.5, 
+                                        'authority': 'benevolent'
                                       },
                        },
             'group_3': {
                         'first_half': {
                                         "end": 100, "multiplier": 2, "tax": 0.3, "transcription": True, 'tag': 'DTA', 
-                                        "mode": 2, "difficulty": 6, "spanish": True, "penalty": 0.9, 
-                                        "appropriation_percent": 0, "shuffle": False, 'authority': 'no authority'
+                                        "difficulty": 6, "spanish": True, "penalty": 0.9, "appropriation_percent": 0, 
+                                        'authority': 'no authority'
                                       },
                         'second_half': {
                                         "end": 100, "multiplier": 2, "tax": 0.3, "transcription": True, 'tag': 'STA',
-                                        "mode": 2, "difficulty": 6, "spanish": True, "penalty": 0.9, 
-                                        "appropriation_percent": 0.5, "shuffle": False, 'authority': 'no authority'
+                                        "difficulty": 6, "spanish": True, "penalty": 0.9, "appropriation_percent": 0.5, 
+                                        'authority': 'no authority'
                                       },
                        },
             'group_4': {
                         'first_half': {
                                         "end": 100, "multiplier": 2, "tax": 0.3, "transcription": True, 'tag': 'STA', 
-                                        "mode": 3, "difficulty": 6, "spanish": True, "penalty": 0.9, 
-                                        "appropriation_percent": 0.5, "shuffle": False, 'authority': 'no authority'
+                                        "difficulty": 6, "spanish": True, "penalty": 0.9, "appropriation_percent": 0.5, 
+                                        'authority': 'no authority'
                                       },
                         'second_half': {
                                         "end": 100, "multiplier": 2, "tax": 0.3, "transcription": True, 'tag': 'DTA',
-                                        "mode": 3, "difficulty": 6, "spanish": True, "penalty": 0.9, 
-                                        "appropriation_percent": 0, "shuffle": False, 'authority': 'no authority'
+                                        "difficulty": 6, "spanish": True, "penalty": 0.9, "appropriation_percent": 0, 
+                                        'authority': 'no authority'
                                       },
                        },
             }
@@ -87,7 +87,7 @@ data_nau = [
     ]
     ]
 
-num_rounds = 1
+num_rounds = 4
 
 
 def grouping_algorithm(total_players, players_per_group):

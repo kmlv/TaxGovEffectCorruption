@@ -17,10 +17,7 @@
         Luego, se asignarán dos tipos de roles A y B.
         En cada par, uno de los miembros tendrá el <strong>rol A </strong>, mientras que el
         otro tendrá el <strong> rol B </strong>.
-        Los roles serán asignados al azar y ambos jugarán como ambos roles en una misma ronda, es decir,
-        jugarán como si se les hubiera asignado tanto el rol A y el rol B. Una vez que acaben con las
-        decisiones para ambos jugadores, se les dirá cuál de los dos roles tuvieron en el juego y se 
-        asignarán los pagos de acuerdo a ello.
+        Los roles serán asignados al azar
     </p>
 
     <h4 class="panel-sub-heading">
@@ -35,6 +32,9 @@
         Antes que B reciba ese monto, la cantidad enviada será multiplicada por {{ Constants.multiplication_factor }}.
         Después de recibir el monto triplicado, rol B debe decidir qué parte del monto enviado triplicado desea enviar
         de retorno a su contraparte en rol A (este es el "monto retornado").
+
+        El jugador B decidirá cuánto enviaría de regreso si recibiera cada una de las posibles cantidades (por ej, cuánto enviaría si recibiera
+        3, si recibiera 6, etc). La cantidad que se enviará de regreso será aquella que corresponda a la cantidad que envió A.
     </p>
 
     <h4 class="panel-sub-heading">

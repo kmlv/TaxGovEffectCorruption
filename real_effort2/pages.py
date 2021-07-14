@@ -120,12 +120,16 @@ class Introduction(Page):
 class InstructionsB(Page):
     """Description of the game block"""
     
-    # TODO: update instructions
-    def is_displayed(self):
-        if (self.round_number == 1):
-            return True
-
-        return False
+    def vars_for_template(self):
+        audit_prob = self.session.config["audit_prob"]
+        display_tax_perc = str(round(self.group.tax_percent*100))+"%"
+        display_audit_prob = str(round(audit_prob*100))+"%"
+        display_penalty_perc = str(round(self.group.penalty_percent*100))+"%"   
+        return {"appropiation_percent_display": str(round(self.group.appropriation_percent/2, 2)*100)+"%",
+                "display_tax_perc": display_tax_perc,
+                "audit_prob": display_audit_prob,
+                "penalty": display_penalty_perc,
+                "mult": round(self.group.multiplier)}
     
     
 class Transcribe1(Page):
@@ -266,7 +270,7 @@ class Audit(Page):
                 'fail': True,
                 'correctIncome': player.income_before_taxes,
                 'reportedIncome': player.contribution,
-                'newIncome': round(player.income, 1),
+                'newIncome': c(round(player.income, 1)),
                 'penalty': self.group.penalty_percent * 100,
                 'round_num': self.round_number
             }
@@ -305,7 +309,7 @@ class NoAuthority(Page):
     def vars_for_template(self):
         return {
             'mult': self.group.multiplier,
-            'appropriation_percent': self.group.appropriation_percent * 100,
+            "appropiation_percent_display": str(round(self.group.appropriation_percent/2, 2)*100)+"%",
             'round_num': self.round_number
         }
 
@@ -325,7 +329,7 @@ class Authority(Page):
             'mult': self.group.multiplier,
             'tax': self.group.tax_percent * 100, 
             'round_num': self.round_number, 
-            'display_app_percent': self.group.appropriation_percent * 100
+            "appropiation_percent_display": str(round(self.group.appropriation_percent/2, 2)*100)+"%"
         }
 
 
@@ -339,13 +343,17 @@ class AuthorityWaitPage(WaitPage):
         # getting group parameters
         tax = self.group.tax_percent
         multiplier = self.group.multiplier
-        appropriation_percent = self.group.multiplier
+        appropriation_percent = self.group.appropriation_percent
 
         # setting up contribution parameters
         contributions = [p.contribution * tax for p in players]
         group.total_contribution = sum(contributions)
+        print("group.total_contribution = ", group.total_contribution)
         group.total_earnings = group.total_contribution*multiplier
+        print("group.total_earnings = ", group.total_earnings)
         group.appropriation = group.total_contribution*appropriation_percent
+        print("group.appropriation_percent = ", group.appropriation_percent)
+        print("group.appropriation = ", group.appropriation)
         group.individual_share = (group.total_earnings - group.appropriation) / Constants.players_per_group
 
         # assigning payoffs
@@ -362,7 +370,7 @@ class AuthorityInfo(Page):
     """Lets the other players know what decision the Authority player made."""
 
     def is_displayed(self):
-        if self.player.id_in_group == self.group.authority_ID and self.group.authority != "no authority":
+        if self.player.id_in_group == self.group.authority_ID:
             return False
         else:
             return True
@@ -378,7 +386,7 @@ class AuthorityInfo(Page):
         if group.auth_appropriate is False:
             decision = Constants.decisions[0]
         else:
-            decision = Constants.decisions[1] + " " + str(multiplier) + Constants.decisions[2] + str(appropriation_percent * 100) + Constants.decisions[3]
+            decision = Constants.decisions[1] + " " + str(multiplier) + Constants.decisions[2] + str(round(self.group.appropriation_percent/2, 2)*100) + Constants.decisions[3]
 
         return {"decision": decision, 'round_num': self.round_number}
 
@@ -397,6 +405,7 @@ class TaxResults(Page):
             'orig': player.income_before_taxes,'total_contribution': group.total_contribution,
             'total_earnings': group.total_earnings, 'total_appropriation': group.appropriation,
             'round_num': self.round_number, 'taxcob':taxcob,'tax': tax, 'payoff': player.payoff,
+            'appropiation_percent_display': str(round(self.group.appropriation_percent/2, 2)*100)+"%",
             'authority': group.authority
         }
 

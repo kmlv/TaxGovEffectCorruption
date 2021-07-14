@@ -267,3 +267,5 @@ def matching_to_json(num_players=12, players_per_group=2, same_num_rounds=6):
     os.remove(file_path_name + temp_extension)  # erasing the tmp
 
 #matching_to_json()
+
+print("results = ", all_round_matchings(20, 5, 2)[0])

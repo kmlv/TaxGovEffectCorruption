@@ -3,15 +3,16 @@
 
 
 {% block title %}
-{% if mode != 3 %}
-        <p style="font-size:15px; color:#CD853F;" align="right"><br/>Period {{ round_num }}</p>Información sobre la autoridad
+{% if group.authority != "no authority" %}
+        <p style="font-size:15px; color:#CD853F;" align="right"><br/>Ronda {{ round_num }}</p>Información sobre la autoridad
 {% else %}
-        <p style="font-size:15px; color:#CD853F;" align="right"><br/>Period {{ round_num }}</p>Información sobre la apropiación
+        <p style="font-size:15px; color:#CD853F;" align="right"><br/>Ronda {{ round_num }}</p>Información sobre la apropiación
 {% endif %}
 {% endblock %}
 
 {% block content %}
-    {% if player.spanish %}
+    {% if group.spanish %}
+    <b>{{ group.id_in_subsession }}</b> p: {{ player.id_in_group }}
         <p>
             Otro jugador fue seleccionado para ser la autoridad. Él decidió {{ decision }}
         </p>

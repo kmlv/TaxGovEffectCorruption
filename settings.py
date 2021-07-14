@@ -21,8 +21,9 @@ LANGUAGE_CODE = 'es'
 # e.g. EUR, GBP, CNY, JPY
 REAL_WORLD_CURRENCY_CODE = 'Soles'
 REAL_WORLD_CURRENCY_DECIMAL_PLACES = 0
-POINTS_DECIMAL_PLACES = 0
-USE_POINTS = False
+POINTS_DECIMAL_PLACES = 1
+USE_POINTS = True
+POINTS_CUSTOM_NAME = "Solex"
 
 ROOMS = []
 
@@ -79,10 +80,11 @@ SESSION_CONFIGS = [
         'pay_random_app': True
     },
     {
-        'name': 'paper_klo_au',
+        'name': 'paper_klo_au_debug',
         'display_name': "Impuestos & Eficacia de gobierno: Group DEBUG",
         'num_demo_participants': 12,
         'app_sequence': ["real_effort2"],
+        'audit_prob': 0.05,
         'use_browser_bots': False
     },
     {

@@ -7,7 +7,8 @@
 {% endblock %}
 
 {% block content %}
-    {% if player.spanish %}
+    {% if group.spanish %}
+        <b>{{ group.id_in_subsession }}</b> p: {{ player.id_in_group }}
         <table class="table-condensed" style="width:500px; margin-top:20px;">
         <tr><td colspan="2"><hr/></td></tr>
         <tr><td>Tu <b>ingreso original</b> fue: </td><td>{{ orig }}</td></tr>
@@ -17,9 +18,9 @@
          <tr><td>Los <b>impuestos que pagaste</b> fueron: </td><td>{{ taxcob }}</td></tr>
         <tr><td><br/></td></tr>
         <tr><td>Los <b>ingresos reportados</b> por</td><td></td></tr>
-        <tr><td>el <b>otro</b> participante fue:</td>
+        <tr><td>los <b>otros</b> participantes fue:</td>
         {% for p in player.get_others_in_group %}
-            <td>{{ p.contribution }}</td></tr>
+            <tr><td></td><td>{{ p.contribution }}</td></tr>
         {% endfor %}
         <tr><td colspan="2"><hr/></td></tr>
         <tr><td><b>Recaudación total:</b></td><td>{{ total_contribution }}</td></tr>
@@ -30,10 +31,16 @@
         <tr><td>( Recaudación total*2 )</td></tr>
 
             {% if authority != "no authority"  %}
-                <tr><td>La <b>autoridad</b> se <b>quedó</b> con:</td><td>{{total_appropriation}} (25% de ganancia total de inversión pública) </td></tr>
+                {% if group.auth_appropriate != 0 %}
+                    {% if player.id_in_group != group.authority_ID %}
+                        <tr><td>La <b>autoridad</b> se <b>quedó</b> con:</td><td>{{total_appropriation}} (25% de ganancia total de inversión pública) </td></tr>
+                    {% else %}
+                        <tr><td>Te quedaste con: </td><td>{{total_appropriation}} (25% de ganancia total de inversión pública) </td></tr>
+                    {% endif %}
+                {% endif %}
             {% else %}
-                {% if total_appropriation != 0 %}
-                    <tr><td>Un <b>jugador</b> se <b>quedó</b> con:</td><td>{{total_appropriation}} (25% de ganancia total de inversión pública) </td></tr>
+                {% if group.auth_appropriate != 0 %}
+                    <tr><td>Un <b>jugador</b> se <b>quedó</b> con:</td><td>{{total_appropriation}} ({{ appropiation_percent_display }} de ganancia total de inversión pública) </td></tr>    
                 {% endif %}
             {% endif %}
 
@@ -41,7 +48,12 @@
         <tr><td>Por lo tanto, tú <b>ganaste</b>:</td><td>{{ payoff }}</td></tr>
         <tr><td>( Ingreso - Impuestos + </td></tr>
         {% if total_appropriation != 0 %}
-            <tr><td>(Ganancia Total - Cantidad apropiada)/(Número de Jugadores) )</td></tr>
+            {% if player.id_in_group != group.authority_ID %}
+                <tr><td>(Ganancia Total - Cantidad apropiada)/(Número de Jugadores) )</td></tr>
+            {% else %}
+                <tr><td>(Ganancia Total - Cantidad apropiada)/(Número de Jugadores) + Cantidad apropiada</td></tr>
+            {% endif %}
+            
         {% else %}
             <tr><td>(Ganancia Total)/(Número de Jugadores) )</td></tr>
         {% endif %}

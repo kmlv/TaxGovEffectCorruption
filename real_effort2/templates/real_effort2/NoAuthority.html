@@ -10,7 +10,7 @@ h2 {
 </style>
 </head>
 <body>
-    <p style="font-size:15px; color:#CD853F;" align="right">Period {{ round_num }}</p>    <h1>Autoridad</h1>
+    <p style="font-size:15px; color:#CD853F;" align="right">Period {{ round_num }}</p>    <h1>Estado sin Autoridad</h1>
 {% if mult == 2 %}
     <h2>Código: a2-Au-Nap</h2><br>
 {% endif %}
@@ -21,16 +21,17 @@ h2 {
 {% endblock %}
 
 {% block content %}
-    {% if player.spanish %}
+    {% if group.spanish %}
+    <b>{{ group.id_in_subsession }}</b> p: {{ player.id_in_group }}
 
         <p>
             Has sido escogido para multiplicar el monto total reportado por {{ mult }} para que luego
             pueda ser repartido entre todos los integrantes en partes iguales (incluyéndote).
         </p>
-        {% if appropriation_percent != 0 %}
+        {% if group.appropriation_percent != 0 %}
             <p>
-               Asimismo, fuiste elegido para recibir {{ appropriation_percent }}% de la cantidad total 
-               recaudada.
+               Asimismo, fuiste elegido para recibir {{ appropiation_percent_display }} de la cantidad total 
+               recaudada tras ser multiplicada.
             </p>
             <div>
                 <button name="authority_multiply" value="True" class="btn btn-primary btn-large">Multiplicar y recibir</button>

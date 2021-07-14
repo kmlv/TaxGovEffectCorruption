@@ -6,9 +6,9 @@
 {% endblock %}
 
 {% block content %}
-{% if mode == 3 %}
+{% if group.spanish= 3 %}
 
-    {% if player.spanish %}
+    {% if group.spanish %}
     <p>
         Has sido escogido para recibir {{ display_app_percent }}% del monto total recaudado por el grupo.
     </p>
@@ -29,7 +29,7 @@
 
     {% if mode ==2 %}
 
-     {% if player.spanish %}
+     {% if group.spanish %}
     <p>
         Has sido escogido para ser la autoridad de tu grupo.
         Esto quiere decir que puedes escoger entre dos alternativas:

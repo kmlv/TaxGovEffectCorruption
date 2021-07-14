@@ -7,9 +7,9 @@
 
 {% block content %}
     {% if fail %}
-        <p>¡Has sido seleccionado para la auditoría!<br/><br/>Tu ingreso fue de {{ correctIncome }} Solex, y reportaste
-            {{ reportedIncome }} Solex. Has sido penalizado con un {{ penalty }}% de tu
-            ingreso restante después de pagar impuestos. <br/><br/>Por lo tanto, tu ingreso ahora es de {{ newIncome }} Solex.
+        <p>¡Has sido seleccionado para la auditoría!<br/><br/>Tu ingreso fue de {{ correctIncome }}, y reportaste
+            {{ reportedIncome }}. Has sido penalizado con un {{ penalty }}% de tu
+            ingreso restante después de pagar impuestos. <br/><br/>Por lo tanto, tu ingreso ahora es de {{ newIncome }}.
     {% else %}
         <p>¡Has sido seleccionado para la auditoría! Como reportaste correctamente tu ingreso, no se te aplica la penalidad.</p>
 {% endif %}
