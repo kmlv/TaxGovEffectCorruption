@@ -48,21 +48,21 @@ h2 {
         <ul>
         <li>Si tu ingreso declarado es igual a tu ingreso verdadero, tu pago de la ronda es:
             <br><br> <b>Pago</b> = Ingreso neto de impuestos + Ganancia por la obra pública.<br><br></li>
-        <li>Si tu ingreso declarado NO es igual a tu ingreso pero NO eres auditado, tu pago es igual a tu ingreso declarado neto de impuestos MÁS el monto del ingreso que no declaraste MÁS la ganancia por la obra pública.
+        <li>Si tu ingreso declarado NO es igual a tu ingreso pero NO eres auditado, tu pago de la ronda es:
             <br><br> <b>Pago</b> = Ingreso neto de impuestos + Ganancia por la obra pública + Ingreso no declarado.<br><br></li>
-        <li>Si tu ingreso declarado NO es igual a tu ingreso  pero SÍ eres auditado, tu pago es igual a tu ingreso declarado neto de impuestos MÁS el monto del ingreso que no declaraste MÁS la ganancia por la obra pública MENOS la penalidad.
-            <br><br> <b>Pago</b> = Ingreso neto de impuestos + Ganancia por la obra pública + Ingreso no declarado - 90%(Ingreso antes de impuestos).<br></li>
+        <li>Si tu ingreso declarado NO es igual a tu ingreso pero SÍ eres auditado, tu pago de la ronda es:
+            <br><br> <b>Pago</b> = Ganancia por la obra pública + (100% - {{ penalty }})*(Ingreso antes de impuestos - Impuestos sobre Ingreso declarado) 
         </ul>
         El resultado de la ronda se muestra al terminar cada ronda.
         <br><br>
         {% if group.authority != "no authority"  %}
-            <h5>Autoridad:</h5> En cada ronda se escogerá a un participante para que sea la Autoridad y tome una decisión con respecto a la
-            eficacia del Estado. Quien sea elegido para ese puesto, tendrá en algunos casos la opción de tomar {{ appropiation_percent_display }} de lo recaudado tras ser multiplicado
+            <h5>Autoridad:</h5> En esta ronda, se escogerá a un participante para que sea la Autoridad y tome una decisión con respecto a la
+            eficacia del Estado. Quien sea elegido para ese puesto, tendrá la opción de tomar {{ appropiation_percent_display }} de lo recaudado tras ser multiplicado
             para sí mismo.
             <br><br>
         {% else %}
             {% if group.appropriation_percent != 0  %}
-                <h5>Eficacia de la obra pública:</h5> En algunas rondas, uno de los participantes será elegido aleatoriamente para recibir {{ appropiation_percent_display }} de lo recaudado tras ser multiplicado.
+                <h5>Eficacia de la obra pública:</h5> En esta ronda, uno de los participantes será elegido aleatoriamente para recibir {{ appropiation_percent_display }} de lo recaudado tras ser multiplicado.
             {% endif %}
         {% endif %}
     </p>
@@ -70,11 +70,21 @@ h2 {
         <h5>Cambios por Ronda: </h5>
         Debes estar atento a las indicaciones, ya que habrán cambios en:<br><br>
         <ul>
-        <li><b>Estado con/sin Autoridad:</b> Pueden haber algunas rondas donde (no) haya autoridad, sino que alguien será escogido aleatoriamente para
-        multiplicar lo recaudado y repartirlo entre él y los demás en partes iguales, pero adicionalmente recibirá {{ appropiation_percent_display }} de lo multiplicado.<br><br></li>
-        <li><b>Eficacia de la obra pública:</b> En algunas rondas, los participantes que sean seleccionados para ser la autoridad sólo podrán multiplicar
-        las ganancias de la obra pública, pero, en otras, podrán multiplicar las ganancias y quedarse con parte de ellas.<br><br></li>
+            {% if group.authority == "no authority" %}
+                <li><b>Autoridad:</b> En algunas rondas, un participante puede ser elegido aleatoriamente para que sea la Autoridad y tome una decisión con respecto a la
+                eficacia del Estado. Quien sea elegido para ese puesto, tendrá la opción de tomar una parte de lo recaudado tras ser multiplicado
+                para sí mismo.</li>
+                <li><b>Eficacia de la obra pública:</b> En algunas rondas donde no haya autoridad, uno de los participantes puede ser elegido aleatoriamente para recibir
+                parte de lo recaudado tras ser multiplicado. En otras rondas, puede haber un participante que se encargue de multiplicar lo recaudado,
+                pero no pueda tomar una parte para sí mismo.</li>
+            {% else %}
+                <li><b>Autoridad:</b> En algunas rondas, puede no haber Autoridad.</li>
+                <li><b>Eficacia de la obra pública:</b> En algunas rondas donde no haya autoridad, uno de los participantes puede ser elegido aleatoriamente para recibir
+                parte de lo recaudado tras ser multiplicado. En otras rondas, puede haber un participante que se encargue de multiplicar lo recaudado,
+                pero no pueda tomar una parte para sí mismo.</li>
+            {% endif %}
         </ul>
+        De ocurrir algún cambio, las instrucciones previas a esta sección se actualizarán según corresponda.
     </p>
     </div>
 </div>
