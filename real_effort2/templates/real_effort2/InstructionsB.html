@@ -23,7 +23,7 @@ h2 {
     <p>
         <div align="justify">
         Este experimento tendrá 2 bloques y 10 rondas de decisión por bloque. Antes de cada bloque, todos los
-        participantes serán asignados a un grupo de cuatro personas completamente al azar. Una vez formados los
+        participantes serán asignados a un grupo de {{ Constants.players_per_group }} personas completamente al azar. Una vez formados los
         grupos, el bloque comenzará.
 
         <br><br>
@@ -34,11 +34,14 @@ h2 {
                 impuestos es de {{ display_tax_perc }} de tu ingreso. Tú puedes decidir si reportas todo lo que ganaste en la tarea
                 o un monto distinto.</li>
             <li>Se realizarán auditorías al azar con probabilidad {{ audit_prob }}. Si eres auditado, y reportaste ingresos menores
-                a los que recibiste, se te descontará el {{ penalty }} de tus ingresos.</li>
+                a los que recibiste, se te impondrá una penalidad, la cual es descrita a detalle en la sección de <i>Pagos</i>.</li>
             <li>Con el dinero de los impuestos, el Estado “hace obras” que benefician a los ciudadanos. En concreto, el
                 monto total de contribuciones es multiplicado por {{ mult }} y luego es repartido por igual entre todos los
-                ciudadanos y se denomina beneficio por obra pública. Esta transferencia se realiza sin importar quiénes
+                ciudadanos. Esta transferencia se realiza sin importar quiénes
                 y cuánto han contribuido.</li>
+            <li>Se considera que el <i>Estado ha sido eficiente</i> si la cantidad multiplicada es repartida a todos los participantes
+                en partes iguales
+            </li>
         </ol>
         <br><br>
         </div>
@@ -57,12 +60,14 @@ h2 {
         <br><br>
         {% if group.authority != "no authority"  %}
             <h5>Autoridad:</h5> En esta ronda, se escogerá a un participante para que sea la Autoridad y tome una decisión con respecto a la
-            eficacia del Estado. Quien sea elegido para ese puesto, tendrá la opción de tomar {{ appropiation_percent_display }} de lo recaudado tras ser multiplicado
-            para sí mismo.
+            eficacia del Estado: tendrá la opción de tomar {{ appropiation_percent_display }} de lo recaudado tras ser multiplicado
+            para sí mismo o repartir lo multiplicado a todos en partes iguales.
             <br><br>
         {% else %}
             {% if group.appropriation_percent != 0  %}
-                <h5>Eficacia de la obra pública:</h5> En esta ronda, uno de los participantes será elegido aleatoriamente para recibir {{ appropiation_percent_display }} de lo recaudado tras ser multiplicado.
+                <h5>Eficacia del Estado:</h5> En esta ronda, uno de los participantes será 
+                elegido aleatoriamente para recibir {{ appropiation_percent_display }} de lo recaudado 
+                tras ser multiplicado.
             {% endif %}
         {% endif %}
     </p>
@@ -72,17 +77,22 @@ h2 {
         <ul>
             {% if group.authority == "no authority" %}
                 <li><b>Autoridad:</b> En algunas rondas, un participante puede ser elegido aleatoriamente para que sea la Autoridad y tome una decisión con respecto a la
-                eficacia del Estado. Quien sea elegido para ese puesto, tendrá la opción de tomar una parte de lo recaudado tras ser multiplicado
-                para sí mismo.</li>
-                <li><b>Eficacia de la obra pública:</b> En algunas rondas donde no haya autoridad, uno de los participantes puede ser elegido aleatoriamente para recibir
-                parte de lo recaudado tras ser multiplicado. En otras rondas, puede haber un participante que se encargue de multiplicar lo recaudado,
-                pero no pueda tomar una parte para sí mismo.</li>
+                eficacia del Estado: tendrá la opción de tomar una parte adicional de lo recaudado tras ser 
+                multiplicado para sí mismo o repartir lo multiplicado a todos en partes iguales.              
+                </li>
+                <li><b>Eficacia del Estado:</b> En algunas rondas donde no haya autoridad, uno
+                de los participantes puede ser elegido aleatoriamente para quedarse con una parte adicional
+                de lo recaudado tras ser multiplicado. En otras rondas, puede haber un participante que 
+                se encargue de multiplicar lo recaudado, pero no pueda tomar una parte para sí mismo.</li>
             {% else %}
                 <li><b>Autoridad:</b> En algunas rondas, puede no haber Autoridad.</li>
-                <li><b>Eficacia de la obra pública:</b> En algunas rondas donde no haya autoridad, uno de los participantes puede ser elegido aleatoriamente para recibir
-                parte de lo recaudado tras ser multiplicado. En otras rondas, puede haber un participante que se encargue de multiplicar lo recaudado,
+                <li><b>Eficacia del Estado:</b> En algunas rondas donde no haya autoridad, uno de los participantes puede ser elegido aleatoriamente para recibir
+                una parte adicional de lo recaudado tras ser multiplicado. En otras rondas, puede haber un participante que se encargue de multiplicar lo recaudado,
                 pero no pueda tomar una parte para sí mismo.</li>
             {% endif %}
+            <li><i><b>Importante:</b></i> Si la autoridad o participante elegido toma una parte de lo multiplicado, 
+            lo restante será dividido en partes iguales entre todos los participantes, incluyendo a este mismo participante.
+            </li> 
         </ul>
         De ocurrir algún cambio, las instrucciones previas a esta sección se actualizarán según corresponda.
     </p>
