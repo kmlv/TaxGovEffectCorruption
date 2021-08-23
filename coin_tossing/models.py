@@ -95,7 +95,8 @@ class Player(BasePlayer):
         Output: None
         """
 
-        apps = self.session.config["app_sequence"][:-1]
+        apps = self.session.config["app_sequence"][1:-1]
+
         print("app sequence without last app", apps)
         random.shuffle(apps)
         self.chosen_app = apps[0]

@@ -38,6 +38,8 @@ class Results(Page):
     def vars_for_template(self):
         return {
             'offer': Constants.endowment - self.group.group_kept,
+            'last_round': Constants.num_rounds == self.round_number,
+            'accumulated_payoff': self.player.participant.vars["payoff_"+Constants.name_in_url] + self.player.payoff
         }
 
 

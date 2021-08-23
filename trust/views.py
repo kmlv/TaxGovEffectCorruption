@@ -100,7 +100,9 @@ class Results(Page):
         return {
             # 'strategy_method': self.session.config["use_strategy_method"],
             'tripled_amount': self.group.sent_amount * Constants.multiplication_factor,
-            'sent_back_amount': self.group.sent_back_amount
+            'sent_back_amount': self.group.sent_back_amount,
+            'last_round': Constants.num_rounds == self.round_number,
+            'accumulated_payoff': self.player.participant.vars["payoff_"+Constants.name_in_url] + self.player.payoff
         }
 
     def before_next_page(self):

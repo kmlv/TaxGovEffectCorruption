@@ -1,0 +1,35 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Instrucciones Generales
+{% endblock %}
+
+{% block content %}
+
+    <p>
+        Estimado participante, gracias por su interés en colaborar con el presente 
+        estudio de investigación.
+    </p>
+    <p>
+        En esta sesión, usted realizará cinco tareas, las cuales pueden ser individuales
+        o grupales. Cuatro de las tareas presentadas le darán la oportunidad de 
+        obtener un pago dependiendo de las decisiones que se le permitan tomar. Por 
+        ello, debe estar atento a las instrucciones que se le muestren al inicio de 
+        cada una.
+    </p>
+    <p>
+        Se eligirá al azar lo acumulado en una de las tareas como su pago final
+        por la sesión. Se estima que acabar las tareas tomará como máximo 1 hora
+        y media.
+    </p>
+    <p>
+        Permanezca en su sitio durante toda la sesión y evite el uso de dispositivos
+        móviles o que puedan alterar su concentración.
+    </p>
+    <p>
+        Para comenzar, puede hacer click en el botón "Siguiente".
+    </p>
+    {% next_button %}
+
+{% endblock %}

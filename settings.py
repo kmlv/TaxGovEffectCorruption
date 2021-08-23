@@ -71,7 +71,7 @@ SESSION_CONFIGS = [
         'name': 'paper_klo_prosocial',
         'display_name': "Tareas de Prosocialidad",
         'num_demo_participants': 4,
-        'app_sequence': ["dictator", "trust", "public_goods", "coin_tossing", "prosociality"],
+        'app_sequence': ["initial_page", "dictator", "trust", "public_goods", "coin_tossing", "prosociality"],
         'app_names': {"dictator": "primera", "trust": "segunda", "public_goods":"tercera", 
                       "coin_tossing": "cuarta", "prosociality": "quinta"},
         'participation_fee': SESSION_CONFIG_DEFAULTS["participation_fee"],

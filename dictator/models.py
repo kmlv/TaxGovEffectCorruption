@@ -80,7 +80,7 @@ class Group(BaseGroup):
         # looping again for setting non dictator's payoffs (cant assign before knowing who is dictator)
         for p in self.get_players():
             if not p.dictator:
-                p.payoff = amount_kept_dictator
+                p.payoff = Constants.endowment - amount_kept_dictator
             
 
 class Player(BasePlayer):

@@ -50,7 +50,9 @@ class Results(Page):
         return {
             'total_earnings': self.group.total_contribution * Constants.multiplier,
             'final_payoff': self.player.participant.payoff,
-            'round_number': self.round_number
+            'round_number': self.round_number,
+            'last_round': Constants.num_rounds == self.round_number,
+            'accumulated_payoff': self.player.participant.vars["payoff_"+Constants.name_in_url] 
         }
 
     def before_next_page(self):
