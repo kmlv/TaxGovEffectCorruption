@@ -1,0 +1,33 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Enlace para pagos
+{% endblock %}
+
+{% block content %}
+
+Para proceder con tu pago, entra al enlace abajo. Este enlace te redirigirá a un formulario para brindar la información
+para que recibas tu pago.
+<br><br>
+<a target="_blank" href="https://forms.gle/bdeJJVWAVRMKUCTm8">https://forms.gle/bdeJJVWAVRMKUCTm8</a>
+</br><br>
+Además, deberás colocar tu etiqueta de participante: <br> <br> <h4 align="middle">{{ participant_id  }}</h4>
+<br><br>
+Los datos que brindes en ese formulario no se combinarán con los datos de la interacción y no afectarán el monto de tu
+pago.
+<br><br>
+¡Gracias, nuevamente!
+<br><br>
+E2LabUP
+<br>
+
+<br><br>
+<br>
+<b>Contáctenos:</b>
+<br>
+<img height="2%" width="2%" src="{% static "whatsapp.png"%}"/> <a href="https://wa.me/0051949993704" target="_blank">+51 949 993 704</a>
+<br>
+<img height="2%" width="2%" src="{% static "gmail.png"%}"/> e2lab@up.edu.pe
+
+{% endblock %}
