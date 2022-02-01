@@ -90,6 +90,7 @@ class Constants(BaseConstants):
 
     name_in_url = 'mpl'
     players_per_group = None
+    contact_template ="mpl/Contactenos.html"
 
     if one_choice_per_page:
         if certain_choice:

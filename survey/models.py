@@ -9,6 +9,7 @@ class Constants(BaseConstants):
     name_in_url = 'survey'
     players_per_group = None
     num_rounds = 1
+    contact_template =name_in_url + "/Contactenos.html"
 
 
 class Subsession(BaseSubsession):

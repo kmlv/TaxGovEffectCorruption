@@ -21,6 +21,7 @@ class Constants(BaseConstants):
     players_per_group = 2
     num_rounds = 1
 
+    contact_template =name_in_url + "/Contactenos.html"
     instructions_template = 'trust/Instructions.html'
 
     # Initial amount allocated to each player

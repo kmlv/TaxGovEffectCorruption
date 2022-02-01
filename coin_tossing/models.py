@@ -23,6 +23,7 @@ class Constants(BaseConstants):
     players_per_group = None
     num_rounds = 5
     instructions_template = name_in_url + "/Instructions.html"
+    contact_template =name_in_url + "/Contactenos.html"
 
     # parameters for coin tossing
     head_value = "Cara"
