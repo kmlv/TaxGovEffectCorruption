@@ -164,3 +164,4 @@ SESSION_CONFIGS = [
 # oTree's default settings. Use with caution.
 # otree.settings.augment_settings(globals())
 
+DEBUG=False
