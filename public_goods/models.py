@@ -19,7 +19,7 @@ class Constants(BaseConstants):
     instructions_template = 'public_goods/Instructions.html'
 
     # """Amount allocated to each player"""
-    endowment = c(config_leex_1.PG_endowment)
+    endowment = config_leex_1.PG_endowment
     multiplier = 2
 
 
@@ -57,8 +57,8 @@ class Subsession(BaseSubsession):
 
 
 class Group(BaseGroup):
-    total_contribution = models.CurrencyField()
-    individual_share = models.CurrencyField()
+    total_contribution = models.IntegerField()
+    individual_share = models.FloatField()
 
     def set_payoffs(self):
         self.total_contribution = sum([p.contribution for p in self.get_players()])
@@ -68,7 +68,7 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
-    contribution = models.CurrencyField(
+    contribution = models.IntegerField(
         min=0, max=Constants.endowment,
         doc="""The amount contributed by the player""",
     )
