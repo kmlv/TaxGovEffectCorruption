@@ -22,11 +22,11 @@ class PlayerBot(Bot):
 
         #Corroborando pagos
         if self.player.dictator == True:
-            assert self.player.payoff == self.group.group_kept, "el pago no es el correcto"
+            assert self.player.payoff == self.group.group_kept, "dictator: el pago no es el correcto"
             
             print(f'Todo salio bien para jugador {self.player.id_in_group}')
         else:
-            assert self.player.payoff == Constants.endowment - self.group.group_kept, "el pago no es el correcto"
+            assert self.player.payoff == Constants.endowment - self.group.group_kept, "citizen: el pago no es el correcto"
             
             print(f'Todo salio bien para jugador {self.player.id_in_group}')
 
