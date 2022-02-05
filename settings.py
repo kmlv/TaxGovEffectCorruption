@@ -128,8 +128,9 @@ SESSION_CONFIGS = [
     {
         'name': 'dictator',
         'display_name': "Dictator: 'Strategy' method",
-        'num_demo_participants': 12,
+        'num_demo_participants': 4,
         'app_sequence': ['dictator'],
+        'use_browser_bots':True
         # 'fixed_matching': True,
         # 'matching_file': "matchings_taxgovcorruption.json"
     },    

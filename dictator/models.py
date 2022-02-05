@@ -85,7 +85,7 @@ class Group(BaseGroup):
             
 
 class Player(BasePlayer):
-    kept = models.CurrencyField(
+    kept = models.IntegerField(
         doc="""Amount tentative dictator decided to keep for himself""",
         min=0, max=Constants.endowment,
         verbose_name='Si pudieras decidir cómo dividir los puntos (Participante 1), ¿con cuántos te quedarías? (desde 0 hasta %i)' % Constants.endowment
