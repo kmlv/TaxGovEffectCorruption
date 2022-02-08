@@ -195,12 +195,12 @@ class Player(BasePlayer):
     trustee = models.BooleanField(initial=False)
 
     #create labels from constants and multiplier:
-    for value in Constants.result:
-        for number in Constants.label:
-            locals()[value]=models.IntegerField(
-                                choices=[choice for choice in range(int(number) + 1)],
-                                label=f"Si recibieras {number} puntos, ¿cuánto enviarías de vuelta al Jugador A?")
-          
+    for labe, numb in zip(Constants.result,Constants.label):
+        locals()[labe]=models.IntegerField(
+                            choices=[choice for choice in range(int(numb) + 1)],
+                            label=f"Si recibieras {numb} puntos, ¿cuánto enviarías de vuelta al Jugador A?")
+    del labe
+    del numb
 
 
     #sent_back_amount_strategy_3 = make_sent_back_field(3)
