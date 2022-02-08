@@ -23,6 +23,7 @@ class Constants(BaseConstants):
     id_random_dictator = random.randint(1, players_per_group)
 
     instructions_template = 'dictator/Instructions.html'
+    contact_template = "dictator/Contactenos.html"
 
     # Initial amount allocated to the dictator
     endowment = c(100)

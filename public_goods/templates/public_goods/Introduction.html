@@ -1,1 +1,23 @@
-{% extends "global/Page.html" %}{% load staticfiles otree_tags %}{% block title %}{% endblock %}{% block content %}    {% include Constants.instructions_template %}    <p>        Las instrucciones permanecerán en pantalla en caso desees consultarlas durante la interacción..    </p>    {% next_button %}{% endblock %}
+{% extends "global/Page.html" %}
+{% load staticfiles otree_tags %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block content %}
+
+    {% include Constants.instructions_template %}
+
+    <p>
+
+        Las instrucciones permanecerán en pantalla en caso desees consultarlas durante la interacción..
+
+    </p>
+
+    {% next_button %}
+    <p>
+        {% include Constants.contact_template %}
+    </p>
+
+{% endblock %}
