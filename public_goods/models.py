@@ -15,6 +15,7 @@ class Constants(BaseConstants):
     name_in_url = 'public_goods'
     players_per_group = 4
     num_rounds = 1
+    contact_template =name_in_url + "/Contactenos.html"
 
     instructions_template = 'public_goods/Instructions.html'
 

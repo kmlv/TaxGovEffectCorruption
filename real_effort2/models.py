@@ -87,6 +87,7 @@ class Constants(BaseConstants):
     maxdistance1 = len(reference_texts[0])
     maxdistance2 = len(reference_texts[1])
     allowed_error_rates = [0, 0.99]
+    contact_template = "real_effort2/Contactenos.html"
 
     
 class Subsession(BaseSubsession):

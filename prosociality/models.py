@@ -22,6 +22,7 @@ class Constants(BaseConstants):
     players_per_group = None
     num_rounds = 1
     likert_choices=[choice for choice in range(11)]
+    contact_template = name_in_url + "/Contactenos.html"
 
 
 class Subsession(BaseSubsession):
