@@ -31,6 +31,12 @@ class Constants(BaseConstants):
     # Strategy method
     choice_step = 1 
     choices_trustor = [choice for choice in range(0, endowment+1, choice_step)]
+    
+    #create labels from constants and multiplier:
+    label=[]
+    for value in range(multiplication_factor,endowment*multiplication_factor+1,multiplication_factor):
+        label.append(str(value))
+    result = ['sent_back_amount_strategy_' + value for value in label]
 
 
 class Subsession(BaseSubsession):
@@ -188,16 +194,25 @@ class Player(BasePlayer):
     ## for trustee
     trustee = models.BooleanField(initial=False)
 
-    sent_back_amount_strategy_3 = make_sent_back_field(3)
-    sent_back_amount_strategy_6 = make_sent_back_field(6)
-    sent_back_amount_strategy_9 = make_sent_back_field(9)
-    sent_back_amount_strategy_12 = make_sent_back_field(12)
-    sent_back_amount_strategy_15 = make_sent_back_field(15)
-    sent_back_amount_strategy_18 = make_sent_back_field(18)
-    sent_back_amount_strategy_21 = make_sent_back_field(21)
-    sent_back_amount_strategy_24 = make_sent_back_field(24)
-    sent_back_amount_strategy_27 = make_sent_back_field(27)
-    sent_back_amount_strategy_30 = make_sent_back_field(30)    
+    #create labels from constants and multiplier:
+    for value in Constants.result:
+        for number in Constants.label:
+            locals()[value]=models.IntegerField(
+                                choices=[choice for choice in range(int(number) + 1)],
+                                label=f"Si recibieras {number} puntos, ¿cuánto enviarías de vuelta al Jugador A?")
+          
+
+
+    #sent_back_amount_strategy_3 = make_sent_back_field(3)
+    #sent_back_amount_strategy_6 = make_sent_back_field(6)
+    #sent_back_amount_strategy_9 = make_sent_back_field(9)
+    #sent_back_amount_strategy_12 = make_sent_back_field(12)
+    #sent_back_amount_strategy_15 = make_sent_back_field(15)
+    #sent_back_amount_strategy_18 = make_sent_back_field(18)
+    #sent_back_amount_strategy_21 = make_sent_back_field(21)
+    #sent_back_amount_strategy_24 = make_sent_back_field(24)
+    #sent_back_amount_strategy_27 = make_sent_back_field(27)
+    #sent_back_amount_strategy_30 = make_sent_back_field(30)    
 
     def role(self):
         return {1: 'A', 2: 'B'}[self.id_in_group]
