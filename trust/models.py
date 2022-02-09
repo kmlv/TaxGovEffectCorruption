@@ -33,11 +33,13 @@ class Constants(BaseConstants):
     choices_trustor = [choice for choice in range(0, endowment+1, choice_step)]
     
     #create labels from constants and multiplier:
-    label=[]
+    numbers=[]
     for value in range(multiplication_factor,endowment*multiplication_factor+1,multiplication_factor):
-        label.append(str(value))
-    result = ['sent_back_amount_strategy_' + value for value in label]
+        numbers.append(str(value))
+    label = ['sent_back_amount_strategy_' + value for value in numbers]
 
+    #list with numbers from 1 to endowment:
+    list_c=[number for number in range(1,endowment+1)]
 
 class Subsession(BaseSubsession):
     def creating_session(self):
@@ -54,21 +56,15 @@ class Subsession(BaseSubsession):
 
         # amount sent back in average per case
         amounts_sent_back = {}
-        amounts_sent_back["received_3"] = [p.sent_back_amount_strategy_3 for p in self.get_players() if p.sent_back_amount_strategy_3 != None]
-        amounts_sent_back["received_6"] = [p.sent_back_amount_strategy_6 for p in self.get_players() if p.sent_back_amount_strategy_6 != None]
-        amounts_sent_back["received_9"] = [p.sent_back_amount_strategy_9 for p in self.get_players() if p.sent_back_amount_strategy_9 != None]
-        amounts_sent_back["received_12"] = [p.sent_back_amount_strategy_12 for p in self.get_players() if p.sent_back_amount_strategy_12 != None]
-        amounts_sent_back["received_15"] = [p.sent_back_amount_strategy_15 for p in self.get_players() if p.sent_back_amount_strategy_15 != None]
-        amounts_sent_back["received_18"] = [p.sent_back_amount_strategy_18 for p in self.get_players() if p.sent_back_amount_strategy_18 != None]
-        amounts_sent_back["received_21"] = [p.sent_back_amount_strategy_21 for p in self.get_players() if p.sent_back_amount_strategy_21 != None]
-        amounts_sent_back["received_24"] = [p.sent_back_amount_strategy_24 for p in self.get_players() if p.sent_back_amount_strategy_24 != None]
-        amounts_sent_back["received_27"] = [p.sent_back_amount_strategy_27 for p in self.get_players() if p.sent_back_amount_strategy_27 != None]
-        amounts_sent_back["received_30"] = [p.sent_back_amount_strategy_30 for p in self.get_players() if p.sent_back_amount_strategy_30 != None]
-
+        for labe, numb in zip(Constants.label,Constants.numbers):
+            numb='received_'+numb
+            labe='p.'+labe
+            amounts_sent_back[numb] = [labe for p in self.get_players() if labe != None]
+       
         # telling if there are values for all sent back amounts
         there_are_sent_backs = False
         aux_counter = 0 # for counting how many values from amounts_sent_back are not empty
-        for choice in range(3, Constants.endowment*Constants.multiplication_factor+1, Constants.choice_step*Constants.multiplication_factor):
+        for choice in range(Constants.multiplication_factor, Constants.endowment*Constants.multiplication_factor+1, Constants.choice_step*Constants.multiplication_factor):
             if amounts_sent_back[f"received_{choice}"]:
                 amounts_sent_back[f"received_{choice}"] = sum(amounts_sent_back[f"received_{choice}"])/len(amounts_sent_back[f"received_{choice}"])
                 aux_counter += 1
@@ -81,7 +77,7 @@ class Subsession(BaseSubsession):
 
         else:   
             sent_backs_no_data = {}
-            for choice in range(3, Constants.endowment*Constants.multiplication_factor+1, Constants.choice_step*Constants.multiplication_factor):
+            for choice in range(Constants.multiplication_factor, Constants.endowment*Constants.multiplication_factor+1, Constants.choice_step*Constants.multiplication_factor):
                 sent_backs_no_data[f"received_{choice}"] = '(no data)'
             return {**{'avg_sent': '(no data)'}, **sent_backs_no_data}
 
@@ -118,6 +114,20 @@ class Group(BaseGroup):
         if self.session.config["use_strategy_method"] is False:
             p1.payoff = Constants.endowment - self.sent_amount + self.sent_back_amount
             p2.payoff = self.sent_amount * Constants.multiplication_factor - self.sent_back_amount
+       
+        #else:
+        #    if p1.sent_amount_strategy == 0:
+        #        p1.payoff = Constants.endowment
+        #        p2.payoff = 0
+        #        self.sent_back_amount = 0
+        #    else:
+
+        #        for value, label in zip(Constants.list_c, Constants.label) :
+        #            if p1.sent_amount_strategy == value:
+        #                label="p2."+label
+        #                p1.payoff = Constants.endowments - p1.sent_amount_strategy + label
+        #                p2.payoff = p1.sent_amount_strategy * Constants.multiplication_factor - label
+        #                self.sent_back_amount = label
         else:
             if p1.sent_amount_strategy == 0:
                 p1.payoff = Constants.endowment
@@ -163,7 +173,7 @@ class Group(BaseGroup):
                 p1.payoff = Constants.endowment - p1.sent_amount_strategy + p2.sent_back_amount_strategy_30
                 p2.payoff = p1.sent_amount_strategy * Constants.multiplication_factor - p2.sent_back_amount_strategy_30
                 self.sent_back_amount = p2.sent_back_amount_strategy_30
-
+        
     def set_group_data(self):
         for p in self.get_players():
             if p.role() == 'A':
@@ -194,8 +204,8 @@ class Player(BasePlayer):
     ## for trustee
     trustee = models.BooleanField(initial=False)
 
-    #create labels from constants and multiplier:
-    for labe, numb in zip(Constants.result,Constants.label):
+
+    for labe, numb in zip(Constants.label,Constants.numbers):
         locals()[labe]=models.IntegerField(
                             choices=[choice for choice in range(int(numb) + 1)],
                             label=f"Si recibieras {numb} puntos, ¿cuánto enviarías de vuelta al Jugador A?")
