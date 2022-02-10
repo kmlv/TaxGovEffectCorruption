@@ -108,7 +108,8 @@ SESSION_CONFIGS = [
         'display_name': "Coin Tossing - Honesty",
         'num_demo_participants': 1,
         'app_sequence': ['coin_tossing'],
-        'pay_random_app': False
+        'pay_random_app': False,
+        'use_browser_bots':True
     },    
     {
         'name': 'mpl',
@@ -119,9 +120,10 @@ SESSION_CONFIGS = [
     {
        'name': 'public_goods',
        'display_name': "Public Goods",
-       'num_demo_participants': 12,
+       'num_demo_participants': 4,
        'app_sequence': ['public_goods'],
        'use_strategy_method': False,
+       'use_browser_bots':True
     #    'fixed_matching': True,
     #    'matching_file': "matchings_taxgovcorruption.json"
     },

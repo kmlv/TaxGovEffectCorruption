@@ -1,41 +1,57 @@
 from otree.api import (
-    Currency as c, currency_range, SubmissionMustFail, Submission
+    Currency as c, currency_range, SubmissionMustFail,expect
 )
 from . import views
 from ._builtin import Bot
 from .models import Constants
+import random 
 
 
 class PlayerBot(Bot):
 
     cases = ['basic', 'min', 'max']
 
+    p1 = random.randint(1,Constants.endowment)
+    p2 = random.randint(1,Constants.endowment)
+    p3 = random.randint(1,Constants.endowment)
+    p4 = random.randint(1,Constants.endowment)
+
     def play_round(self):
-        case = self.case
-        yield (views.Introduction)
+        
+        yield views.Introduction
 
-        if case == 'basic':
-            if self.player.id_in_group == 1:
-                for invalid_contribution in [-1, 101]:
-                    yield SubmissionMustFail(views.Contribute, {
-                        'contribution': invalid_contribution})
+        # Verificando que valores extremos ni decimales funcionen
 
-        contribution = {
-            'min': 0,
-            'max': 100,
-            'basic': 50,
-        }[case]
+        for extreme_value in [-5.5,-100,-1,Constants.endowment+1,5.4]:
 
-        yield (views.Contribute, {"contribution": contribution})
-
-        yield (views.Results)
+            yield SubmissionMustFail(views.Contribute, {
+                'contribution':extreme_value
+            })
 
         if self.player.id_in_group == 1:
+            yield views.Contribute, {"contribution" : self.p1}
+        elif self.player.id_in_group == 2: 
+            yield views.Contribute, {"contribution":self.p2}
+        elif self.player.id_in_group == 3: 
+            yield views.Contribute, {"contribution":self.p3}
+        else:
+            yield views.Contribute, {"contribution":self.p4}
 
-            if case == 'min':
-                expected_payoff = 100
-            elif case == 'max':
-                expected_payoff = 200
-            else:
-                expected_payoff = 150
-            assert self.player.payoff == expected_payoff
+        # Corroborando que los pagos sean los correctos
+        pago = (Constants.endowment - self.player.contribution) + self.group.individual_share
+        
+        yield views.Results
+
+        print(self.player.round_payoff,pago)
+
+        assert self.player.round_payoff == pago, "El pago no cuadra"
+
+        print(f'Todo salio bien para jugador {self.player.id_in_group}')
+
+        
+
+        
+    
+
+        
+            

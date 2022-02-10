@@ -25,6 +25,8 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
+__temp_static_root/
+db.sqlite3
 
 
 # PyInstaller
