@@ -25,8 +25,8 @@ class Constants(BaseConstants):
     instructions_template = 'trust/Instructions.html'
 
     # Initial amount allocated to each player
-    endowment = 10
-    multiplication_factor = 3
+    endowment = 11
+    multiplication_factor = 2
 
     # Strategy method
     choice_step = 1 
@@ -40,6 +40,7 @@ class Constants(BaseConstants):
 
     #list with numbers from 1 to endowment:
     list_c=[number for number in range(1,endowment+1)]
+
 
 class Subsession(BaseSubsession):
     def creating_session(self):
@@ -115,65 +116,65 @@ class Group(BaseGroup):
             p1.payoff = Constants.endowment - self.sent_amount + self.sent_back_amount
             p2.payoff = self.sent_amount * Constants.multiplication_factor - self.sent_back_amount
        
-        #else:
-        #    if p1.sent_amount_strategy == 0:
-        #        p1.payoff = Constants.endowment
-        #        p2.payoff = 0
-        #        self.sent_back_amount = 0
-        #    else:
-
-        #        for value, label in zip(Constants.list_c, Constants.label) :
-        #            if p1.sent_amount_strategy == value:
-        #                label="p2."+label
-        #                p1.payoff = Constants.endowments - p1.sent_amount_strategy + label
-        #                p2.payoff = p1.sent_amount_strategy * Constants.multiplication_factor - label
-        #                self.sent_back_amount = label
         else:
             if p1.sent_amount_strategy == 0:
                 p1.payoff = Constants.endowment
                 p2.payoff = 0
                 self.sent_back_amount = 0
-            elif p1.sent_amount_strategy == 1:
-                p1.payoff = Constants.endowment - p1.sent_amount_strategy + p2.sent_back_amount_strategy_3
-                p2.payoff = p1.sent_amount_strategy * Constants.multiplication_factor - p2.sent_back_amount_strategy_3
-                self.sent_back_amount = p2.sent_back_amount_strategy_3
-            elif p1.sent_amount_strategy == 2:
-                p1.payoff = Constants.endowment - p1.sent_amount_strategy + p2.sent_back_amount_strategy_6
-                p2.payoff = p1.sent_amount_strategy * Constants.multiplication_factor - p2.sent_back_amount_strategy_6
-                self.sent_back_amount = p2.sent_back_amount_strategy_6
-            elif p1.sent_amount_strategy == 3:
-                p1.payoff = Constants.endowment - p1.sent_amount_strategy + p2.sent_back_amount_strategy_9
-                p2.payoff = p1.sent_amount_strategy * Constants.multiplication_factor - p2.sent_back_amount_strategy_9
-                self.sent_back_amount = p2.sent_back_amount_strategy_9
-            elif p1.sent_amount_strategy == 4:
-                p1.payoff = Constants.endowment - p1.sent_amount_strategy + p2.sent_back_amount_strategy_12
-                p2.payoff = p1.sent_amount_strategy * Constants.multiplication_factor - p2.sent_back_amount_strategy_12
-                self.sent_back_amount = p2.sent_back_amount_strategy_12
-            elif p1.sent_amount_strategy == 5:
-                p1.payoff = Constants.endowment - p1.sent_amount_strategy + p2.sent_back_amount_strategy_15
-                p2.payoff = p1.sent_amount_strategy * Constants.multiplication_factor - p2.sent_back_amount_strategy_15
-                self.sent_back_amount = p2.sent_back_amount_strategy_15
-            elif p1.sent_amount_strategy == 6:
-                p1.payoff = Constants.endowment - p1.sent_amount_strategy + p2.sent_back_amount_strategy_18
-                p2.payoff = p1.sent_amount_strategy * Constants.multiplication_factor - p2.sent_back_amount_strategy_18
-                self.sent_back_amount = p2.sent_back_amount_strategy_18
-            elif p1.sent_amount_strategy == 7:
-                p1.payoff = Constants.endowment - p1.sent_amount_strategy + p2.sent_back_amount_strategy_21
-                p2.payoff = p1.sent_amount_strategy * Constants.multiplication_factor - p2.sent_back_amount_strategy_21
-                self.sent_back_amount = p2.sent_back_amount_strategy_21
-            elif p1.sent_amount_strategy == 8:
-                p1.payoff = Constants.endowment - p1.sent_amount_strategy + p2.sent_back_amount_strategy_24
-                p2.payoff = p1.sent_amount_strategy * Constants.multiplication_factor - p2.sent_back_amount_strategy_24
-                self.sent_back_amount = p2.sent_back_amount_strategy_24
-            elif p1.sent_amount_strategy == 9:
-                p1.payoff = Constants.endowment - p1.sent_amount_strategy + p2.sent_back_amount_strategy_27
-                p2.payoff = p1.sent_amount_strategy * Constants.multiplication_factor - p2.sent_back_amount_strategy_27
-                self.sent_back_amount = p2.sent_back_amount_strategy_27
-            elif p1.sent_amount_strategy == 10:
-                p1.payoff = Constants.endowment - p1.sent_amount_strategy + p2.sent_back_amount_strategy_30
-                p2.payoff = p1.sent_amount_strategy * Constants.multiplication_factor - p2.sent_back_amount_strategy_30
-                self.sent_back_amount = p2.sent_back_amount_strategy_30
-        
+            else:
+
+                for value, label in zip(Constants.list_c, Constants.label) :
+                    if p1.sent_amount_strategy == value:
+                        p1.payoff = Constants.endowment - p1.sent_amount_strategy + getattr(p2,label)
+                        p2.payoff = p1.sent_amount_strategy * Constants.multiplication_factor - getattr(p2,label)
+                        self.sent_back_amount = getattr(p2,label)
+                        print(getattr(p2,label))
+        # else:
+        #     if p1.sent_amount_strategy == 0:
+        #         p1.payoff = Constants.endowment
+        #         p2.payoff = 0
+        #         self.sent_back_amount = 0
+        #     elif p1.sent_amount_strategy == 1:
+        #         p1.payoff = Constants.endowment - p1.sent_amount_strategy + p2.sent_back_amount_strategy_3
+        #         p2.payoff = p1.sent_amount_strategy * Constants.multiplication_factor - p2.sent_back_amount_strategy_3
+        #         self.sent_back_amount = p2.sent_back_amount_strategy_3
+        #     elif p1.sent_amount_strategy == 2:
+        #         p1.payoff = Constants.endowment - p1.sent_amount_strategy + p2.sent_back_amount_strategy_6
+        #         p2.payoff = p1.sent_amount_strategy * Constants.multiplication_factor - p2.sent_back_amount_strategy_6
+        #         self.sent_back_amount = p2.sent_back_amount_strategy_6
+        #     elif p1.sent_amount_strategy == 3:
+        #         p1.payoff = Constants.endowment - p1.sent_amount_strategy + p2.sent_back_amount_strategy_9
+        #         p2.payoff = p1.sent_amount_strategy * Constants.multiplication_factor - p2.sent_back_amount_strategy_9
+        #         self.sent_back_amount = p2.sent_back_amount_strategy_9
+        #     elif p1.sent_amount_strategy == 4:
+        #         p1.payoff = Constants.endowment - p1.sent_amount_strategy + p2.sent_back_amount_strategy_12
+        #         p2.payoff = p1.sent_amount_strategy * Constants.multiplication_factor - p2.sent_back_amount_strategy_12
+        #         self.sent_back_amount = p2.sent_back_amount_strategy_12
+        #     elif p1.sent_amount_strategy == 5:
+        #         p1.payoff = Constants.endowment - p1.sent_amount_strategy + p2.sent_back_amount_strategy_15
+        #         p2.payoff = p1.sent_amount_strategy * Constants.multiplication_factor - p2.sent_back_amount_strategy_15
+        #         self.sent_back_amount = p2.sent_back_amount_strategy_15
+        #     elif p1.sent_amount_strategy == 6:
+        #         p1.payoff = Constants.endowment - p1.sent_amount_strategy + p2.sent_back_amount_strategy_18
+        #         p2.payoff = p1.sent_amount_strategy * Constants.multiplication_factor - p2.sent_back_amount_strategy_18
+        #         self.sent_back_amount = p2.sent_back_amount_strategy_18
+        #     elif p1.sent_amount_strategy == 7:
+        #         p1.payoff = Constants.endowment - p1.sent_amount_strategy + p2.sent_back_amount_strategy_21
+        #         p2.payoff = p1.sent_amount_strategy * Constants.multiplication_factor - p2.sent_back_amount_strategy_21
+        #         self.sent_back_amount = p2.sent_back_amount_strategy_21
+        #     elif p1.sent_amount_strategy == 8:
+        #         p1.payoff = Constants.endowment - p1.sent_amount_strategy + p2.sent_back_amount_strategy_24
+        #         p2.payoff = p1.sent_amount_strategy * Constants.multiplication_factor - p2.sent_back_amount_strategy_24
+        #         self.sent_back_amount = p2.sent_back_amount_strategy_24
+        #     elif p1.sent_amount_strategy == 9:
+        #         p1.payoff = Constants.endowment - p1.sent_amount_strategy + p2.sent_back_amount_strategy_27
+        #         p2.payoff = p1.sent_amount_strategy * Constants.multiplication_factor - p2.sent_back_amount_strategy_27
+        #         self.sent_back_amount = p2.sent_back_amount_strategy_27
+        #     elif p1.sent_amount_strategy == 10:
+        #         p1.payoff = Constants.endowment - p1.sent_amount_strategy + p2.sent_back_amount_strategy_30
+        #         p2.payoff = p1.sent_amount_strategy * Constants.multiplication_factor - p2.sent_back_amount_strategy_30
+        #         self.sent_back_amount = p2.sent_back_amount_strategy_30
+     
     def set_group_data(self):
         for p in self.get_players():
             if p.role() == 'A':
