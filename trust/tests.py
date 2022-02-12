@@ -6,8 +6,9 @@ import random
 
 class PlayerBot(Bot):
 
-    def play_round(self):
 
+    def play_round(self):
+        
         p1=random.randint(0,Constants.endowment)
         #create random numbers that depends on the endowment
         list_players=[]
@@ -28,6 +29,7 @@ class PlayerBot(Bot):
             yield views.SendStrategyMethod, {"sent_amount_strategy" : p1}
         elif self.player.id_in_group == 2: 
             yield views.SendBackStrategyMethod, dict(zip(Constants.label, list_p)) 
+
         
         #if self.player.id_in_group == 1:
         #    yield views.Send, {"sent_amount": 4}
@@ -50,7 +52,7 @@ class PlayerBot(Bot):
                 if self.group.sent_amount == 0:
                     assert self.player.payoff == 0
                 elif self.group.sent_amount == value:
-                    assert self.player.payoff == self.group.sent_amount * Constants.multiplication_factor - getattr(self.player,label)
+                    assert self.player.payoff == self.group.sent_amount * Constants.multiplication_factor - getattr(self.player,label), "Player 2: El pago no cuadra"
         #     if self.group.sent_amount == 0:
         #         assert self.player.payoff == 0
         #     elif self.group.sent_amount == 1:
