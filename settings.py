@@ -130,8 +130,9 @@ SESSION_CONFIGS = [
     {
         'name': 'dictator',
         'display_name': "Dictator: 'Strategy' method",
-        'num_demo_participants': 12,
+        'num_demo_participants': 4,
         'app_sequence': ['dictator'],
+        'use_browser_bots':True
         # 'fixed_matching': True,
         # 'matching_file': "matchings_taxgovcorruption.json"
     },    
@@ -147,9 +148,10 @@ SESSION_CONFIGS = [
     {
         'name': 'trust_strategy',
         'display_name': "Trust Game: Strategy Method",
-        'num_demo_participants': 12,
+        'num_demo_participants': 4,
         'app_sequence': ['trust'],
         'use_strategy_method': True,
+        'use_browser_bots':True
         # 'fixed_matching': True,
         # 'matching_file': "matchings_taxgovcorruption.json"
     },

@@ -26,7 +26,9 @@ var/
 .installed.cfg
 *.egg
 __temp_static_root/
+__temp_migrations/
 db.sqlite3
+
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
