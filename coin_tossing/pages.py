@@ -39,8 +39,8 @@ class FinalProcessing(Page):
     def before_next_page(self):
         self.player.set_final_payoffs()
 
-    def is_displayed(self):
-        return self.round_number == Constants.num_rounds and self.session.config["pay_random_app"]
+    # def is_displayed(self):
+    #     return self.round_number == Constants.num_rounds and self.session.config["pay_random_app"]
 
 
 class RoundResults(Page):

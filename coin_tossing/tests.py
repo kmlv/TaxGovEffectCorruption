@@ -41,19 +41,33 @@ class PlayerBot(Bot):
             
                 assert self.player.real_coin_value != None, "No se esta guardando el toss"
 
-        yield pages.RoundResults
-
         # Chequeando si el pago final es igual a Nro de caras X 10
 
+        yield Submission(pages.FinalProcessing, check_html = False,timeout_happened=True)
+        yield pages.RoundResults
+        
         if self.player.round_number == Constants.num_rounds:
             
             acumulado = 0
             for player in self.player.in_all_rounds():
                 acumulado += player.payoff 
 
-            print(f'Suma de pagos {acumulado}', f'Nro de Caras por 10 {10*self.R}')
+            print(f'Suma de pagos {acumulado}', f'Nro de Caras x 10 = {10*self.R}')
 
             assert acumulado == 10*self.R, "No cuadra el payoff final"
 
             print('Si cuadro los pagos')
+
+            # Verificando si el pago final del participante es igual al pago de la app elegida
+
+            app_pago = self.player.chosen_app
+
+            print('La app para el pago final es: ',app_pago)
+
+            assert self.participant.vars["payoff_"+app_pago] == self.participant.payoff, 'Los pagos no coinciden'
+
+            print('El pago de la app '+app_pago+' coincide con el pago final del participante')
+
+
+        
 

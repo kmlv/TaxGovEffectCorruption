@@ -75,7 +75,7 @@ SESSION_CONFIGS = [
         'app_names': {"dictator": "primera", "trust": "segunda", "public_goods":"tercera", 
                       "coin_tossing": "cuarta", "prosociality": "quinta"},
         'participation_fee': SESSION_CONFIG_DEFAULTS["participation_fee"],
-        'use_browser_bots': False,
+        'use_browser_bots': True,
         'use_strategy_method': True,
         'pay_random_app': True
     },
