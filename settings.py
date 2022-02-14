@@ -8,7 +8,7 @@ from os import environ
 
 
 SESSION_CONFIG_DEFAULTS = {
-    'real_world_currency_per_point': 1,
+    'real_world_currency_per_point': 0.15,
     'participation_fee': 5,
     'doc': "",
 }
@@ -58,12 +58,19 @@ SECRET_KEY = '^wrnxsj^(6ea-7#&cv*tawwpk*hzov-35m!e^o604&4m^6m+3y'
 INSTALLED_APPS = ['otree']
 
 ROOMS = [
-    {
-        'name': 'EconoLab',
-        'display_name': 'Laboratorio de Economía',
-        'participant_label_file': '_rooms/econolab.txt',
-    },
+    dict(
+        name='econ101',
+        display_name='Econ 101 class',
+        participant_label_file='_rooms/econ101.txt',
+    ),
+    dict(
+        name='e2labup',
+        display_name='E2LabUP - Room para sesiones online',
+        participant_label_file='_rooms/e2labup-room.txt',
+    ),
+    dict(name='live_demo', display_name='Room for live demo (no participant labels)'),
 ]
+
 
 
 SESSION_CONFIGS = [
