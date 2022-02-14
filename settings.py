@@ -69,13 +69,25 @@ ROOMS = [
 SESSION_CONFIGS = [
     {
         'name': 'paper_klo_prosocial',
+        'display_name': "Tareas de Prosocialidad Bots",
+        'num_demo_participants': 40,
+        'app_sequence': ["initial_page", "dictator", "trust", "public_goods", "coin_tossing", "prosociality"],
+        'app_names': {"dictator": "primera", "trust": "segunda", "public_goods":"tercera", 
+                      "coin_tossing": "cuarta", "prosociality": "quinta"},
+        'participation_fee': SESSION_CONFIG_DEFAULTS["participation_fee"],
+        'use_browser_bots': True,
+        'use_strategy_method': True,
+        'pay_random_app': True
+    },
+    {
+        'name': 'paper_klo_prosocial',
         'display_name': "Tareas de Prosocialidad",
         'num_demo_participants': 4,
         'app_sequence': ["initial_page", "dictator", "trust", "public_goods", "coin_tossing", "prosociality"],
         'app_names': {"dictator": "primera", "trust": "segunda", "public_goods":"tercera", 
                       "coin_tossing": "cuarta", "prosociality": "quinta"},
         'participation_fee': SESSION_CONFIG_DEFAULTS["participation_fee"],
-        'use_browser_bots': True,
+        #'use_browser_bots': True,
         'use_strategy_method': True,
         'pay_random_app': True
     },
