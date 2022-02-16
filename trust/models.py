@@ -25,8 +25,8 @@ class Constants(BaseConstants):
     instructions_template = 'trust/Instructions.html'
 
     # Initial amount allocated to each player
-    endowment = 11
-    multiplication_factor = 2
+    endowment = 10
+    multiplication_factor = 3
 
     # Strategy method
     choice_step = 1 
