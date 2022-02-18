@@ -31,7 +31,7 @@ class Constants(BaseConstants):
     # Strategy method
     choice_step = 3 
     choices_trustor = [choice for choice in range(0, endowment+1, choice_step)]
-    
+    print(choices_trustor)
     #create labels from constants and multiplier:
     number=[]
     for value in range(multiplication_factor,endowment*multiplication_factor+1,multiplication_factor):
@@ -39,6 +39,7 @@ class Constants(BaseConstants):
     labe = ['sent_back_amount_strategy_' + value for value in number]
     label=[]
     numbers=[]
+    choices_possible=[]
     x=0
     for value in labe:
         x=x+1
@@ -46,9 +47,13 @@ class Constants(BaseConstants):
             label.append(value)
             x1=x*multiplication_factor
             numbers.append(x1)
+            choices_possible.append(x)
         else:
             pass
-
+    print(number)
+    print(numbers)
+    print(label)
+    print(choices_possible)
 
     #list with numbers from 1 to endowment:
     list_c=[number for number in numbers]
@@ -90,7 +95,7 @@ class Subsession(BaseSubsession):
 
         else:   
             sent_backs_no_data = {}
-            for choice in Constants.numbers:
+            for choice in Constants.number:
                 sent_backs_no_data[f"received_{choice}"] = '(no data)'
             return {**{'avg_sent': '(no data)'}, **sent_backs_no_data}
 
@@ -135,7 +140,7 @@ class Group(BaseGroup):
                 self.sent_back_amount = 0
             else:
 
-                for value, label in zip(Constants.numbers, Constants.label) :
+                for value, label in zip(Constants.choices_possible, Constants.label) :
                     if p1.sent_amount_strategy == value:
                         p1.payoff = Constants.endowment - p1.sent_amount_strategy + getattr(p2,label)
                         p2.payoff = p1.sent_amount_strategy * Constants.multiplication_factor - getattr(p2,label)
