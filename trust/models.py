@@ -25,21 +25,33 @@ class Constants(BaseConstants):
     instructions_template = 'trust/Instructions.html'
 
     # Initial amount allocated to each player
-    endowment = 10
+    endowment = 33
     multiplication_factor = 3
 
     # Strategy method
-    choice_step = 1 
+    choice_step = 3 
     choices_trustor = [choice for choice in range(0, endowment+1, choice_step)]
     
     #create labels from constants and multiplier:
-    numbers=[]
+    number=[]
     for value in range(multiplication_factor,endowment*multiplication_factor+1,multiplication_factor):
-        numbers.append(str(value))
-    label = ['sent_back_amount_strategy_' + value for value in numbers]
+        number.append(str(value))
+    labe = ['sent_back_amount_strategy_' + value for value in number]
+    label=[]
+    numbers=[]
+    x=0
+    for value in labe:
+        x=x+1
+        if x % 3 == 0:
+            label.append(value)
+            x1=x*multiplication_factor
+            numbers.append(x1)
+        else:
+            pass
+
 
     #list with numbers from 1 to endowment:
-    list_c=[number for number in range(1,endowment+1)]
+    list_c=[number for number in numbers]
 
 
 class Subsession(BaseSubsession):
@@ -65,7 +77,7 @@ class Subsession(BaseSubsession):
         # telling if there are values for all sent back amounts
         there_are_sent_backs = False
         aux_counter = 0 # for counting how many values from amounts_sent_back are not empty
-        for choice in range(Constants.multiplication_factor, Constants.endowment*Constants.multiplication_factor+1, Constants.choice_step*Constants.multiplication_factor):
+        for choice in Constants.numbers:
             if amounts_sent_back[f"received_{choice}"]:
                 amounts_sent_back[f"received_{choice}"] = sum(amounts_sent_back[f"received_{choice}"])/len(amounts_sent_back[f"received_{choice}"])
                 aux_counter += 1
@@ -78,7 +90,7 @@ class Subsession(BaseSubsession):
 
         else:   
             sent_backs_no_data = {}
-            for choice in range(Constants.multiplication_factor, Constants.endowment*Constants.multiplication_factor+1, Constants.choice_step*Constants.multiplication_factor):
+            for choice in Constants.numbers:
                 sent_backs_no_data[f"received_{choice}"] = '(no data)'
             return {**{'avg_sent': '(no data)'}, **sent_backs_no_data}
 
@@ -123,12 +135,12 @@ class Group(BaseGroup):
                 self.sent_back_amount = 0
             else:
 
-                for value, label in zip(Constants.list_c, Constants.label) :
+                for value, label in zip(Constants.numbers, Constants.label) :
                     if p1.sent_amount_strategy == value:
                         p1.payoff = Constants.endowment - p1.sent_amount_strategy + getattr(p2,label)
                         p2.payoff = p1.sent_amount_strategy * Constants.multiplication_factor - getattr(p2,label)
                         self.sent_back_amount = getattr(p2,label)
-                        print(getattr(p2,label))
+                        
         # else:
         #     if p1.sent_amount_strategy == 0:
         #         p1.payoff = Constants.endowment
@@ -208,7 +220,7 @@ class Player(BasePlayer):
 
     for labe, numb in zip(Constants.label,Constants.numbers):
         locals()[labe]=models.IntegerField(
-                            choices=[choice for choice in range(int(numb) + 1)],
+                            choices=[choice for choice in range(0,int(numb) + 1,3)],
                             label=f"Si recibieras {numb} puntos, ¿cuánto enviarías de vuelta al Jugador A?")
     del labe
     del numb

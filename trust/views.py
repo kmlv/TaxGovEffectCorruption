@@ -52,9 +52,7 @@ class SendBackStrategyMethod(Page):
 
     form_model = 'player'
     form_fields = [f'sent_back_amount_strategy_{received}' 
-                    for received in range(Constants.multiplication_factor, 
-                    Constants.endowment*Constants.multiplication_factor + 1,
-                    Constants.multiplication_factor)]
+                    for received in Constants.numbers]
 
     def is_displayed(self):
         return self.session.config["use_strategy_method"] is True and self.player.id_in_group == 2
