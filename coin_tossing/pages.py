@@ -27,7 +27,7 @@ class Report(Page):
         if self.player.heads_or_tails == Constants.head_value:
             self.player.number_of_heads += 1
             self.player.payoff += Constants.head_payment
-            self.player.participant.vars["payoff_"+Constants.name_in_url] += self.player.payoff
+            self.player.participant.vars["payoff_"+Constants.name_in_url] += self.player.payoff*2
         
         if self.player.heads_or_tails != self.player.real_coin_value:
             self.player.player_is_lying = 1

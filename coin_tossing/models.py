@@ -28,7 +28,7 @@ class Constants(BaseConstants):
     # parameters for coin tossing
     head_value = "Cara"
     tail_value = "Sello"
-    head_payment = c(10)
+    head_payment = c(20)
     coin_choices = [head_value, tail_value]
     num_heads = 2 # number of times a coin should be heads
     

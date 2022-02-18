@@ -102,7 +102,7 @@ class Results(Page):
             'tripled_amount': self.group.sent_amount * Constants.multiplication_factor,
             'sent_back_amount': self.group.sent_back_amount,
             'last_round': Constants.num_rounds == self.round_number,
-            'accumulated_payoff': self.player.participant.vars["payoff_"+Constants.name_in_url] + self.player.payoff
+            'accumulated_payoff': self.player.participant.vars["payoff_"+Constants.name_in_url] + self.player.payoff*3.3334
         }
 
     def before_next_page(self):

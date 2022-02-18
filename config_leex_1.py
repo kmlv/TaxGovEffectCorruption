@@ -27,7 +27,7 @@ PEMG_number_rounds = 10
 #
 # # public goods params
 PG_number_rounds = 10
-PG_endowment = 8
+PG_endowment = 40
 #
 # # trust game
 TG_number_rounds = 10
