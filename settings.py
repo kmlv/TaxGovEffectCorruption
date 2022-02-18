@@ -77,7 +77,7 @@ SESSION_CONFIGS = [
     {
         'name': 'paper_klo_prosocial_bots',
         'display_name': "Tareas de Prosocialidad Bots",
-        'num_demo_participants': 4,
+        'num_demo_participants': 40,
         'app_sequence': ["initial_page", "dictator", "trust", "public_goods", "coin_tossing", "prosociality"],
         'app_names': {"dictator": "primera", "trust": "segunda", "public_goods":"tercera", 
                       "coin_tossing": "cuarta", "prosociality": "quinta"},
