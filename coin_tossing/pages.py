@@ -8,7 +8,7 @@ class Introduction(Page):
         return self.round_number == 1
 
     def before_next_page(self):
-        self.player.participant.vars["payoff_"+Constants.name_in_url] = 0
+        self.player.participant.vars["payoff_"+Constants.name_app] = 0
 
 
 class TossingTheCoin(Page):
@@ -27,7 +27,7 @@ class Report(Page):
         if self.player.heads_or_tails == Constants.head_value:
             self.player.number_of_heads += 1
             self.player.payoff += Constants.head_payment
-            self.player.participant.vars["payoff_"+Constants.name_in_url] += self.player.payoff
+            self.player.participant.vars["payoff_"+Constants.name_app] += self.player.payoff
         
         if self.player.heads_or_tails != self.player.real_coin_value:
             self.player.player_is_lying = 1
@@ -47,7 +47,7 @@ class RoundResults(Page):
     def vars_for_template(self):
         template_vars = {"real_coin_value": self.player.real_coin_value,
                 "guess": self.player.heads_or_tails,
-                "accumulated_payoff": self.player.participant.vars["payoff_"+Constants.name_in_url],
+                "accumulated_payoff": self.player.participant.vars["payoff_"+Constants.name_app],
                 "last_round": self.round_number == Constants.num_rounds,
                 "pay_random_app": self.session.config["pay_random_app"]}
 

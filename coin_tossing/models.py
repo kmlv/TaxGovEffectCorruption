@@ -19,11 +19,12 @@ Your app description
 
 
 class Constants(BaseConstants):
-    name_in_url = 'coin_tossing'
+    name_in_url = 'app_asr'
+    name_app='coin_tossing'
     players_per_group = None
     num_rounds = 5
-    instructions_template = name_in_url + "/Instructions.html"
-    contact_template =name_in_url + "/Contactenos.html"
+    instructions_template = "coin_tossing/Instructions.html"
+    contact_template = "coin_tossing/Contactenos.html"
 
     # parameters for coin tossing
     head_value = "Cara"

@@ -11,7 +11,7 @@ class Introduction(Page):
         return self.round_number == 1
 
     def before_next_page(self):
-        self.player.participant.vars["payoff_"+Constants.name_in_url] = 0
+        self.player.participant.vars["payoff_"+Constants.name_app] = 0
 
 
 class Send(Page):
@@ -100,17 +100,17 @@ class Results(Page):
             'tripled_amount': self.group.sent_amount * Constants.multiplication_factor,
             'sent_back_amount': self.group.sent_back_amount,
             'last_round': Constants.num_rounds == self.round_number,
-            'accumulated_payoff': self.player.participant.vars["payoff_"+Constants.name_in_url] + self.player.payoff*3.3334
+            'accumulated_payoff': self.player.participant.vars["payoff_"+Constants.name_app] + self.player.payoff
         }
 
     def before_next_page(self):
 
         # pass payoff to new var
         self.player.round_payoff = self.player.payoff
-        self.player.participant.vars["payoff_"+Constants.name_in_url] += self.player.payoff
-        print(f"self.player.participant.vars['payoff_'+Constants.name_in_url] = {self.player.participant.vars['payoff_'+Constants.name_in_url]}")
+        self.player.participant.vars["payoff_"+Constants.name_app] += self.player.payoff
+        print(f"self.player.participant.vars['payoff_'+Constants.app] = {self.player.participant.vars['payoff_'+Constants.name_app]}")
         
-        # if config_leex_1.paid_game == Constants.name_in_url and config_leex_1.paid_round == self.round_number:
+        # if config_leex_1.paid_game == Constants.name_app and config_leex_1.paid_round == self.round_number:
         #     self.player.payoff = self.player.payoff
         # else:
         #     self.player.payoff = 0

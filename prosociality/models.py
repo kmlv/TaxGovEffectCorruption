@@ -18,11 +18,11 @@ Small survey on prosociality based on Global preferences survey
 
 
 class Constants(BaseConstants):
-    name_in_url = 'prosociality'
+    name_in_url = 'app_wrw'
     players_per_group = None
     num_rounds = 1
     likert_choices=[choice for choice in range(11)]
-    contact_template = name_in_url + "/Contactenos.html"
+    contact_template = "prosociality/Contactenos.html"
 
 
 class Subsession(BaseSubsession):

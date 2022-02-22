@@ -45,9 +45,11 @@
     </table>
 
     </br></br>
+    {% if Constants.num_rounds > 1 %}
     <p>
         Este es el monto que has acumulado en esta tarea hasta la ronda actual: {{ accumulated_payoff }}
     </p>
+    {% endif %}
     {% next_button %}
 
     </br></br></br></br>

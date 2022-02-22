@@ -34,10 +34,11 @@
     {% endif %}
 
     </br></br>
-
+    {% if Constants.num_rounds > 1 %}
     <p>
         Este es el monto que has acumulado en esta tarea hasta la ronda actual: {{ accumulated_payoff }}
     </p>
+    {% endif %}
     <p>{% next_button %}</p>
 
     </br></br></br></br>

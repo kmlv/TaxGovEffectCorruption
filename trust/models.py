@@ -17,11 +17,12 @@ doc/download?doi=10.1.1.597.7870&rep=rep1&type=pdf" target="_blank"> here</a>
 
 
 class Constants(BaseConstants):
-    name_in_url = 'trust'
+    name_in_url = 'app_das'
+    name_app='trust'
     players_per_group = 2
     num_rounds = 1
 
-    contact_template =name_in_url + "/Contactenos.html"
+    contact_template = "trust/Contactenos.html"
     instructions_template = 'trust/Instructions.html'
 
     # Initial amount allocated to each player

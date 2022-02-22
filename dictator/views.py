@@ -11,7 +11,7 @@ class Introduction(Page):
         return {"part_fee": self.session.config["participation_fee"]}
 
     def before_next_page(self):
-        self.player.participant.vars["payoff_"+Constants.name_in_url] = 0
+        self.player.participant.vars["payoff_"+Constants.name_app] = 0
 
 
 class Offer(Page):
@@ -32,14 +32,14 @@ class Results(Page):
 
     def before_next_page(self):
         # pass payoff to new var
-        self.player.participant.vars["payoff_"+Constants.name_in_url] += self.player.payoff
-        print(f"self.player.participant.vars['payoff_'+Constants.name_in_url] = {self.player.participant.vars['payoff_'+Constants.name_in_url]}")
+        self.player.participant.vars["payoff_"+Constants.name_app] += self.player.payoff
+        print(f"self.player.participant.vars['payoff_'+Constants.name_app] = {self.player.participant.vars['payoff_'+Constants.name_app]}")
 
     def vars_for_template(self):
         return {
             'offer': Constants.endowment - self.group.group_kept,
             'last_round': Constants.num_rounds == self.round_number,
-            'accumulated_payoff': self.player.participant.vars["payoff_"+Constants.name_in_url] + self.player.payoff
+            'accumulated_payoff': self.player.participant.vars["payoff_"+Constants.name_app] + self.player.payoff
         }
 
 
