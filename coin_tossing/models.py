@@ -89,22 +89,22 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
-    def set_final_payoffs(self):
-        """
-        Choses a random app for paying the player
+    # def set_final_payoffs(self):
+    #     """
+    #     Choses a random app for paying the player
 
-        Input: None
-        Output: None
-        """
+    #     Input: None
+    #     Output: None
+    #     """
 
-        apps = self.session.config["app_sequence"][1:-1]
+    #     apps = self.session.config["app_sequence"][1:-1]
 
-        print("app sequence without last app", apps)
-        random.shuffle(apps)
-        self.chosen_app = apps[0]
-        self.participant.payoff = self.participant.vars["payoff_"+self.chosen_app]
+    #     print("app sequence without last app", apps)
+    #     random.shuffle(apps)
+    #     self.chosen_app = apps[0]
+    #     self.participant.payoff = self.participant.vars["payoff_"+self.chosen_app]
 
-    chosen_app = models.StringField()
+    # chosen_app = models.StringField()
 
     heads_or_tails = models.StringField(doc="The player declares if the tossed coin was heads or tails", 
                                         choices=Constants.coin_choices,

@@ -16,16 +16,6 @@
     <p>
         Tu pago acumulado es {{ accumulated_payoff }}
     </p>
-    <p>
-        {% if pay_random_app %}
-            {% if last_round %}
-                La aplicación escogida para el pago es la <b>{{ paid_app }}</b>. Por lo tanto, tu pago final del experimento es <b>{{ participant.payoff }}</b>.
-            {% endif %}
-        {% endif %}
-
-    </p>
-
-
 
     {% next_button %}
 

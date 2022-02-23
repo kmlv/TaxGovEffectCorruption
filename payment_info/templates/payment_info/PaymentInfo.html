@@ -1,26 +1,33 @@
 {% extends "global/Page.html" %}
-{% load staticfiles otree_tags %}
+{% load otree %}
 
 {% block title %}
-    Gracias
+    Enlace para pagos
 {% endblock %}
 
 {% block content %}
 
-    <p>
-        <em> </em>
-    </p>
-
-    <div class="panel panel-default" style="margin-bottom:10px">
-        <div class="panel-body">
-            <p><strong>Laboratory:</strong></p>
-            <p>Por favor espera en tu sitio hasta que tu número sea llamado. Cuando sea tu turno, lleva tu número y el documento que se te entregó, asegúrate de que esté debidamente firmado.</p>
-            </div>
-    </div>
-
-
-{% endblock %}
-
-{% block form %}
+    Para proceder con tu pago, entra al enlace abajo, el cual te redirigirá a un formulario para brindar la información
+    correspondiente.
+    <br><br>
+    <a target="_blank" href="https://forms.gle/bdeJJVWAVRMKUCTm8">https://forms.gle/bdeJJVWAVRMKUCTm8</a>
+    </br>
+    <br>
+    Además, deberás colocar tu etiqueta de participante: <br> <br> <h4 align="middle">{{ participant_id }}</h4>
+    <br>
+    Los datos que brindes en ese formulario no se combinarán con los datos de la interacción y no afectarán el monto de tu
+    pago.
+    <br><br>
+    ¡Gracias, nuevamente!
+    <br><br>
+    El Equipo E2LabUP
+    <br><br>
+    <b>Contáctenos:</b>
+    <br>
+    <img height="2%" width="2%" src="{% static 'whatsapp.png'%}"/> <a href="https://wa.me/0051985730063" target="_blank">+51 985730063</a>
+    <br>
+    <img height="2%" width="2%" src="{% static 'gmail.png'%}"/> <a href="https://mail.google.com/mail/?view=cm&fs=1&to=e2lab@up.edu.pe" target="_blank">e2lab@up.edu.pe</a> 
+    <br>
+    <img height=10% width=20% src="{% static 'logoup.png'%}"/>
 
 {% endblock %}

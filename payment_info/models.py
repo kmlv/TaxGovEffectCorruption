@@ -23,6 +23,22 @@ class Group(BaseGroup):
     pass
 
 class Player(BasePlayer):
-    pass
+    
+    def set_final_payoffs(self):
+        """
+        Choses a random app for paying the player
+
+        Input: None
+        Output: None
+        """
+
+        apps = self.session.config["app_sequence"][1:-2]
+
+        print("app sequence without last app", apps)
+        random.shuffle(apps)
+        self.chosen_app = apps[0]
+        self.participant.payoff = self.participant.vars["payoff_"+self.chosen_app]
+
+    chosen_app = models.StringField()
 
 

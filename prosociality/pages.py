@@ -12,10 +12,4 @@ class Survey(Page):
                    'revenge',
                    'stranger_payback']
 
-
-class FinalPage(Page):
-    def vars_for_template(self):
-        return {"participant_id": self.participant.label}
-
-
-page_sequence = [Survey, FinalPage]
+page_sequence = [Survey]
