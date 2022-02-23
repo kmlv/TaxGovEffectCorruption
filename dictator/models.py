@@ -17,7 +17,8 @@ S285-S300.
 
 
 class Constants(BaseConstants):
-    name_in_url = 'dictator'
+    name_in_url = 'app_fsd'
+    name_app='dictator'
     players_per_group = 2
     num_rounds = 1
     id_random_dictator = random.randint(1, players_per_group)

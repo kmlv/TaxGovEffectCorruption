@@ -12,10 +12,11 @@ This is a one-period public goods game with 3 players.
 
 
 class Constants(BaseConstants):
-    name_in_url = 'public_goods'
+    name_in_url = 'app_sai'
+    name_app='public_goods'
     players_per_group = 4
     num_rounds = 1
-    contact_template =name_in_url + "/Contactenos.html"
+    contact_template = "public_goods/Contactenos.html"
 
     instructions_template = 'public_goods/Instructions.html'
 

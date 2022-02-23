@@ -9,7 +9,7 @@ class Introduction(Page):
         return self.round_number == 1
 
     def before_next_page(self):
-        self.player.participant.vars["payoff_"+Constants.name_in_url] = 0
+        self.player.participant.vars["payoff_"+Constants.name_app] = 0
 
 
 class Contribute(Page):
@@ -25,8 +25,8 @@ class ResultsWaitPage(WaitPage):
     def after_all_players_arrive(self):
         self.group.set_payoffs()
         for p in self.group.get_players():
-            p.participant.vars["payoff_"+Constants.name_in_url] += p.payoff
-            print(f"p.participant.vars['payoff_'+Constants.name_in_url] = {p.participant.vars['payoff_'+Constants.name_in_url]}")
+            p.participant.vars["payoff_"+Constants.name_app] += p.payoff
+            print(f"p.participant.vars['payoff_'+Constants.name_app] = {p.participant.vars['payoff_'+Constants.name_app]}")
         
 
     body_text = "Waiting for other participants to contribute."
@@ -52,7 +52,7 @@ class Results(Page):
             'final_payoff': self.player.participant.payoff,
             'round_number': self.round_number,
             'last_round': Constants.num_rounds == self.round_number,
-            'accumulated_payoff': self.player.participant.vars["payoff_"+Constants.name_in_url] 
+            'accumulated_payoff': self.player.participant.vars["payoff_"+Constants.name_app] 
         }
 
     def before_next_page(self):
@@ -60,7 +60,7 @@ class Results(Page):
         # pass payoff to new var
         self.player.round_payoff = self.player.payoff
 
-        # if config_leex_1.paid_game == Constants.name_in_url and config_leex_1.paid_round == self.round_number:
+        # if config_leex_1.paid_game == Constants.name_app and config_leex_1.paid_round == self.round_number:
         #     self.player.payoff = self.player.payoff
         # else:
         #     self.player.payoff = 0

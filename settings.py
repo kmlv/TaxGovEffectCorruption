@@ -8,7 +8,7 @@ from os import environ
 
 
 SESSION_CONFIG_DEFAULTS = {
-    'real_world_currency_per_point': 1,
+    'real_world_currency_per_point': 0.15,
     'participation_fee': 5,
     'doc': "",
 }
@@ -58,15 +58,34 @@ SECRET_KEY = '^wrnxsj^(6ea-7#&cv*tawwpk*hzov-35m!e^o604&4m^6m+3y'
 INSTALLED_APPS = ['otree']
 
 ROOMS = [
-    {
-        'name': 'EconoLab',
-        'display_name': 'Laboratorio de Economía',
-        'participant_label_file': '_rooms/econolab.txt',
-    },
+    dict(
+        name='econ101',
+        display_name='Econ 101 class',
+        participant_label_file='_rooms/econ101.txt',
+    ),
+    dict(
+        name='e2labup',
+        display_name='E2LabUP - Room para sesiones online',
+        participant_label_file='_rooms/e2labup-room.txt',
+    ),
+    dict(name='live_demo', display_name='Room for live demo (no participant labels)'),
 ]
 
 
+
 SESSION_CONFIGS = [
+    {
+        'name': 'paper_klo_prosocial_bots',
+        'display_name': "Tareas de Prosocialidad Bots",
+        'num_demo_participants': 40,
+        'app_sequence': ["initial_page", "dictator", "trust", "public_goods", "coin_tossing", "prosociality"],
+        'app_names': {"dictator": "primera", "trust": "segunda", "public_goods":"tercera", 
+                      "coin_tossing": "cuarta", "prosociality": "quinta"},
+        'participation_fee': SESSION_CONFIG_DEFAULTS["participation_fee"],
+        'use_browser_bots': True,
+        'use_strategy_method': True,
+        'pay_random_app': True
+    },
     {
         'name': 'paper_klo_prosocial',
         'display_name': "Tareas de Prosocialidad",
@@ -75,7 +94,7 @@ SESSION_CONFIGS = [
         'app_names': {"dictator": "primera", "trust": "segunda", "public_goods":"tercera", 
                       "coin_tossing": "cuarta", "prosociality": "quinta"},
         'participation_fee': SESSION_CONFIG_DEFAULTS["participation_fee"],
-        'use_browser_bots': True,
+        #'use_browser_bots': True,
         'use_strategy_method': True,
         'pay_random_app': True
     },

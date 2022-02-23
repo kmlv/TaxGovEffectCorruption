@@ -43,18 +43,20 @@ class PlayerBot(Bot):
 
         # Chequeando si el pago final es igual a Nro de caras X 10
 
-        yield Submission(pages.FinalProcessing, check_html = False,timeout_happened=True)
+        if self.player.round_number == Constants.num_rounds: 
+            yield Submission(pages.FinalProcessing, check_html = False, timeout_happened=True)
+        
         yield pages.RoundResults
         
-        if self.player.round_number == Constants.num_rounds:
+        if self.player.round_number == Constants.num_rounds and self.session.config["pay_random_app"]:
             
             acumulado = 0
             for player in self.player.in_all_rounds():
                 acumulado += player.payoff 
 
-            print(f'Suma de pagos {acumulado}', f'Nro de Caras x 10 = {10*self.R}')
+            print(f'Suma de pagos {acumulado}', f'Nro de Caras x 10 = {Constants.head_payment*self.R}')
 
-            assert acumulado == 10*self.R, "No cuadra el payoff final"
+            assert acumulado == Constants.head_payment*self.R, "No cuadra el payoff final"
 
             print('Si cuadro los pagos')
 
