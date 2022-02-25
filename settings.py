@@ -77,8 +77,8 @@ SESSION_CONFIGS = [
     {
         'name': 'paper_klo_prosocial_bots',
         'display_name': "Tareas de Prosocialidad Bots",
-        'num_demo_participants': 40,
-        'app_sequence': ["initial_page", "dictator", "trust", "public_goods", "coin_tossing", "prosociality"],
+        'num_demo_participants': 4,
+        'app_sequence': ["initial_page", "dictator", "trust", "public_goods", "coin_tossing", "prosociality","payment_info"],
         'app_names': {"dictator": "primera", "trust": "segunda", "public_goods":"tercera", 
                       "coin_tossing": "cuarta", "prosociality": "quinta"},
         'participation_fee': SESSION_CONFIG_DEFAULTS["participation_fee"],
@@ -90,7 +90,7 @@ SESSION_CONFIGS = [
         'name': 'paper_klo_prosocial',
         'display_name': "Tareas de Prosocialidad",
         'num_demo_participants': 4,
-        'app_sequence': ["initial_page", "dictator", "trust", "public_goods", "coin_tossing", "prosociality"],
+        'app_sequence': ["initial_page", "dictator", "trust", "public_goods", "coin_tossing", "prosociality","payment_info"],
         'app_names': {"dictator": "primera", "trust": "segunda", "public_goods":"tercera", 
                       "coin_tossing": "cuarta", "prosociality": "quinta"},
         'participation_fee': SESSION_CONFIG_DEFAULTS["participation_fee"],
@@ -127,8 +127,8 @@ SESSION_CONFIGS = [
         'display_name': "Coin Tossing - Honesty",
         'num_demo_participants': 1,
         'app_sequence': ['coin_tossing'],
-        'pay_random_app': False,
-        'use_browser_bots':True
+        'pay_random_app': True,
+        'use_browser_bots':False
     },    
     {
         'name': 'mpl',

@@ -1,0 +1,41 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+{% load otree static %}
+{% block title %}
+    Pagos
+{% endblock %}
+
+{% block content %}
+
+    <table class="table">
+        <thead>
+            <th>Tarea</th>
+            <th>Pago</th>
+        </thead>
+        <tbody>
+            {% for app, payment in payments.items %}
+            <tr>
+                <td>{{ app }}</td>
+                <td>{{ payment }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <table class = 'table'>
+        {% for chosen_app, payment in chosen_app_payment.items %}
+        <tr>
+            <td><strong>Tarea Escogida</strong></td>
+            <td>{{ chosen_app }}</td>
+        </tr>
+        <tr>
+            <td><strong>Pagos Finales</strong></td>
+            <td> {{ payment }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    {% next_button %}
+{% endblock %}
+
+

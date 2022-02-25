@@ -43,12 +43,12 @@ class PlayerBot(Bot):
 
         # Chequeando si el pago final es igual a Nro de caras X 10
 
-        if self.player.round_number == Constants.num_rounds: 
-            yield Submission(pages.FinalProcessing, check_html = False, timeout_happened=True)
+        #if self.player.round_number == Constants.num_rounds: 
+        #    yield Submission(pages.FinalProcessing, check_html = False, timeout_happened=True)
         
         yield pages.RoundResults
         
-        if self.player.round_number == Constants.num_rounds and self.session.config["pay_random_app"]:
+        if self.player.round_number == Constants.num_rounds: #and self.session.config["pay_random_app"]
             
             acumulado = 0
             for player in self.player.in_all_rounds():
@@ -62,13 +62,13 @@ class PlayerBot(Bot):
 
             # Verificando si el pago final del participante es igual al pago de la app elegida
 
-            app_pago = self.player.chosen_app
+            #app_pago = self.player.chosen_app
 
-            print('La app para el pago final es: ',app_pago)
+            #print('La app para el pago final es: ',app_pago)
 
-            assert self.participant.vars["payoff_"+app_pago] == self.participant.payoff, 'Los pagos no coinciden'
+            #assert self.participant.vars["payoff_"+app_pago] == self.participant.payoff, 'Los pagos no coinciden'
 
-            print('El pago de la app '+app_pago+' coincide con el pago final del participante')
+            #print('El pago de la app '+app_pago+' coincide con el pago final del participante')
 
 
         
