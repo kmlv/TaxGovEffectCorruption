@@ -77,12 +77,12 @@ SESSION_CONFIGS = [
     {
         'name': 'paper_klo_prosocial_bots',
         'display_name': "Tareas de Prosocialidad Bots",
-        'num_demo_participants': 2,
+        'num_demo_participants': 4,
         'app_sequence': ["initial_page", "dictator", "trust", "public_goods", "coin_tossing", "prosociality","payment_info"],
         'app_names': {"dictator": "primera", "trust": "segunda", "public_goods":"tercera", 
                       "coin_tossing": "cuarta", "prosociality": "quinta"},
         'participation_fee': SESSION_CONFIG_DEFAULTS["participation_fee"],
-        'use_browser_bots': False,
+        'use_browser_bots': True,
         'use_strategy_method': True,
         'pay_random_app': True
     },

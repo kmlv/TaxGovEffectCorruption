@@ -32,9 +32,6 @@ class Report(Page):
         if self.player.heads_or_tails != self.player.real_coin_value:
             self.player.player_is_lying = 1
 
-# 
-
-
 class RoundResults(Page):
     def vars_for_template(self):
         template_vars = {"real_coin_value": self.player.real_coin_value,
