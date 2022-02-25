@@ -32,15 +32,7 @@ class Report(Page):
         if self.player.heads_or_tails != self.player.real_coin_value:
             self.player.player_is_lying = 1
 
-
-# class FinalProcessing(Page):
-#     timeout_seconds = 1
-
-#     def before_next_page(self):
-#         self.player.set_final_payoffs()
-
-#     def is_displayed(self):
-#         return self.round_number == Constants.num_rounds and self.session.config["pay_random_app"]
+# 
 
 
 class RoundResults(Page):
@@ -51,10 +43,7 @@ class RoundResults(Page):
                 "last_round": self.round_number == Constants.num_rounds,
                 "pay_random_app": self.session.config["pay_random_app"]}
 
-        # paid_app = self.player.chosen_app
-        # if paid_app != None:
-        #     paid_app_name = self.session.config["app_names"][paid_app]
-        #     template_vars = {**template_vars, **{"paid_app": paid_app_name}}        
+               
 
         return template_vars
 
