@@ -8,7 +8,7 @@ from os import environ
 
 
 SESSION_CONFIG_DEFAULTS = {
-    'real_world_currency_per_point': 0.15,
+    'real_world_currency_per_point': 0.1,
     'participation_fee': 5,
     'doc': "",
 }
@@ -187,4 +187,4 @@ SESSION_CONFIGS = [
 # oTree's default settings. Use with caution.
 # otree.settings.augment_settings(globals())
 
-DEBUG=True
+DEBUG=False
