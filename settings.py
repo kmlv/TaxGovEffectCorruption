@@ -11,6 +11,7 @@ SESSION_CONFIG_DEFAULTS = {
     'real_world_currency_per_point': 0.1,
     'participation_fee': 5,
     'doc': "",
+    'custom_name' : 'Solex'
 }
 
 
@@ -84,7 +85,8 @@ SESSION_CONFIGS = [
         'participation_fee': SESSION_CONFIG_DEFAULTS["participation_fee"],
         'use_browser_bots': True,
         'use_strategy_method': True,
-        'pay_random_app': True
+        'pay_random_app': True,
+        'custom_name' : SESSION_CONFIG_DEFAULTS["custom_name"]
     },
     {
         'name': 'paper_klo_prosocial',
@@ -96,7 +98,8 @@ SESSION_CONFIGS = [
         'participation_fee': SESSION_CONFIG_DEFAULTS["participation_fee"],
         #'use_browser_bots': True,
         'use_strategy_method': True,
-        'pay_random_app': True
+        'pay_random_app': True,
+        'custom_name' : SESSION_CONFIG_DEFAULTS["custom_name"]
     },
     {
         'name': 'paper_klo_au_debug',
