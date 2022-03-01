@@ -82,6 +82,7 @@ SESSION_CONFIGS = [
         'app_names': {"dictator": "primera", "trust": "segunda", "public_goods":"tercera", 
                       "coin_tossing": "cuarta", "prosociality": "quinta"},
         'participation_fee': SESSION_CONFIG_DEFAULTS["participation_fee"],
+        'exchange_rate': SESSION_CONFIG_DEFAULTS["real_world_currency_per_point"],
         'use_browser_bots': True,
         'use_strategy_method': True,
         'pay_random_app': True
@@ -94,6 +95,7 @@ SESSION_CONFIGS = [
         'app_names': {"dictator": "primera", "trust": "segunda", "public_goods":"tercera", 
                       "coin_tossing": "cuarta", "prosociality": "quinta"},
         'participation_fee': SESSION_CONFIG_DEFAULTS["participation_fee"],
+        'exchange_rate': SESSION_CONFIG_DEFAULTS["real_world_currency_per_point"],
         #'use_browser_bots': True,
         'use_strategy_method': True,
         'pay_random_app': True
@@ -187,4 +189,4 @@ SESSION_CONFIGS = [
 # oTree's default settings. Use with caution.
 # otree.settings.augment_settings(globals())
 
-DEBUG=False
+DEBUG=True

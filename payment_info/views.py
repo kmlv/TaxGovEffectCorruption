@@ -16,11 +16,18 @@ class Payoffs(Page):
         apps = self.session.config["app_sequence"][1:-2]
         app_names = self.session.config["app_names"]
 
-        payments = {app_names[app]:self.player.participant.vars['payoff_'+app] for app in apps}
+        payments = {app_names[app]:float(self.player.participant.vars['payoff_'+app]*self.session.config["exchange_rate"]) for app in apps}
+        chosen_app_name = app_names[self.player.chosen_app]
+        chosen_app_payment = self.player.participant.vars['payoff_'+self.player.chosen_app]
+
+        chosen_app_payment_soles = chosen_app_payment * self.session.config["exchange_rate"]
 
         return dict(
             payments = payments,
-            chosen_app_payment = {app_names[self.player.chosen_app]:self.player.participant.vars['payoff_'+self.player.chosen_app]},
+            # chosen_app_payment = chosen_app_payment, # not in soles
+            chosen_app_name = chosen_app_name,
+            chosen_app_payment_plus_fee = float(chosen_app_payment_soles + self.session.config["participation_fee"]),
+            chosen_app_payment_soles = float(chosen_app_payment_soles)
             #pay_random_app = self.session.config["pay_random_app"],
         )
 
