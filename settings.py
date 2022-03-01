@@ -96,7 +96,7 @@ SESSION_CONFIGS = [
         'app_names': {"dictator": "primera", "trust": "segunda", "public_goods":"tercera", 
                       "coin_tossing": "cuarta", "prosociality": "quinta"},
         'participation_fee': SESSION_CONFIG_DEFAULTS["participation_fee"],
-        'custom_name' : SESSION_CONFIG_DEFAULTS["custom_name"]
+        'custom_name' : SESSION_CONFIG_DEFAULTS["custom_name"],
         #'use_browser_bots': True,
         'use_strategy_method': True,
         'pay_random_app': True
