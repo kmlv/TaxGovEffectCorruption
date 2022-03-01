@@ -10,29 +10,36 @@
     <table class="table">
         <thead>
             <th>Tarea</th>
-            <th>Pago</th>
+            <th>Pago (Solex)</th>
+            <th>Pago (Soles)</th>
         </thead>
         <tbody>
             {% for app, payment in payments.items %}
             <tr>
                 <td>{{ app }}</td>
-                <td>{{ payment }}</td>
+                <td>{{ payment.Solex }} Solex</td>
+                <td>{{ payment.Soles }} Soles</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 
     <table class = 'table'>
-        {% for chosen_app, payment in chosen_app_payment.items %}
         <tr>
             <td><strong>Tarea Escogida</strong></td>
-            <td>{{ chosen_app }}</td>
+            <td><strong>{{ chosen_app_name }}</strong></td>
         </tr>
         <tr>
-            <td><strong>Pagos Finales</strong></td>
-            <td> {{ payment }}</td>
+            <td><strong>Pago Final</strong></td>
+            <td> {{ chosen_app_payment_soles }} Soles</td>
         </tr>
-        {% endfor %}
+    </table>
+
+    <table class = 'table'>
+        <thead>
+            <th>Pago Final + Pago por participar ({{ participant_fee }} Soles)</th>
+            <th>{{ chosen_app_payment_plus_fee }} Soles</th>
+        </thead>
     </table>
 
     {% next_button %}
