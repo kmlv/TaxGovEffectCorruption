@@ -11,6 +11,7 @@ SESSION_CONFIG_DEFAULTS = {
     'real_world_currency_per_point': 0.1,
     'participation_fee': 5,
     'doc': "",
+    'custom_name' : 'Solex'
 }
 
 
@@ -83,6 +84,7 @@ SESSION_CONFIGS = [
                       "coin_tossing": "cuarta", "prosociality": "quinta"},
         'participation_fee': SESSION_CONFIG_DEFAULTS["participation_fee"],
         'exchange_rate': SESSION_CONFIG_DEFAULTS["real_world_currency_per_point"],
+        'custom_name' : SESSION_CONFIG_DEFAULTS["custom_name"],
         'use_browser_bots': True,
         'use_strategy_method': True,
         'pay_random_app': True
@@ -96,6 +98,7 @@ SESSION_CONFIGS = [
                       "coin_tossing": "cuarta", "prosociality": "quinta"},
         'participation_fee': SESSION_CONFIG_DEFAULTS["participation_fee"],
         'exchange_rate': SESSION_CONFIG_DEFAULTS["real_world_currency_per_point"],
+        'custom_name' : SESSION_CONFIG_DEFAULTS["custom_name"],
         #'use_browser_bots': True,
         'use_strategy_method': True,
         'pay_random_app': True
