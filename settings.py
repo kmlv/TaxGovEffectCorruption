@@ -48,7 +48,7 @@ ADMIN_USERNAME = 'admin'
 ADMIN_PASSWORD = 'PACMAN'
 
 # Consider '', None, and '0' to be empty/false
-DEBUG = (environ.get('OTREE_PRODUCTION') in {None, '', '0'})
+# DEBUG = (environ.get('OTREE_PRODUCTION') in {None, '', '0'})
 
 DEMO_PAGE_INTRO_HTML = """ """
 
@@ -71,8 +71,6 @@ ROOMS = [
     ),
     dict(name='live_demo', display_name='Room for live demo (no participant labels)'),
 ]
-
-
 
 SESSION_CONFIGS = [
     {
@@ -192,4 +190,4 @@ SESSION_CONFIGS = [
 # oTree's default settings. Use with caution.
 # otree.settings.augment_settings(globals())
 
-DEBUG=True
+DEBUG=False
