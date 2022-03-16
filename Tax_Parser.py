@@ -67,20 +67,31 @@ for i in range(1,6):
     
 coin_tossing = new_session[variables] 
 
-coin_tossing['Num Lies'] = sum([coin_tossing['coin_tossing.'+str(i)+'.player.player_is_lying'] for i in range(1,6)])
-coin_tossing['% Lies'] = coin_tossing['Num Lies']*100/5
+coin_tossing['Num_Lies'] = sum([coin_tossing['coin_tossing.'+str(i)+'.player.player_is_lying'] for i in range(1,6)])
+coin_tossing['%_Lies'] = coin_tossing['Num_Lies']*100/5
 coin_tossing['Payoff_Coin_Tossing'] = sum([coin_tossing['coin_tossing.'+str(i)+'.player.payoff'] for i in range(1,6)])
 
-variables = ['Num Lies','% Lies','Payoff_Coin_Tossing']
+variables = ['Num_Lies','%_Lies','Payoff_Coin_Tossing']
 coin_tossing = coin_tossing[variables]
 
 coin_tossing.columns = [variables]
 
 final_data = pd.concat([ids,dictator,trust,public_goods,coin_tossing], axis=1)
 
-acum_data = pd.concat([data,final_data]) # concat all data sessions with the new one
-
 #### End Parser ####
 
-acum_data.to_csv("session3_parsed.csv") #exporting the new data
+### Formatting columns ### 
+
+variables = final_data.columns.tolist()
+
+for element in range(len(variables)): 
+    variables[element] = variables[element][0].replace(".","_") if type(variables[element]) is tuple else variables[element].replace(".","_")
+
+final_data.columns = variables
+
+### End Formatting columns ### 
+
+acum_data = pd.concat([data,final_data]) # concat all data sessions with the new one
+
+acum_data.to_csv("session3_parsed.csv", index=False) #exporting the new data
 
