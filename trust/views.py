@@ -24,7 +24,10 @@ class Send(Page):
     form_fields = ['sent_amount']
 
     def is_displayed(self):
-        return self.player.id_in_group == 1 and self.session.config["use_strategy_method"] is False
+        if self.round_number == 1:
+            return self.player.id_in_group == 1 and self.session.config["use_strategy_method"] is False
+        else: 
+            return self.player.id_in_group == 2 and self.session.config["use_strategy_method"] is False
 
     def vars_for_template(self):
         amount = Constants.endowment
@@ -42,8 +45,10 @@ class SendStrategyMethod(Page):
     form_fields = ['sent_amount_strategy']
 
     def is_displayed(self):
-        return self.session.config["use_strategy_method"] is True and self.player.id_in_group == 1 
-
+        if self.round_number == 1:
+            return self.session.config["use_strategy_method"] is True and self.player.id_in_group == 1 
+        else: 
+            return self.session.config["use_strategy_method"] is True and self.player.id_in_group == 2
 
 class SendBackStrategyMethod(Page):
     """This page is for P1 and P2. They will both play both roles
@@ -55,8 +60,10 @@ class SendBackStrategyMethod(Page):
                     for received in Constants.numbers]
 
     def is_displayed(self):
-        return self.session.config["use_strategy_method"] is True and self.player.id_in_group == 2
-
+        if self.round_number == 1:
+            return self.session.config["use_strategy_method"] is True and self.player.id_in_group == 2
+        else:
+            return self.session.config["use_strategy_method"] is True and self.player.id_in_group == 1
 
 class SendBackWaitPage(WaitPage):
     def is_displayed(self):
@@ -71,7 +78,11 @@ class SendBack(Page):
     form_fields = ['sent_back_amount']
 
     def is_displayed(self):
-        return self.player.id_in_group == 2 and self.session.config["use_strategy_method"] is False
+        if self.round_number == 1:
+            return self.player.id_in_group == 2 and self.session.config["use_strategy_method"] is False
+        else: 
+            return self.player.id_in_group == 1 and self.session.config["use_strategy_method"] is False
+
 
     def vars_for_template(self):
         tripled_amount = self.group.sent_amount * Constants.multiplication_factor
@@ -82,6 +93,7 @@ class SendBack(Page):
 
     def sent_back_amount_max(self):
         return self.group.sent_amount * Constants.multiplication_factor
+
 
 
 class ResultsWaitPage(WaitPage):

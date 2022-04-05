@@ -13,6 +13,8 @@ ids = new_session[
     ]
 ] 
 
+ids.columns = ['code','label']
+
 dictator = new_session[
     [
         'dictator.1.player.dictator',
@@ -23,6 +25,15 @@ dictator = new_session[
         'dictator.1.player.payoff'
     ]
 ] 
+
+dictator.columns = [
+    'dictator.dictator',
+    'dictator.id_in_group',
+    'dictator.group.id',
+    'dictator.kept',
+    'dictator.group_kept',
+    'dictator.payoff'
+    ]
 
 # trust
 sent_back_strat = ["trust.1.player.sent_back_amount_strategy_"+str(i)
@@ -42,6 +53,21 @@ variables = [
 
 trust = new_session[variables] 
 
+sent_back_strat_col = ["trust.sent_back_amount_strat_"+str(i)
+                   for i in range(9,100,9) ]
+
+trust.columns = [
+        'trust.trustor',
+        'trust.sent_amount_strategy',
+        'trust.trustee',
+        'trust.id_in_group',
+        'trust.group.id',
+    ] + sent_back_strat_col +  [
+        'trust.sent_amount',
+        'trust.sent_back_amount',
+        'trust.payoff'
+    ]
+
 # public goods
 public_goods = new_session[
     [
@@ -53,6 +79,15 @@ public_goods = new_session[
         'public_goods.1.player.payoff'
     ]
 ]  
+
+public_goods.columns = [
+    'public_goods.contribution',
+        'public_goods.id_in_group',
+        'public_goods.group.id',
+        'public_goods.total_contribution',
+        'public_goods.individual_share',
+        'public_goods.payoff'
+]
 
 # coin tossing
 variables = []
@@ -92,6 +127,8 @@ final_data.columns = variables
 ### End Formatting columns ### 
 
 acum_data = pd.concat([data,final_data]) # concat all data sessions with the new one
+
+acum_data.drop_duplicates(inplace = True) 
 
 acum_data.to_csv("session3_parsed.csv", index=False) #exporting the new data
 

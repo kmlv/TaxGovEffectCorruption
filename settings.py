@@ -161,7 +161,7 @@ SESSION_CONFIGS = [
     {
         'name': 'trust',
         'display_name': "Trust Game",
-        'num_demo_participants': 12,
+        'num_demo_participants': 2,
         'app_sequence': ['trust'],
         'use_strategy_method': False,
         # 'fixed_matching': True,
@@ -170,7 +170,7 @@ SESSION_CONFIGS = [
     {
         'name': 'trust_strategy',
         'display_name': "Trust Game: Strategy Method",
-        'num_demo_participants': 4,
+        'num_demo_participants': 2,
         'app_sequence': ['trust'],
         'use_strategy_method': True,
         'use_browser_bots':True

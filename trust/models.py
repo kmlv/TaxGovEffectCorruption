@@ -20,7 +20,7 @@ class Constants(BaseConstants):
     name_in_url = 'app_das'
     name_app='trust'
     players_per_group = 2
-    num_rounds = 1
+    num_rounds = 2
 
     contact_template = "trust/Contactenos.html"
     instructions_template = 'trust/Instructions.html'
@@ -62,7 +62,13 @@ class Constants(BaseConstants):
 
 class Subsession(BaseSubsession):
     def creating_session(self):
-        self.group_randomly()
+        if self.round_number == 1:
+
+            self.group_randomly()
+            
+        else:
+
+            self.group_like_round(1)
 
     def vars_for_admin_report(self):
         num_players = len(self.get_players())
@@ -127,8 +133,12 @@ class Group(BaseGroup):
     #             p.trustee = True
 
     def set_payoffs(self):
-        p1 = self.get_player_by_id(1)
-        p2 = self.get_player_by_id(2)
+        if self.round_number == 1: 
+            p1 = self.get_player_by_id(1)
+            p2 = self.get_player_by_id(2)
+        else: 
+            p1 = self.get_player_by_id(2)
+            p2 = self.get_player_by_id(1)
 
         if self.session.config["use_strategy_method"] is False:
             p1.payoff = Constants.endowment - self.sent_amount + self.sent_back_amount
@@ -198,4 +208,7 @@ class Player(BasePlayer):
     #sent_back_amount_strategy_30 = make_sent_back_field(30)    
 
     def role(self):
-        return {1: 'A', 2: 'B'}[self.id_in_group]
+        if self.round_number == 1:
+            return {1: 'A', 2: 'B'}[self.id_in_group]
+        else:
+            return {1: 'B', 2: 'A'}[self.id_in_group]
