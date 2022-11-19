@@ -1,6 +1,7 @@
 __pycache__/
 *.py[cod]
 *.pyc
+*.ini
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
