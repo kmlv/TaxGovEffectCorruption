@@ -241,7 +241,7 @@ class ReportIncome(Page):
 
     def before_next_page(self):
         self.player.income_before_taxes = self.player.income # assigning income bef taxes
-        # TODO: ask kristian if he still wants audits
+#        self.player.income_after_taxes = self.player.income_before_taxes - self.player.contribution*self.group.tax_percent
         if random.randint(0, 1) == 0:
             self.player.audit = True
         else:
@@ -351,7 +351,8 @@ class AuthorityWaitPage(WaitPage):
         print("group.total_contribution = ", group.total_contribution)
         group.total_earnings = group.total_contribution*multiplier
         print("group.total_earnings = ", group.total_earnings)
-        group.appropriation = group.total_contribution*appropriation_percent
+        group.appropriation = group.total_contribution*appropriation_percent*group.auth_appropriate # if no appropriation, this will be zero
+        print("group.id = ", group.id_in_subsession)
         print("group.appropriation_percent = ", group.appropriation_percent)
         print("group.appropriation = ", group.appropriation)
         group.individual_share = (group.total_earnings - group.appropriation) / Constants.players_per_group
@@ -405,7 +406,7 @@ class TaxResults(Page):
             'orig': player.income_before_taxes,'total_contribution': group.total_contribution,
             'total_earnings': group.total_earnings, 'total_appropriation': group.appropriation,
             'round_num': self.round_number, 'taxcob':taxcob,'tax': tax, 'payoff': player.payoff,
-            'appropiation_percent_display': str(round(self.group.appropriation_percent/2, 2)*100)+"%",
+            'appropiation_percent_display': str(round(self.group.appropriation_percent/2, 2)*100*group.auth_appropriate)+"%",
             'authority': group.authority
         }
 

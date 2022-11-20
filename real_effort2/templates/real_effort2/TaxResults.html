@@ -33,21 +33,25 @@
             {% if authority != "no authority"  %}
                 {% if group.auth_appropriate != 0 %}
                     {% if player.id_in_group != group.authority_ID %}
-                        <tr><td>La <b>autoridad</b> se <b>quedó</b> con:</td><td>{{total_appropriation}} (25% de ganancia total de inversión pública) </td></tr>
+                        <tr><td>La <b>autoridad</b> se <b>quedó</b> con:</td><td>{{total_appropriation}} ({{ appropiation_percent_display }} de ganancia total de inversión pública) </td></tr>
                     {% else %}
-                        <tr><td>Te quedaste con: </td><td>{{total_appropriation}} (25% de ganancia total de inversión pública) </td></tr>
+                        <tr><td>Te quedaste con: </td><td>{{total_appropriation}} ({{ appropiation_percent_display }} de ganancia total de inversión pública) </td></tr>
                     {% endif %}
                 {% endif %}
             {% else %}
                 {% if group.auth_appropriate != 0 %}
-                    <tr><td>Un <b>jugador</b> se <b>quedó</b> con:</td><td>{{total_appropriation}} ({{ appropiation_percent_display }} de ganancia total de inversión pública) </td></tr>    
+                    {% if player.id_in_group != group.authority_ID %}
+                        <tr><td>Un <b>jugador</b> se <b>quedó</b> con:</td><td>{{total_appropriation}} ({{ appropiation_percent_display }} de ganancia total de inversión pública) </td></tr>    
+                    {% else %} 
+                        <tr><td>Te quedaste con: </td><td>{{total_appropriation}} ({{ appropiation_percent_display }} de ganancia total de inversión pública) </td></tr>    
+                    {% endif %}
                 {% endif %}
             {% endif %}
 
         <tr><td colspan="2"><hr/></td></tr>
         <tr><td>Por lo tanto, tú <b>ganaste</b>:</td><td>{{ payoff }}</td></tr>
         <tr><td>( Ingreso - Impuestos + </td></tr>
-        {% if total_appropriation != 0 %}
+        {% if group.auth_appropriate != 0 %}
             {% if player.id_in_group != group.authority_ID %}
                 <tr><td>(Ganancia Total - Cantidad apropiada)/(Número de Jugadores) )</td></tr>
             {% else %}

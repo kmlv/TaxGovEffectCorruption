@@ -60,12 +60,12 @@ h2 {
         <br><br>
         {% if group.authority != "no authority"  %}
             <h5>Autoridad:</h5> En esta ronda, se escogerá a un participante para que sea la Autoridad y tome una decisión con respecto a la
-            eficacia del Estado: tendrá la opción de tomar {{ appropiation_percent_display }} de lo recaudado tras ser multiplicado
+            eficiencia del Estado: tendrá la opción de tomar {{ appropiation_percent_display }} de lo recaudado tras ser multiplicado
             para sí mismo o repartir lo multiplicado a todos en partes iguales.
             <br><br>
         {% else %}
             {% if group.appropriation_percent != 0  %}
-                <h5>Eficacia del Estado:</h5> En esta ronda, uno de los participantes será 
+                <h5>Eficiencia del Estado:</h5> En esta ronda, uno de los participantes será 
                 elegido aleatoriamente para recibir {{ appropiation_percent_display }} de lo recaudado 
                 tras ser multiplicado.
             {% endif %}
@@ -77,16 +77,16 @@ h2 {
         <ul>
             {% if group.authority == "no authority" %}
                 <li><b>Autoridad:</b> En algunas rondas, un participante puede ser elegido aleatoriamente para que sea la Autoridad y tome una decisión con respecto a la
-                eficacia del Estado: tendrá la opción de tomar una parte adicional de lo recaudado tras ser 
+                eficiencia del Estado: tendrá la opción de tomar una parte adicional de lo recaudado tras ser 
                 multiplicado para sí mismo o repartir lo multiplicado a todos en partes iguales.              
                 </li>
-                <li><b>Eficacia del Estado:</b> En algunas rondas donde no haya autoridad, uno
+                <li><b>Eficiencia del Estado:</b> En algunas rondas donde no haya autoridad, uno
                 de los participantes puede ser elegido aleatoriamente para quedarse con una parte adicional
                 de lo recaudado tras ser multiplicado. En otras rondas, puede haber un participante que 
                 se encargue de multiplicar lo recaudado, pero no pueda tomar una parte para sí mismo.</li>
             {% else %}
                 <li><b>Autoridad:</b> En algunas rondas, puede no haber Autoridad.</li>
-                <li><b>Eficacia del Estado:</b> En algunas rondas donde no haya autoridad, uno de los participantes puede ser elegido aleatoriamente para recibir
+                <li><b>Eficiencia del Estado:</b> En algunas rondas donde no haya autoridad, uno de los participantes puede ser elegido aleatoriamente para recibir
                 una parte adicional de lo recaudado tras ser multiplicado. En otras rondas, puede haber un participante que se encargue de multiplicar lo recaudado,
                 pero no pueda tomar una parte para sí mismo.</li>
             {% endif %}

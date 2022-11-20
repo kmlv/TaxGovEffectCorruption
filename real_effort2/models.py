@@ -185,6 +185,7 @@ class Group(BaseGroup):
 class Player(BasePlayer):
     audit2 = models.IntegerField()
     income_before_taxes = models.CurrencyField()
+    income_after_taxes = models.CurrencyField()
     transcribed_text = models.LongStringField()
     transcribed_text2 = models.LongStringField()
     levenshtein_distance = models.IntegerField()
