@@ -215,7 +215,8 @@ class Transcribe2(Page):
         # If transcription mode is set to true for this round, set the player's income according
         # to their transcription accuracy
         self.player.ratio = 1 - self.player.levenshtein_distance / len(self.player.refText)
-        self.player.income *= self.player.ratio
+        self.player.task_earnings = self.player.endowment * self.player.ratio
+        self.player.income_before_taxes = self.player.task_earnings # assigning income bef taxes
         self.player.payoff = 0
         self.player.transcriptionDone = True
 
@@ -227,25 +228,20 @@ class ReportIncome(Page):
 
     def contribution_max(self):
         """Dynamically sets the maximum amount of each player's income that he/she can report"""
-        return self.player.income
+        return self.player.income_before_taxes
 
     def vars_for_template(self):
         return {'tax': self.group.tax_percent * 100,
                 'mult': self.group.multiplier,
                 'display_ratio': round(self.player.ratio * 100, 1), 
                 'endowment': self.player.endowment,
-                'display_income': self.player.income, 
+                'display_income': self.player.task_earnings, 
                 'transcribe_on': self.group.transcription_required,
                 'round_num': self.round_number
         }
 
     def before_next_page(self):
-        self.player.income_before_taxes = self.player.income # assigning income bef taxes
-#        self.player.income_after_taxes = self.player.income_before_taxes - self.player.contribution*self.group.tax_percent
-        if random.randint(0, 1) == 0:
-            self.player.audit = True
-        else:
-            self.player.audit = False
+        self.player.income_after_taxes = self.player.income_before_taxes - self.player.contribution*self.group.tax_percent
 
 
 class Audit(Page):
@@ -253,8 +249,7 @@ class Audit(Page):
     and reported income match. If not, they incur a penalty that's deducted from their remaining income after taxes
     are deducted."""
     def is_displayed(self):
-       # return self.player.audit
-       if self.player.audit2 == 1:
+       if self.player.audit == 1:
            return True
        else:
            return False
@@ -263,18 +258,19 @@ class Audit(Page):
         player = self.player
 
         # If player's reported income and actual income don't match
-        if player.contribution != player.income:
-            player.income = (1 - self.group.penalty_percent) * (player.income - (self.group.tax_percent * player.contribution))
-
+        if player.contribution != player.income_before_taxes:
+            player.income_after_audit = (1 - self.group.penalty_percent)*player.income_after_taxes
+            
             return {
                 'fail': True,
                 'correctIncome': player.income_before_taxes,
                 'reportedIncome': player.contribution,
-                'newIncome': c(round(player.income, 1)),
+                'newIncome': c(round(player.income_after_audit, 1)),
                 'penalty': self.group.penalty_percent * 100,
                 'round_num': self.round_number
             }
         else:
+            player.income_after_audit = player.income_after_taxes
             return {
                 'fail': False, 'round_num': self.round_number
             }
@@ -312,6 +308,12 @@ class NoAuthority(Page):
             "appropiation_percent_display": str(round(self.group.appropriation_percent/2, 2)*100)+"%",
             'round_num': self.round_number
         }
+    
+    def before_next_page(self):
+        if self.group.appropriation_percent == 0:
+            self.group.auth_appropriate = False
+        else:
+            self.group.auth_appropriate = True
 
 
 class Authority(Page):
@@ -359,7 +361,10 @@ class AuthorityWaitPage(WaitPage):
 
         # assigning payoffs
         for p in players: 
-            p.payoff = p.income - (tax * p.contribution) + group.individual_share
+            if p.audit:
+                p.payoff = p.income_after_audit + group.individual_share
+            else:
+                p.payoff = p.income_after_taxes + group.individual_share
 
             if p.id_in_group == group.authority_ID: # adding the appropiated amt to auth/random indv
                 p.payoff += group.appropriation

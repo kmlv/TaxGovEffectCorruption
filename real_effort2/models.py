@@ -98,7 +98,7 @@ class Subsession(BaseSubsession):
 
         for p in self.get_players():
             k = random.randint(1, 100)/100
-            p.audit2 = k <= self.session.config["audit_prob"]
+            p.audit = k <= self.session.config["audit_prob"]
 
         # getting player groups
         # total_amount_of_players = len(self.get_players())
@@ -146,11 +146,9 @@ class Subsession(BaseSubsession):
             p.ratio = 1
             p.contribution = 0
             p.endowment = round_parameters["end"]
-            p.income = p.endowment
-
+    
 
 class Group(BaseGroup):
-    baseIncome = models.CurrencyField()
     total_report = models.CurrencyField()
     total_contribution = models.CurrencyField()
     total_earnings = models.CurrencyField()
@@ -183,9 +181,10 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
-    audit2 = models.IntegerField()
+    task_earnings = models.CurrencyField()
     income_before_taxes = models.CurrencyField()
     income_after_taxes = models.CurrencyField()
+    income_after_audit = models.CurrencyField()
     transcribed_text = models.LongStringField()
     transcribed_text2 = models.LongStringField()
     levenshtein_distance = models.IntegerField()
