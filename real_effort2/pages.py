@@ -10,6 +10,7 @@ import random
 import string
 from .config import data_grps as data_all_groups
 
+
 def writeText(text, fileName):
     """"This method generates the image with the garbled/randomized transcription text on it
     and saves it to fileName"""
@@ -38,6 +39,7 @@ def writeText(text, fileName):
         draw.text((x, y), message, fill=color, font=font)
 
     image.save(fileName)
+
 
 def generateText1(difficulty):
     """This method generates randomized garbled text whose difficulty to transcribe is based on the difficulty paramaeter
@@ -91,6 +93,7 @@ def generateText2(difficulty):
         generated += (add + ".")
 
     return generated
+
 
 def getPageCode(self):
     """This method generates a page code in the format T_1_A_5, where the number after "T" represents the transcription
@@ -180,15 +183,13 @@ class Transcribe2(Page):
         if self.group.transcription_required == False:
             return False
         else:
-            # creating an image with the text to be transcribed
-            self.player.refText = generateText2(self.group.transcription_difficulty)            
-            writeText(self.player.refText, 'real_effort2/static/real_effort2/paragraphs/{}.png'.format(2))
-            
             return True
 
     def vars_for_template(self):
+        # creating an image with the text to be transcribed
+        self.player.refText = generateText2(self.group.transcription_difficulty)     
         return {
-            'image_path': 'real_effort2/paragraphs/{}.png'.format(2),
+            # 'image_path': 'real_effort2/paragraphs/{}.png'.format(2),
             'reference_text': self.player.refText,
             'debug': settings.DEBUG,
             'required_accuracy': 100 * (1 - Constants.allowed_error_rates[1]),
