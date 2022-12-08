@@ -4,20 +4,11 @@ import random
 ##            audit penalty, appropriation percent, shuffle
 # Each dictionary entry represents the data values for 1 round
 
-# data = [
-#     [
-#         {"end": 100, "multiplier": 2, "tax": 0.3, "transcription": True, "mode": 1, "difficulty": 1, "spanish": True,
-#          "penalty": 0.9, "appropriation_percent": 0.25, "shuffle": False},
-#         {"end": 100, "multiplier": 1.5, "tax": 0.3, "transcription": True, "mode": 1, "difficulty": 1, "spanish": True,
-#          "penalty": 0.9, "appropriation_percent": 0.25, "shuffle": False},
-#         {"end": 100, "multiplier": 2, "tax": 0.3, "transcription": True, "mode": 2, "difficulty": 1, "spanish": True,
-#          "penalty": 0.9, "appropriation_percent": 0.25, "shuffle": False},
-#         {"end": 100, "multiplier": 2, "tax": 0.5, "transcription": True, "mode": 3, "difficulty": 6, "spanish": True,
-#          "penalty": 0.9, "appropriation_percent": 0.25, "shuffle": False}
-#     ]
-#     ]
+num_groups_with_dictators = 2
+num_benevolents_per_group = 1
+num_embezzlements_per_group = 1
+num_backups_per_dictator = 1
 
-#TODO: edit data_grps for groups with no authority
 data_grps = {
             'group_1': {
                         'first_half': {
