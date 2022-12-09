@@ -1,6 +1,6 @@
 from ._builtin import Page, WaitPage
 from otree.api import Currency as c, currency_range
-from .models import Constants, levenshtein, distance_and_ok
+from .models import Constants, assign_dictator, distance_and_ok
 from django.conf import settings
 import PIL
 from PIL import Image, ImageDraw, ImageFont
@@ -8,7 +8,7 @@ import math
 from random import *
 import random
 import string
-from .config import data_grps as data_all_groups
+from .config import data_grps
 
 
 def writeText(text, fileName):
@@ -110,10 +110,108 @@ def getPageCode(self):
     return "T" + str(t_code) + "_" + "A" + str(auth_code)
 
 
+class InitialWaitPage(WaitPage):
+    wait_for_all_groups = True    
+    def after_all_players_arrive(self):
+        # setting up groups (for first round)
+        round_number = self.round_number
+        group_matrix = [[] for _ in range(int(len(self.subsession.get_players())/Constants.players_per_group))]
+        print("Number of groups", int(len(self.subsession.get_players())/Constants.players_per_group))
+        print("group matrix: ", group_matrix)
+
+        # reading dictators
+        benevolent_dictators = Constants.dictators["benevolent"]
+        embezzlement_dictators = Constants.dictators["embezzlement"]
+        
+        # getting group ids of groups with dictators
+        groups_with_dicts = []
+        for group in data_grps.keys():
+            if data_grps[group]["first_half"]["authority"] != "no authority" \
+                or data_grps[group]["second_half"]["authority"] != "no authority":
+                groups_with_dicts.append(int(group[-1]))
+
+        # setting new group matrix
+        print(f"round_num = {round_number}")
+        if round_number == 1:
+            # getting players by type
+            print("All players: ", self.subsession.get_players())
+            benevolents_in_session = [player.id_in_subsession for player in self.subsession.get_players() if player.participant.label in benevolent_dictators]
+            embezzlements_in_session = [player.id_in_subsession for player in self.subsession.get_players() if player.participant.label in embezzlement_dictators]
+            non_dictators = [player.id_in_subsession for player in self.subsession.get_players() if player.id_in_subsession not in benevolents_in_session and player.id_in_subsession not in embezzlements_in_session]
+            
+            # shuffling players order
+            random.shuffle(benevolents_in_session)
+            random.shuffle(embezzlements_in_session)
+            random.shuffle(non_dictators)
+            print(f"Benevolent dictators: {benevolents_in_session}")
+            print(f"Embezzlement dictators: {embezzlements_in_session}")
+            print(f"Non dictators: {non_dictators}")
+
+            # assigning dictators to grous
+            updated_groups, non_assigned_benev = assign_dictator(benevolents_in_session, groups_with_dicts, group_matrix)
+            print(f"Updated groups: {updated_groups}. Non assigned benevolent dicts: {non_assigned_benev}")
+            updated_groups, non_assigned_embez = assign_dictator(embezzlements_in_session, groups_with_dicts, updated_groups)
+            print(f"Updated groups: {updated_groups}. Non assigned embezzlement dicts: {non_assigned_embez}")
+
+            # completing groups with non dictators
+            unassigned_players = non_dictators + non_assigned_benev + non_assigned_embez
+            print(f"Unassigned players: {unassigned_players}")
+            initial_index = 0 # first index for slicing non dictators
+            print("---Completting groups---")
+            for group_list in updated_groups:
+                print("--Current group list: ", group_list)
+                num_unassigned = Constants.players_per_group - len(group_list) # num of required participants to complete group
+                print("Current num_unassigned: ", num_unassigned)
+                final_index = initial_index + num_unassigned # final index for slicing non dictators                
+                print("Current indexes: ", (initial_index, final_index))
+                group_list += unassigned_players[initial_index:final_index] # assigning non dictators to group
+                print("Current group_list: ", group_list)
+                initial_index = final_index
+                print("Next initial_index: ", initial_index)
+                            
+            print(f"Final groups: {updated_groups}")
+            self.subsession.set_group_matrix(updated_groups) # setting groups after assignment
+
+    def is_displayed(self):
+        if self.round_number == 1:
+            return True
+        else:
+            self.subsession.group_like_round(1) # grouping like round 1
+            return False
+
+
 class Introduction(Page):
     """Description of the game: How to play and returns expected"""
     
     def is_displayed(self):
+        # setting group parameters
+        if self.group.treatment_tag is None: # if parameters haven't been updated yet (default contr = -1)
+            for grp in self.subsession.get_groups(): 
+                # obtaining the group parameters
+                group_parameters = data_grps[f"group_{grp.id_in_subsession}"]
+                
+                if self.round_number <= round(Constants.num_rounds/2):
+                    round_parameters = group_parameters["first_half"] # parameters for first half of rounds
+                else:
+                    round_parameters = group_parameters["second_half"] # parameters for second half of rounds
+                
+                grp.multiplier = round_parameters["multiplier"]
+                grp.authority = round_parameters["authority"]
+                grp.appropriation_percent = round_parameters["appropriation_percent"]
+                grp.tax_percent = round_parameters["tax"]
+                grp.penalty_percent = round_parameters["penalty"]
+                grp.transcription_required = round_parameters["transcription"]
+                grp.transcription_difficulty = round_parameters["difficulty"]
+                grp.treatment_tag = round_parameters["tag"]
+                grp.spanish = round_parameters["spanish"]
+
+            # Initialization of default ratio, contribution, and income values for each player
+            for p in self.subsession.get_players():
+                p.ratio = 1
+                p.contribution = 0
+                p.endowment = round_parameters["end"]
+
+        # displaying page
         if (self.round_number == 1):
             return True
         else:
@@ -416,5 +514,5 @@ class TaxResults(Page):
             'authority': group.authority
         }
 
-page_sequence = [Introduction, InstructionsB, Transcribe2, ReportIncome, Audit, resultsWaitPage,
+page_sequence = [InitialWaitPage, Introduction, InstructionsB, Transcribe2, ReportIncome, Audit, resultsWaitPage,
                  NoAuthority,  Authority, AuthorityWaitPage, AuthorityInfo, TaxResults]

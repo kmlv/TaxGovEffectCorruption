@@ -59,18 +59,30 @@ def assign_dictator(dictators_in_session: list, groups_with_dicts: list, group_m
     """
     Assigns a dictator to each group that requires one
     """
+    print("----Assign dictator----")
+
     index = 0
     if len(dictators_in_session) > 0:
+        print("Dictators in session: ", dictators_in_session)
+        print("Groups with dictators: ", groups_with_dicts)
+        print("Group matrix: ", group_matrix)        
         for dictator in dictators_in_session:
+            print("---")
+            print("Current dictator: ", dictator)
             group_index = groups_with_dicts[index] - 1 # getting index of group with dictator
-            group_matrix[group_index].append(dictator) # adding the benevolent dictator to the group
+            current_group = group_matrix[group_index]
+            print("Group index: ", group_index)
+            print("Group matrix before update: ", group_matrix)
+            print("Current group: ", group_matrix[group_index])
+            current_group.append(dictator) # adding the benevolent dictator to the group
+            print("Group matrix after update: ", group_matrix)
             index += 1
 
             if index == len(groups_with_dicts) or \
                index == len(dictators_in_session) : # break if more dictators than groups or no more dictators
-                return (group_matrix, dictators_in_session[index:]) # return group and non assigned dictators
+                return group_matrix, dictators_in_session[index:] # return group and non assigned dictators
     else: # if no dictators in session
-        return (group_matrix, [])
+        return group_matrix, []
 
 
 class Constants(BaseConstants):
@@ -116,85 +128,10 @@ class Subsession(BaseSubsession):
     # Executed when the session is created
     def creating_session(self):
         # k is a scalar that will allow to randomize the audits
-        round_number = self.round_number
 
         for p in self.get_players():
             k = random.randint(1, 100)/100
             p.audit = k <= self.session.config["audit_prob"]
-
-        group_matrix = [[] for group in range(Constants.num_groups)]
-
-        # reading dictators
-        benevolent_dictators = Constants.dictators["benevolent"]
-        embezzlement_dictators = Constants.dictators["embezzlement"]
-
-        # getting num of required dictators
-        num_req_benevolents = config_py.num_groups_with_dictators*config_py.num_benevolents_per_group
-        num_req_embezzlements = config_py.num_groups_with_dictators*config_py.num_embezzlements_per_group
-        
-        # getting group ids of groups with dictators
-        groups_with_dicts = []
-        for group in config_py.data_grps.keys():
-            if config_py.data_grps[group]["first_half"]["authority"] != "no authority" \
-                or config_py.data_grps[group]["second_half"]["authority"] != "no authority":
-                groups_with_dicts.append(int(group[-1]))
-
-        # setting new group matrix
-        print(f"round_num = {round_number}")
-        if round_number == 1:
-            # getting players by type
-            benevolents_in_session = [player.id_in_subsession for player in self.get_players() if player.label in benevolent_dictators]
-            embezzlements_in_session = [player.id_in_subsession for player in self.get_players() if player.label in embezzlement_dictators]
-            non_dictators = [player.id_in_subsession for player in self.get_players() if player.id_in_subsession not in benevolents_in_session and player.id_in_subsession not in embezzlements_in_session]
-            
-            # shuffling players order
-            random.shuffle(benevolents_in_session)
-            random.shuffle(embezzlements_in_session)
-            random.shuffle(non_dictators)
-            
-            # assigning dictators to grous
-            updated_groups, non_assigned_benev = assign_dictator(benevolents_in_session, groups_with_dicts, group_matrix)
-            updated_groups, non_assigned_embez = assign_dictator(embezzlements_in_session, groups_with_dicts, updated_groups)
-
-            # completing groups with non dictators
-            unassigned_players = non_dictators + non_assigned_benev + non_assigned_embez
-            initial_index = 0 # first index for slicing non dictators
-            for group_list in updated_groups:
-                num_unassigned = Constants.players_per_group - len(group_list) # num of required participants to complete group
-                final_index = initial_index + num_unassigned # final index for slicing non dictators                
-                group_list += unassigned_players[initial_index:final_index] # assigning non dictators to group
-                initial_index = num_unassigned
-            
-            self.set_group_matrix(updated_groups) # setting groups after assignment
-
-        else:
-            self.group_like_round(1) # grouping like round 1
-        
-        for grp in self.get_groups(): # setting group parameters
-            
-            # obtaining the group parameters
-            group_parameters = config_py.data_grps[f"group_{grp.id_in_subsession}"]
-            
-            if self.round_number <= round(Constants.num_rounds/2):
-                round_parameters = group_parameters["first_half"] # parameters for first half of rounds
-            else:
-                round_parameters = group_parameters["second_half"] # parameters for second half of rounds
-            
-            grp.multiplier = round_parameters["multiplier"]
-            grp.authority = round_parameters["authority"]
-            grp.appropriation_percent = round_parameters["appropriation_percent"]
-            grp.tax_percent = round_parameters["tax"]
-            grp.penalty_percent = round_parameters["penalty"]
-            grp.transcription_required = round_parameters["transcription"]
-            grp.transcription_difficulty = round_parameters["difficulty"]
-            grp.treatment_tag = round_parameters["tag"]
-            grp.spanish = round_parameters["spanish"]
-
-        # Initialization of default ratio, contribution, and income values for each player
-        for p in self.get_players():
-            p.ratio = 1
-            p.contribution = 0
-            p.endowment = round_parameters["end"]
     
 
 class Group(BaseGroup):
