@@ -2,7 +2,6 @@ from ._builtin import Page, WaitPage
 from otree.api import Currency as c, currency_range
 from .models import Constants, assign_dictator, distance_and_ok
 from django.conf import settings
-import PIL
 from PIL import Image, ImageDraw, ImageFont
 import math
 from random import *
@@ -205,11 +204,20 @@ class Introduction(Page):
                 grp.treatment_tag = round_parameters["tag"]
                 grp.spanish = round_parameters["spanish"]
 
-            # Initialization of default ratio, contribution, and income values for each player
-            for p in self.subsession.get_players():
-                p.ratio = 1
-                p.contribution = 0
-                p.endowment = round_parameters["end"]
+                # Initialization of default ratio, contribution, and income values for each player
+                for p in grp.get_players():
+                    p.ratio = 1
+                    p.contribution = 0
+                    p.endowment = round_parameters["end"]
+                    if p.participant.label in Constants.dictators["benevolent"] and grp.authority == "benevolent":
+                        grp.authority_ID = p.id_in_group
+                    elif p.participant.label in Constants.dictators["embezzlement"] and grp.authority == "embezzlement":
+                        grp.authority_ID = p.id_in_group
+                    elif grp.authority == "no authority" and grp.authority_ID is None:
+                        grp.authority_ID = random.randint(1, Constants.players_per_group)
+                
+                if grp.authority_ID is None:
+                    grp.authority_ID = random.randint(1, Constants.players_per_group)
 
         # displaying page
         if (self.round_number == 1):
@@ -375,16 +383,6 @@ class Audit(Page):
             }
 
 
-class resultsWaitPage(WaitPage):
-    def after_all_players_arrive(self):
-        group = self.group
-
-        # Generate a random player ID to determine who will be the authority
-        # TODO: create a mechanism to determine who could be an authority
-        # TODO: assign (non)benevolent authority depending on the treatment and config.py
-        group.authority_ID = random.randint(1, Constants.players_per_group)
-
-
 class NoAuthority(Page):
     """
     This page is displayed when there is no authority. A person will be selected
@@ -514,5 +512,5 @@ class TaxResults(Page):
             'authority': group.authority
         }
 
-page_sequence = [InitialWaitPage, Introduction, InstructionsB, Transcribe2, ReportIncome, Audit, resultsWaitPage,
+page_sequence = [InitialWaitPage, Introduction, InstructionsB, Transcribe2, ReportIncome, Audit,
                  NoAuthority,  Authority, AuthorityWaitPage, AuthorityInfo, TaxResults]
