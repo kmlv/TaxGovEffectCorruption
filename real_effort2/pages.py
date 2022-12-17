@@ -238,52 +238,17 @@ class InstructionsB(Page):
                 "display_tax_perc": display_tax_perc,
                 "audit_prob": display_audit_prob,
                 "penalty": display_penalty_perc,
-                "mult": round(self.group.multiplier)}
-    
-    
-class Transcribe1(Page):
-    """First transcription task that's shown to the player that is merely for practice and does not determine the ratio
-    for the player's starting income"""
-    form_model = 'player'
-    form_fields = ['transcribed_text2']
-
-    def is_displayed(self):
-        self.player.refText = generateText1(self.session.vars["config"][0][self.round_number - 1]["difficulty"])
-        # Don't display this Transcribe2 page if the "transcription" value in
-        # the dictionary representing this round in config.py is False
-        print("Inside Transcribe1 page")
-        print("Transcription for this round is: " + str(self.session.vars["config"][0][self.round_number - 1]["transcription"]))
-
-        if self.group.transcription_required == False or self.round_number != 1:
-            self.player.ratio = 1 # income = endowment
-            return False
-        else:
-            return True
-
-    def vars_for_template(self):
-        
-        writeText(self.player.refText, 'real_effort2/static/real_effort2/paragraphs/{}.png'.format(self.player.id_in_group))
-        return {
-            'image_path': 'real_effort2/paragraphs/{}.png'.format(1),
-            'reference_text': self.player.refText,
-            'debug': settings.DEBUG,
-            'round_num': self.round_number,
-            'required_accuracy': 100 * (1 - Constants.allowed_error_rates[0]),
-        }
-
-    def before_next_page(self):
-        """Initialize payoff to have a default value of 0"""
-        self.player.payoff = 0
+                "mult": round(self.group.multiplier)}  
 
 
-class Transcribe2(Page):
-    """Second transcription task that's shown to the player that determines the ratio sfor the player's starting income"""
+class Transcribe(Page):
+    """Transcription task that's shown to the player that determines the ratio sfor the player's starting income"""
     form_model = 'player'
     form_fields = ['transcribed_text']
 
     # la transcripcion se aproxima al entero mas cercano si la parte decimal es mayor a .5 (no mayor igual)
     def is_displayed(self):
-        print("Inside Transcribe2 page")
+        print("Inside Transcribe page")
         print("Transcription for this round is: " + str(self.group.transcription_required))
 
         if self.group.transcription_required == False:
@@ -467,9 +432,7 @@ class AuthorityWaitPage(WaitPage):
                 p.payoff += group.appropriation
 
 
-#TODO: refactor following pages
 class AuthorityInfo(Page):
-    # TODO: update for new modes of (no) authority
     """Lets the other players know what decision the Authority player made."""
 
     def is_displayed(self):
@@ -483,7 +446,6 @@ class AuthorityInfo(Page):
 
         # getting group parameters
         multiplier = group.multiplier
-        appropriation_percent = group.appropriation_percent
 
         # displaying the choice from the authority
         if group.auth_appropriate is False:
@@ -497,7 +459,6 @@ class AuthorityInfo(Page):
 class TaxResults(Page):
     def vars_for_template(self):
         group = self.group
-        players = group.get_players()
         player = self.player
 
         # impuestos cobrados
@@ -512,5 +473,5 @@ class TaxResults(Page):
             'authority': group.authority
         }
 
-page_sequence = [InitialWaitPage, Introduction, InstructionsB, Transcribe2, ReportIncome, Audit,
+page_sequence = [InitialWaitPage, Introduction, InstructionsB, Transcribe, ReportIncome, Audit,
                  NoAuthority,  Authority, AuthorityWaitPage, AuthorityInfo, TaxResults]

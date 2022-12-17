@@ -151,7 +151,6 @@ class Group(BaseGroup):
     # Does the authority decide on mode 2 choice (appropriate a percentage of the money for
     # him/herself)?
     auth_appropriate = models.BooleanField()
-    total_reported_income = models.CurrencyField()
     appropriation = models.CurrencyField(initial=0)
 
     # main parameters
@@ -172,7 +171,6 @@ class Player(BasePlayer):
     income_after_taxes = models.CurrencyField()
     income_after_audit = models.CurrencyField()
     transcribed_text = models.LongStringField()
-    transcribed_text2 = models.LongStringField()
     levenshtein_distance = models.IntegerField()
     ratio = models.FloatField()
     contribution = models.CurrencyField(min = 0, initial = -1)

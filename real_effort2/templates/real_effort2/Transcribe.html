@@ -2,26 +2,28 @@
 {% load otree static %}
 
 {% block title %}
-    Transcripción {{ subsession.round_number }}/{{ Constants.num_rounds }}
+    Transcripción
 {% endblock %}
 
 {% block content %}
 {% if group.spanish %}
         <p> Trascribe el siguiente texto en el recuadro.</p>
-        <p> Trata de ser exacto y asegúrate de poner todas las letras, símbolos y espacios correspondientes.</p>
+        <p> Trata de ser exacto y asegúrate de poner todas las caracteres correspondientes.</p>
     {% else %}
         <p>
         Please transcribe the text below into the input field.
         Be exact and make sure to get all characters and spaces correct.
     </p>
+
     {% endif %}
 
-    
-
-
-    <img src="{% static image_path %}"/>
+    <p id ="text" style="-webkit-touch-callout: none; 
+    -webkit-user-select: none; 
+    -khtml-user-select: none; 
+    -moz-user-select: none; 
+        -ms-user-select: none; 
+            user-select: none; ">{{ reference_text }}</p>
     <br><br>
-
 
     {% formfield player.transcribed_text label="" %}
 
@@ -49,12 +51,12 @@
 {% endblock %}
 
 {% block scripts %}
-<script>
+<!-- <script>
     $(document).ready(function () {
         var referenceText = {{ reference_text|json }};
         $('#prefill').click(function () {
             $('#id_transcribed_text').val(referenceText);
         })
     });
-</script>
+</script> -->
 {% endblock %}
