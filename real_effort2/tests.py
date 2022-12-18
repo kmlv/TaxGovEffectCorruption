@@ -37,3 +37,6 @@ class PlayerBot(Bot):
             yield pages.AuthorityInfo
         
         yield pages.TaxResults
+
+        if self.round_number == Constants.num_rounds:
+            yield pages.FinalResults

@@ -40,40 +40,13 @@ def writeText(text, fileName):
     image.save(fileName)
 
 
-def generateText1(difficulty):
+def generateText(difficulty):
     """This method generates randomized garbled text whose difficulty to transcribe is based on the difficulty paramaeter
     (between 1 to 3) that's passed in."""
 
     min_char = 4 * difficulty
     max_char = min_char + 6
-    allchar = string.ascii_lowercase + string.digits + string.punctuation
-    vowels = ('a','e','i','o','u')
-
-    #generated = "$eub:uuwhui eiu,u.ead^)ie{hp/irle.eug aw2x~auao`u.pi-[n+eaoqej."
-    generated=""
-
-    if(difficulty == 1):
-        allchar = string.ascii_lowercase
-    if(difficulty == 2):
-        allchar = string.ascii_lowercase + string.digits
-    for i in range(10):
-        for i in range(5):
-             allchar += vowels[i]
-    
-    while(len(generated) < 70 - max_char):
-        add = "".join(choice(allchar) for x in range(randint(min_char, max_char)))
-        generated += (add +".")
-
-    return generated
-
-
-def generateText2(difficulty):
-    """This method generates randomized garbled text whose difficulty to transcribe is based on the difficulty paramaeter
-    (between 1 to 3) that's passed in."""
-
-    min_char = 4 * difficulty
-    max_char = min_char + 6
-    allchar = string.ascii_lowercase + string.digits + string.punctuation
+    allchar = string.ascii_lowercase + string.digits + string.punctuation.replace(",", "").replace(";", "")
     vowels = ('a', 'e', 'i', 'o', 'u')
 
     #generated = "$abgfnu% hgancnya @mk.o)qwbn[apzxc[*}-en45a.m_nbczpi45&|jsn-omn^"
@@ -258,7 +231,7 @@ class Transcribe(Page):
 
     def vars_for_template(self):
         # creating an image with the text to be transcribed
-        self.player.refText = generateText2(self.group.transcription_difficulty)     
+        self.player.refText = generateText(self.group.transcription_difficulty)     
         return {
             # 'image_path': 'real_effort2/paragraphs/{}.png'.format(2),
             'reference_text': self.player.refText,
@@ -465,6 +438,12 @@ class TaxResults(Page):
         tax = group.tax_percent
         taxcob =  tax*player.contribution 
 
+        # storing round payoff
+        self.player.round_payoff = self.player.payoff
+        if self.round_number == 1:
+            self.player.participant.vars["round_payoffs"] = []
+        self.player.participant.vars["round_payoffs"].append(self.player.round_payoff)
+
         return{
             'orig': player.income_before_taxes,'total_contribution': group.total_contribution,
             'total_earnings': group.total_earnings, 'total_appropriation': group.appropriation,
@@ -472,6 +451,23 @@ class TaxResults(Page):
             'appropiation_percent_display': str(round(self.group.appropriation_percent/2, 2)*100*group.auth_appropriate)+"%",
             'authority': group.authority
         }
+    
+    def before_next_page(self):
+        if self.round_number == Constants.num_rounds: # choosing a payoff at random
+            self.player.chosen_round = random.randint(1, Constants.num_rounds)
+            chosen_round = self.player.chosen_round
+            self.player.participant.payoff = self.player.participant.vars["round_payoffs"][chosen_round - 1]
 
+
+class FinalResults(Page):
+    def is_displayed(self):
+        return self.round_number == Constants.num_rounds
+    
+    def vars_for_template(self):
+        return {"round_num": self.round_number,
+                "chosen_round": self.player.chosen_round,
+                "chosen_payoff": self.player.participant.payoff}
+        
+        
 page_sequence = [InitialWaitPage, Introduction, InstructionsB, Transcribe, ReportIncome, Audit,
-                 NoAuthority,  Authority, AuthorityWaitPage, AuthorityInfo, TaxResults]
+                 NoAuthority,  Authority, AuthorityWaitPage, AuthorityInfo, TaxResults, FinalResults]
