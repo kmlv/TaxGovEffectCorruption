@@ -97,7 +97,7 @@ class Constants(BaseConstants):
     dictators_file = open("dictators.json", "r")
     dictators = json.loads(dictators_file.read())
 
-    players_per_group = 3 # 5 in prod
+    players_per_group = 5 # 5 in prod
     instructions_template = 'real_effort2/Instructions.html'
     info_code = 'real_effort/Code.html'
 
