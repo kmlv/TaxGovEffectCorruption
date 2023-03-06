@@ -6,34 +6,37 @@ from .models import Constants
 
 class PlayerBot(Bot):
     def play_round(self):
-        # must reject transcription that is too inaccurate
-        yield SubmissionMustFail(pages.Transcribe, {'transcribed_text': 'foo'})
+        if self.round_number == 1:
+            yield pages.Introduction
+        
+        yield pages.InstructionsB
 
-        transcription = Constants.reference_texts[self.round_number - 1]
-        add_char = Constants.allowed_error_rates[self.round_number - 1] > 0
-        if add_char:
-            # add a 1-char error, should still be fine
-            transcription += 'a'
+        yield (pages.Transcribe, {"transcribed_text": self.player.refText}) # yielding exact text for avoiding wait times
 
-        yield (pages.Transcribe, {'transcribed_text': transcription})
+        yield (pages.ReportIncome, {"contribution": 10})
 
+        if self.player.audit == 1:
+            yield pages.Audit
 
-        for value in [
-            self.player.levenshtein_distance,
-            self.player.transcribed_text,
-            self.player.payoff
-        ]:
-            assert value != None
+        approp_test_value = False # true for first half of rounds
+        if self.player.id_in_group == self.group.authority_ID:
+            # no authority validation
+            if self.group.authority == "no authority":
+                yield (pages.NoAuthority, {"authority_multiply": True})
+            
+            # authority validation
+            elif self.group.authority != "no authority":     
+                if self.round_number > round(Constants.num_rounds/2):
+                    approp_test_value = True # false for second half
+                yield (pages.Authority, {"auth_appropriate": approp_test_value})
+            
+            else:
+                print("Error with authority validation")
 
-        if add_char:
-            assert self.player.levenshtein_distance == 1
-        else:
-            assert self.player.levenshtein_distance == 0
+        if self.player.id_in_group != self.group.authority_ID:
+            yield pages.AuthorityInfo
+        
+        yield pages.TaxResults
 
         if self.round_number == Constants.num_rounds:
-            # final page should print lengths of all reference texts
-            for ref_text in Constants.reference_texts:
-                assert str(len(ref_text)) in self.html
-
-            # because of add_char, there should be an error in at least 1 round
-            assert any(p.levenshtein_distance > 0 for p in self.player.in_all_rounds())
+            yield pages.FinalResults

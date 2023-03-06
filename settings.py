@@ -62,7 +62,7 @@ ROOMS = [
     dict(
         name='econ101',
         display_name='Econ 101 class',
-        participant_label_file='_rooms/econ101.txt',
+        participant_label_file='_rooms/econolab.txt',
     ),
     dict(
         name='e2labup',
@@ -108,6 +108,14 @@ SESSION_CONFIGS = [
         'app_sequence': ["real_effort2"],
         'audit_prob': 0.05,
         'use_browser_bots': False
+    },
+    {
+        'name': 'paper_klo_au_debug_bots',
+        'display_name': "Impuestos & Eficacia de gobierno: Group DEBUG BOTS",
+        'num_demo_participants': 12,
+        'app_sequence': ["real_effort2"],
+        'audit_prob': 0.05,
+        'use_browser_bots': True
     },
     {
         'name': 'paper_klo_au',
@@ -190,4 +198,4 @@ SESSION_CONFIGS = [
 # oTree's default settings. Use with caution.
 # otree.settings.augment_settings(globals())
 
-DEBUG=False
+DEBUG=True

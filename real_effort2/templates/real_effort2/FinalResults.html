@@ -1,0 +1,18 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    <p style="font-size:15px; color:#CD853F;" align="right"><br/>Period {{ round_num }}</p>
+    Resultados Finales
+{% endblock %}
+
+{% block content %}
+    <p>
+        La tarea actual ha concluido. Se ha escogido aleatoriamente la <b>ronda {{ chosen_round }}</b>.
+    </p>
+    <p>
+        Por lo tanto, tu pago por esta tarea es <b>{{ chosen_payoff }}</b>
+    </p>
+    {% next_button %}
+    
+{% endblock %}
