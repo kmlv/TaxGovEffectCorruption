@@ -42,7 +42,7 @@ class SendStrategyMethod(Page):
     form_fields = ['sent_amount_strategy']
 
     def is_displayed(self):
-        return self.session.config["use_strategy_method"] is True and self.player.id_in_group == 1 
+        return self.session.config["use_strategy_method"] is True 
 
 
 class SendBackStrategyMethod(Page):
@@ -55,7 +55,7 @@ class SendBackStrategyMethod(Page):
                     for received in Constants.numbers]
 
     def is_displayed(self):
-        return self.session.config["use_strategy_method"] is True and self.player.id_in_group == 2
+        return self.session.config["use_strategy_method"] is True 
 
 
 class SendBackWaitPage(WaitPage):
