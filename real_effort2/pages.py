@@ -327,7 +327,7 @@ class NoAuthority(Page):
     randomly receive 0.5, it will also be displayed here
     """
     form_model = 'group'
-    form_fields = ['authority_multiply']
+    form_fields = ['auth_appropriate']
 
     def is_displayed(self):
         # displaying if there is no authority and if player is the chosen to mult
@@ -342,12 +342,6 @@ class NoAuthority(Page):
             "appropiation_percent_display": str(round(self.group.appropriation_percent/2, 2)*100)+"%",
             'round_num': self.round_number
         }
-    
-    def before_next_page(self):
-        if self.group.appropriation_percent == 0:
-            self.group.auth_appropriate = False
-        else:
-            self.group.auth_appropriate = True
 
 
 class Authority(Page):

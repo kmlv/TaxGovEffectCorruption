@@ -22,14 +22,16 @@ class PlayerBot(Bot):
         if self.player.id_in_group == self.group.authority_ID:
             # no authority validation
             if self.group.authority == "no authority":
-                yield (pages.NoAuthority, {"authority_multiply": True})
+                if self.group.appropriation_percent != 0:
+                    yield (pages.NoAuthority, {"auth_appropriate": True})
+                else:
+                    yield (pages.NoAuthority, {"auth_appropriate": False})
             
             # authority validation
             elif self.group.authority != "no authority":     
                 if self.round_number > round(Constants.num_rounds/2):
                     approp_test_value = True # false for second half
                 yield (pages.Authority, {"auth_appropriate": approp_test_value})
-            
             else:
                 print("Error with authority validation")
 
