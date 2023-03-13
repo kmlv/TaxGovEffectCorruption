@@ -151,7 +151,7 @@ class Group(BaseGroup):
     # Does the authority decide on mode 2 choice (appropriate a percentage of the money for
     # him/herself)?
     auth_appropriate = models.BooleanField()
-    appropriation = models.CurrencyField(initial=0)
+    appropriation = models.CurrencyField()
 
     # main parameters
     multiplier = models.FloatField() # public goods multiplier

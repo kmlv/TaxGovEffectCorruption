@@ -146,9 +146,21 @@ class InitialWaitPage(WaitPage):
 
     def is_displayed(self):
         if self.round_number == 1:
+            if self.player.id_in_subsession == 1: # create this variable only once (first round and for first player)
+                self.session.vars["group_assignments"] = [False] * Constants.num_rounds # determines whether the group data was set up or not yet
+                print("Session var for group assignments created: ", self.session.vars["group_assignments"])
             return True
         else:
-            self.subsession.group_like_round(1) # grouping like round 1
+            # as the grouping makes all the group field values None, it should only happen once per round
+            # when the first player to finish a round comes to the next, he will go through this page, which will set up group_like_round(1) 
+            # then, he will automatically go to the second page, which will trigger the execution of setting up the parameters in the next page
+            # and change the value of parameters_already_set_up to True
+            # Hence, parameters_already_set_up will only be False for the current round for the player who finished first the previous round
+            # for the rest, its value will change to True
+            index_for_setting_params = self.round_number - 1
+            parameters_already_set_up = self.session.vars["group_assignments"][index_for_setting_params]
+            if parameters_already_set_up is False: 
+                self.subsession.group_like_round(1) # grouping like round 1
             return False
 
 
@@ -157,40 +169,48 @@ class Introduction(Page):
     
     def is_displayed(self):
         # setting group parameters (setting the parameters only when self.group.treatment_tag is None might cause bugs)
-        for grp in self.subsession.get_groups(): # intentionally executed each time a new player arrives to avoid auth_appropiate bug
-            # obtaining the group parameters
-            group_parameters = data_grps[f"group_{grp.id_in_subsession}"]
-            
-            if self.round_number <= round(Constants.num_rounds/2):
-                round_parameters = group_parameters["first_half"] # parameters for first half of rounds
-            else:
-                round_parameters = group_parameters["second_half"] # parameters for second half of rounds
-            
-            grp.multiplier = round_parameters["multiplier"]
-            grp.authority = round_parameters["authority"]
-            grp.appropriation_percent = round_parameters["appropriation_percent"]
-            grp.tax_percent = round_parameters["tax"]
-            grp.penalty_percent = round_parameters["penalty"]
-            grp.transcription_required = round_parameters["transcription"]
-            grp.transcription_difficulty = round_parameters["difficulty"]
-            grp.treatment_tag = round_parameters["tag"]
-            grp.spanish = round_parameters["spanish"]
+        # NOTE: it's very likely oTree's functionality resets the parameters by default each time a new group is set up (which happens every time group_like_round is executed)
+        index_for_setting_params = self.round_number - 1
+        parameters_already_set_up = self.session.vars["group_assignments"][index_for_setting_params]
+        if parameters_already_set_up is False: # update group parameters only if they haven't been updated yet              
+            for grp in self.subsession.get_groups():
+                print("--Updating group parameters--")
+                # obtaining the group parameters
+                group_parameters = data_grps[f"group_{grp.id_in_subsession}"]
+                
+                if self.round_number <= round(Constants.num_rounds/2):
+                    round_parameters = group_parameters["first_half"] # parameters for first half of rounds
+                else:
+                    round_parameters = group_parameters["second_half"] # parameters for second half of rounds
+                
+                grp.multiplier = round_parameters["multiplier"]
+                grp.authority = round_parameters["authority"]
+                grp.appropriation_percent = round_parameters["appropriation_percent"]
+                grp.tax_percent = round_parameters["tax"]
+                grp.penalty_percent = round_parameters["penalty"]
+                grp.transcription_required = round_parameters["transcription"]
+                grp.transcription_difficulty = round_parameters["difficulty"]
+                grp.treatment_tag = round_parameters["tag"]
+                grp.spanish = round_parameters["spanish"]
 
-            # Initialization of default ratio, contribution, and income values for each player
-            for p in grp.get_players():
-                p.ratio = 1
-                p.contribution = 0
-                p.endowment = round_parameters["end"]
-                if p.participant.label in Constants.dictators["benevolent"] and grp.authority == "benevolent":
-                    grp.authority_ID = p.id_in_group
-                elif p.participant.label in Constants.dictators["embezzlement"] and grp.authority == "embezzlement":
-                    grp.authority_ID = p.id_in_group
-                elif grp.authority == "no authority" and grp.authority_ID is None:
+                # Initialization of default ratio, contribution, and income values for each player # ERROR, se esta sobrescriendo a 0
+                for p in grp.get_players():
+                    p.ratio = 1
+                    p.contribution = 0
+                    p.endowment = round_parameters["end"]
+                    if p.participant.label in Constants.dictators["benevolent"] and grp.authority == "benevolent":
+                        grp.authority_ID = p.id_in_group
+                    elif p.participant.label in Constants.dictators["embezzlement"] and grp.authority == "embezzlement":
+                        grp.authority_ID = p.id_in_group
+                    elif grp.authority == "no authority" and grp.authority_ID is None:
+                        grp.authority_ID = random.randint(1, Constants.players_per_group)
+                
+                if grp.authority_ID is None:
                     grp.authority_ID = random.randint(1, Constants.players_per_group)
-            
-            if grp.authority_ID is None:
-                grp.authority_ID = random.randint(1, Constants.players_per_group)
-
+                
+            self.session.vars["group_assignments"][index_for_setting_params] = True # updating the parameters setup indicator
+        else:
+            print("Parameters already updated")
         # displaying page
         if (self.round_number == 1):
             return True
@@ -381,7 +401,13 @@ class AuthorityWaitPage(WaitPage):
         print("group.total_contribution = ", group.total_contribution)
         group.total_earnings = group.total_contribution*multiplier
         print("group.total_earnings = ", group.total_earnings)
-        group.appropriation = group.total_contribution*appropriation_percent*group.auth_appropriate # if no appropriation, this will be zero
+        if group.auth_appropriate is True:
+            group.appropriation = group.total_contribution*appropriation_percent
+        elif group.auth_appropriate is False:
+            group.appropriation = 0
+        else:
+            raise ValueError(f"The value of group.auth_appropriate is {group.auth_appropriate}")
+        
         print("group.id = ", group.id_in_subsession)
         print("group.appropriation_percent = ", group.appropriation_percent)
         print("group.appropriation = ", group.appropriation)
