@@ -181,7 +181,7 @@ SESSION_CONFIGS = [
         'num_demo_participants': 4,
         'app_sequence': ['trust'],
         'use_strategy_method': True,
-        'use_browser_bots':True
+        'use_browser_bots': False
         # 'fixed_matching': True,
         # 'matching_file': "matchings_taxgovcorruption.json"
     },

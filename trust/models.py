@@ -20,7 +20,7 @@ class Constants(BaseConstants):
     name_in_url = 'app_das'
     name_app='trust'
     players_per_group = 2
-    num_rounds = 1
+    num_rounds = 2
 
     contact_template = "trust/Contactenos.html"
     instructions_template = 'trust/Instructions.html'
@@ -62,11 +62,9 @@ class Constants(BaseConstants):
 
 class Subsession(BaseSubsession):
     def creating_session(self):
-        self.group_randomly()
+        self.group_randomly(fixed_id_in_group=True)
 
     def vars_for_admin_report(self):
-        num_players = len(self.get_players())
-
         # amount sent in average
         amounts_sent = [p.sent_amount_strategy for p in self.get_players() if p.sent_amount_strategy != None]
         avg_sent = "no data"
@@ -112,40 +110,41 @@ class Group(BaseGroup):
         min=c(0),
     )
 
-    # def set_random_trustor(self):
-    #     """
-    #     Sets randomly who will be selected as the trustor
-
-    #     Input: None
-    #     Output: None
-    #     """
-    #     id_random_trustor = random.randint(0, Constants.players_per_group)
-    #     for p in self.get_players():
-    #         if p.id_in_group == id_random_trustor:
-    #             p.trustor = True
-    #         else:
-    #             p.trustee = True
-
     def set_payoffs(self):
         p1 = self.get_player_by_id(1)
         p2 = self.get_player_by_id(2)
 
         if self.session.config["use_strategy_method"] is False:
-            p1.payoff = Constants.endowment - self.sent_amount + self.sent_back_amount
-            p2.payoff = self.sent_amount * Constants.multiplication_factor - self.sent_back_amount
+            if self.round_number == 1:
+                p1.payoff = Constants.endowment - self.sent_amount + self.sent_back_amount
+                p2.payoff = self.sent_amount * Constants.multiplication_factor - self.sent_back_amount
+            else:
+                p2.payoff = Constants.endowment - self.sent_amount + self.sent_back_amount
+                p1.payoff = self.sent_amount * Constants.multiplication_factor - self.sent_back_amount
        
         else:
-            if p1.sent_amount_strategy == 0:
-                p1.payoff = Constants.endowment
-                p2.payoff = 0
-                self.sent_back_amount = 0
+            if self.round_number == 1:
+                if p1.sent_amount_strategy == 0:
+                    p1.payoff = Constants.endowment
+                    p2.payoff = 0
+                    self.sent_back_amount = 0
+                else:
+                    for value, label in zip(Constants.choices_possible, Constants.label) :
+                        if p1.sent_amount_strategy == value:
+                            p1.payoff = Constants.endowment - p1.sent_amount_strategy + getattr(p2,label)
+                            p2.payoff = p1.sent_amount_strategy * Constants.multiplication_factor - getattr(p2,label)
+                            self.sent_back_amount = getattr(p2,label)
             else:
-
-                for value, label in zip(Constants.choices_possible, Constants.label) :
-                    if p1.sent_amount_strategy == value:
-                        p1.payoff = Constants.endowment - p1.sent_amount_strategy + getattr(p2,label)
-                        p2.payoff = p1.sent_amount_strategy * Constants.multiplication_factor - getattr(p2,label)
-                        self.sent_back_amount = getattr(p2,label)
+                if p2.sent_amount_strategy == 0:
+                    p2.payoff = Constants.endowment
+                    p1.payoff = 0
+                    self.sent_back_amount = 0
+                else:
+                    for value, label in zip(Constants.choices_possible, Constants.label) :
+                        if p2.sent_amount_strategy == value:
+                            p2.payoff = Constants.endowment - p2.sent_amount_strategy + getattr(p1,label)
+                            p1.payoff = p2.sent_amount_strategy * Constants.multiplication_factor - getattr(p1,label)
+                            self.sent_back_amount = getattr(p1,label)
                         
     def set_group_data(self):
         for p in self.get_players():
@@ -157,8 +156,7 @@ class Group(BaseGroup):
 def make_sent_back_field(received_amount):
     return models.IntegerField(
     choices=[choice for choice in range(received_amount + 1)],
-    label=f"Si recibieras {received_amount} puntos, ¿cuánto enviarías de vuelta al Jugador A?",
-    #widget=widgets.RadioSelect,
+    label=f"Si recibieras {received_amount} puntos, ¿cuánto enviarías de vuelta al Jugador A?"
 )
 
 class Player(BasePlayer):
@@ -177,7 +175,6 @@ class Player(BasePlayer):
     ## for trustee
     trustee = models.BooleanField(initial=False)
 
-
     for labe, numb in zip(Constants.label,Constants.numbers):
         locals()[labe]=models.IntegerField(
                             choices=[choice for choice in range(0,int(numb) + 1,3)],
@@ -186,16 +183,8 @@ class Player(BasePlayer):
     del numb
 
 
-    #sent_back_amount_strategy_3 = make_sent_back_field(3)
-    #sent_back_amount_strategy_6 = make_sent_back_field(6)
-    #sent_back_amount_strategy_9 = make_sent_back_field(9)
-    #sent_back_amount_strategy_12 = make_sent_back_field(12)
-    #sent_back_amount_strategy_15 = make_sent_back_field(15)
-    #sent_back_amount_strategy_18 = make_sent_back_field(18)
-    #sent_back_amount_strategy_21 = make_sent_back_field(21)
-    #sent_back_amount_strategy_24 = make_sent_back_field(24)
-    #sent_back_amount_strategy_27 = make_sent_back_field(27)
-    #sent_back_amount_strategy_30 = make_sent_back_field(30)    
-
     def role(self):
-        return {1: 'A', 2: 'B'}[self.id_in_group]
+        if self.round_number == 1:
+            return {1: 'A', 2: 'B'}[self.id_in_group]
+        else:
+            return {1: 'B', 2: 'A'}[self.id_in_group]
